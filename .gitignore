@@ -1,0 +1,23 @@
+# eclipse
+.project
+.classpath
+.settings
+
+# intellij
+.idea
+*.iml
+*.ipr
+*.iws
+projectFilesBackup
+
+# maven
+target
+bin/
+
+# others
+TestNoSubmit.java
+lib
+dump
+dumpdata
+dump.tar
+TODO

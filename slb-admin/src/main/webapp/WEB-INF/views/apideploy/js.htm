@@ -1,0 +1,12 @@
+<script type="text/javascript" src="${contextPath}/static/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="${contextPath}/static/js/myangular-apitask.js?t=20130623"></script>
+
+<script type="text/javascript">
+    $("[rel=tooltip]").tooltip();
+    $(document).ready(
+            function () {
+                angular.element($('#TaskController')).scope().getTask(
+                        '${deployTaskId}');
+            });
+</script>
+

@@ -1,0 +1,2 @@
+dp_domain $dp_domain;
+            proxy_pass http://$dp_upstream;

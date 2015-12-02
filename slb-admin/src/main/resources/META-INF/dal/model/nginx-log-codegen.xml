@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model>
+    <entity name="nginx-log" root="true">
+        <element name="server-address" value-type="String"/>
+        <element name="time" value-type="Date" format="yyyy-MM-dd HH:mm:ss"/>
+        <element name="request-method" value-type="String"/>
+        <element name="status" value-type="int"/>
+        <element name="url" value-type="String"/>
+        <element name="pool" value-type="String"/>
+        <element name="upstream-server" value-type="String"/>
+    </entity>
+</model>
+

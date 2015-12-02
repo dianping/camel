@@ -1,0 +1,63 @@
+<div class="main-container-inner" ng-app="MyApp" ng-controller="ConfigStrategyController" id="ConfigStrategyController">
+    #parse("config/sidebar.htm")
+    #parse("config/strategy/modal.htm")
+    <div class="main-content">
+        <div class="page-content">
+            <div class="page-header">
+                <span class="bigger-110" style="visibility: hidden;">用来占行</span>
+				<span style="float: right">
+					<span>
+						<a class="btn btn-primary btn-sm" ng-click="addStrategy()" href="javascript:void(0);"
+                           style="margin-right: 20px; margin-top: 0px">
+                            <i class="icon-edit"></i>
+                            &nbsp;添加策略
+                        </a>
+					</span>
+				</span>
+            </div>
+            <div class="row">
+                <div id="result_div" class="hide">
+                    <strong>
+                        <div class="result_message"></div>
+                    </strong>
+                </div>
+                <div class="table-responsive" ng-show="isStrategyReady">
+                    <table class="table table-striped table-bordered table-hover" id="strategyList">
+                        <thead>
+                        <tr>
+                            <th>策略名称</th>
+                            <th>策略类型</th>
+                            <th>可选参数</th>
+                            <th>
+                                操作
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="strategy in strategyList">
+                            <td>
+                                <b>{{strategy.name}}</b>
+                            </td>
+                            <td>{{strategy.type}}</td>
+                            <td>{{strategy.dynamicAttributes.target}}</td>
+                            <td style="width: 200px">
+                                <a href="javascript:void(0);" ng-click="edit($index);">
+                                    <span class="label label-info">&nbsp; 编辑 </span>
+                                </a>
+                                &nbsp;
+                                <a href="javascript:void(0);" ng-click="remove($index);">
+                                    <span class="label label-danger">&nbsp; 删除 </span>
+                                </a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div ng-hide="isStrategyReady" style="margin-top: 100px" class="col-md-2 col-md-offset-5"
+                ">
+                <div class="loader-inner line-scale-pulse-out"></div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>

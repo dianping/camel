@@ -1,0 +1,51 @@
+<h5 style="margin-top: 30px">公共变量列表</h5>
+<table class="table table-bordered" style="width: 100%; word-break:break-all;">
+    <thead>
+    <tr>
+        <th style="width: 150px">变量名称</th>
+        <th>变量值</th>
+        <th style="width: 120px">影响的vs</th>
+        <th style="width: 60px">发布</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="variable in variables">
+        <td>{{variable.key}}</td>
+        <td>{{variable.value}}</td>
+        <td>
+            <a ng-click="showInfluencingVs(variable.key)"
+               href="javascript:;"
+               style="margin-right: 20px; margin-top: 0px" class="">
+                <i class="icon-edit"></i>&nbsp;显示引用的VS
+            </a>
+        </td>
+        <td>
+            <a ng-click="deployVariable(variable.key)"
+               href="javascript:;"
+               style="margin-right: 20px; margin-top: 0px" class="">
+                <i class="icon-edit"></i>&nbsp;发布
+            </a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<h4 class="blue" ng-show="isShowInfluencingVs">
+    <i style="margin-top: 20px; margin-bottom: 10px; font-size: 12px"
+       class="icon-hand-right icon-animated-hand-pointer blue"></i> 哪些站点引用了变量{{influencingKey}}：
+</h4>
+<table ng-show="isShowInfluencingVs" class="table table-bordered" style="width: 100%">
+    <thead>
+    <tr>
+        <th style="min-width: 120px">站点名称</th>
+        <th>影响的规则</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="vs in influencingVs">
+        <td style="vertical-align:middle"><a target="_blank" href="${contextPath}/console/vs/{{vs.vsName}}#location">{{vs.vsName}}</a>
+        </td>
+        <td style="vertical-align:middle"><p ng-repeat="positionDesc in vs.positionDescs">{{positionDesc}}</p></td>
+    </tr>
+    </tbody>
+</table>

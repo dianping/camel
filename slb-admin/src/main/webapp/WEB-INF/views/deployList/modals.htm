@@ -1,0 +1,22 @@
+<!-- 删除站点 -->
+<div aria-hidden="false" role="dialog" data-backdrop="true" class="bootbox modal" id="removeTaskModal"
+     style="margin: 0 0 0 0;">
+    <div class="modal-dialog" style="width: 600px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+                <h4 class="modal-title">删除任务</h4>
+            </div>
+            <div class="modal-body">
+                <div id="removeTaskAlertDiv"></div>
+                <p style="text-align: center;">确定删除该任务（ id为{{delTaskId}} ）？</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" ng-click="removeTask()"
+                        class="btn btn-primary">确定
+                </button>
+                <button type="button" data-dismiss="modal" class="btn">取消</button>
+            </div>
+        </div>
+    </div>
+</div>

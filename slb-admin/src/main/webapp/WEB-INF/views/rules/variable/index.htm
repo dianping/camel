@@ -1,0 +1,35 @@
+<div class="main-container-inner" ng-init="editOrShow='${editOrShow}'"
+     ng-app="MyApp" ng-controller="VariableController" id="VariableController">
+    #parse("rules/sidebar.htm")
+    <div class="main-content" style="display: none">
+        #parse("rules/breadcrumb.htm")
+        <div class="page-content">
+            <div class="page-header">
+                <a class="btn btn-sm btn-pink" href="javascript:;"
+                   style="visibility: hidden;" title=""> <i
+                        class="icon-eye-open bigger-110"></i><span
+                        class="bigger-110 no-text-shadow">用来占行</span>
+                </a>
+                <a ng-show="editOrShow=='edit'"
+                   ng-click="cancleEdit()" href="javascript:;"
+                   style="float: right; margin-left: 20px;" class="btn">取消
+                </a>
+
+                <button ng-show="editOrShow=='edit'" ng-click="save()"
+                        style="float: right;" class="btn btn-primary">
+                    <i class="icon-ok bigger-110"></i>保存
+                </button>
+                <a ng-hide="editOrShow=='edit'" ng-click="edit()"
+                   href="javascript:;"
+                   style="float: right; margin-right: 20px; margin-top: 0px" class="">
+                    <i class="icon-edit"></i>&nbsp;编辑
+                </a>
+            </div>
+            <div class="row">
+                <div id="alertMessageDiv" style="text-align: center;"></div>
+                #parse("rules/variable/${editOrShow}/list.htm")
+            </div>
+        </div>
+    </div>
+    #parse("rules/variable/modals.htm")
+</div>

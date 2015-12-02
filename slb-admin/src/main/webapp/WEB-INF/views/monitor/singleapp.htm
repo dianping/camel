@@ -1,0 +1,39 @@
+<div class="main-container-inner" ng-app="MyApp" ng-controller="singleApp"
+     id="singleApp">
+
+    #parse("monitor/sidebar.htm")
+
+    <div class="main-content">
+        <div class="page-content">
+            <div class="row" ng-hide="creating">
+
+                <div id="alertMessageDiv" style="text-align: center;"></div>
+                <div class="table-responsive">
+                    <table class="table table-striped table-bordered table-hover"
+                           id="taskListTable">
+                        <thead>
+                        <tr>
+                            <th>序号</th>
+                            <th>Tengine</th>
+                            <th>状态</th>
+                        </tr>
+                        </thead>
+                        <tbody id="adList">
+                        <tr ng-repeat="tengine in tengines">
+
+                            <td>{{tengine.id}}</td>
+                            <td>{{tengine.tengineIp}}</td>
+                            <td>
+										<span ng-class="{'label label-danger' : tengine.nodeStatus == 'down'}" class="">
+											{{tengine.nodeStatus}}
+										</span>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

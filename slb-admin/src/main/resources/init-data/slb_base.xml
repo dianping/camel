@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<slb-model-tree>
+    <strategies>
+        <strategy name="uri-hash" type="hash" target="$request_uri" creation-date="2013-10-15 16:40:00"
+                  last-modified-date="2013-10-15 16:40:00"/>
+        <strategy name="ip-hash" type="ip-hash" creation-date="2013-10-15 16:40:00"
+                  last-modified-date="2013-10-15 16:40:00"/>
+        <strategy name="round-robin" type="round-robin" creation-date="2013-10-15 16:40:00"
+                  last-modified-date="2013-10-15 16:40:00"/>
+        <strategy name="fair" type="fair" creation-date="2013-10-15 16:40:00" last-modified-date="2013-10-15 16:40:00"/>
+    </strategies>
+</slb-model-tree>

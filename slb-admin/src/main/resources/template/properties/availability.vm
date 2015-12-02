@@ -1,0 +1,2 @@
+##vs的availability属性去掉之后，availability会被当作property，生成到nginx confg. 加这个文件，使得availability对应的内容为空，这样就不会输出了。
+## 参见com.dianping.phoenix.lb.velocity.NginxVelocityTools.properties(Map<String, String>)

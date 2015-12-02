@@ -1,0 +1,116 @@
+<div class="row">
+    <div class="col-sm-6">
+        <div class="form-group">
+            <label class="col-sm-3 control-label no-padding-right">状态控制</label>
+
+            <div class="col-sm-9">
+                <label class="radio inline"> <input disabled ng-model="vs.state" type="radio" value="ENABLED">
+                    ENABLED
+                </label> <label class="radio inline"> <input disabled ng-model="vs.state" type="radio" value="DISABLED">
+                DISABLED
+            </label> <label class="radio inline"> <input disabled ng-model="vs.state" type="radio"
+                                                         value="FORCED_OFFLINE">
+                FORCED_OFFLINE
+            </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label no-padding-right" for="">域名</label>
+
+            <div class="col-sm-9">
+                <input disabled ng-trim="true" type="text" ng-model="vs.domain" placeholder="输入站点的域名">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label no-padding-right" for="inputEmail">端口</label>
+
+            <div class="col-sm-9">
+                <input disabled ng-trim="true" type="text" ng-model="vs.port" placeholder="输入站点的端口号">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label no-padding-right" for="">默认Pool名</label>
+
+            <div class="col-sm-6">
+                <select disabled ng-model="vs.defaultPoolName" ng-options="pool.name as pool.name for pool in pools">
+                    <option value="">-- 选择集群 --</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label no-padding-right" for="">目标Nginx集群</label>
+
+            <div class="col-sm-9">
+                <select disabled ng-model="vs.slbPool"
+                        ng-options="slbPool.name as slbPool.name for slbPool in slbPools">
+                    <option value="">-- 选择Nginx集群 --</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label no-padding-right" for="">分组</label>
+
+            <div class="col-sm-9">
+                <input disabled ng-trim="true" type="text" ng-model="vs.group" placeholder="输入站点的分组">
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-4" style="margin-top: 0px; border-left: 1px solid #ddd;">
+        <div class="form-group">
+            <label class="col-sm-3 control-label no-padding-right" for="">使用HTTPS</label>
+
+            <div class="col-sm-9">
+                <input disabled ng-trim="true" type="text" ng-model="vs.httpsOpen" placeholder="是否使用HTTPS">
+            </div>
+        </div>
+        <div class="form-group" ng-show="vs.httpsOpen">
+            <label class="col-sm-3 control-label no-padding-right" for="">默认路径类型</label>
+
+            <div class="col-sm-9" ng-switch="vs.defaultHttpsType">
+                <input disabled ng-trim="true" type="text" value="HTTP,HTTPS" ng-switch-when="1">
+                <input disabled ng-trim="true" type="text" value="强制HTTP" ng-switch-when="2">
+                <input disabled ng-trim="true" type="text" value="强制HTTPS" ng-switch-when="3">
+            </div>
+        </div>
+        <div class="form-group" ng-show="vs.httpsOpen">
+            <label class="col-sm-3 control-label no-padding-right" for="">端口</label>
+
+            <div class="col-sm-9">
+                <input disabled ng-trim="true" type="text" ng-model="vs.httpsPort" placeholder="https默认端口443">
+            </div>
+        </div>
+        <!--<div class="form-group" ng-show="vs.httpsOpen">
+            <label class="col-sm-3 control-label no-padding-right" for="">证书</label>
+            <br/>
+            <div class="col-sm-9">
+                <textarea disabled cols="40" rows="20" ng-trim="true" type="text" ng-model="vs.sslCertificate" placeholder="HTTPS证书">
+                </textarea>
+            </div>
+        </div>
+        <div class="form-group" ng-show="vs.httpsOpen">
+            <label class="col-sm-3 control-label no-padding-right" for="">私钥key</label>
+            <br/>
+            <div class="col-sm-9">
+                <textarea disabled cols="40" rows="20" ng-trim="true" type="text" ng-model="vs.sslCertificateKey" placeholder="HTTPS key">
+                </textarea>
+            </div>
+        </div>-->
+        <div class="form-group" ng-repeat="(key, value) in vs.dynamicAttributes"
+             ng-init="valueList = getValueList(key)">
+            <label class="col-sm-3 control-label no-padding-right">{{ key }}</label>
+
+            <div ng-show="getInputType(key) == 'SELECT'" class="col-sm-9">
+                <select ng-init="vs.dynamicAttributes[key] = getInitSelectValue(vs.dynamicAttributes[key],valueList)"
+                        ng-model="vs.dynamicAttributes[key]" ng-options="value0 for value0 in valueList"></select>
+            </div>
+            <div ng-show="getInputType(key) == 'TEXT'" class="col-sm-9">
+                <input disabled ng-trim="true" ng-model="vs.dynamicAttributes[key]" type="text">
+            </div>
+            <div ng-show="getInputType(key) == 'TEXTAREA'" class="col-sm-9">
+                <textarea disabled ng-trim="true" ng-model="vs.dynamicAttributes[key]" rows="5"
+                          type="textarea"></textarea>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,128 @@
+<!-- 确认删除directive的对话框 -->
+<div aria-hidden="false" role="dialog" data-backdrop="false" tabindex="-1" class="bootbox modal"
+     id="affirmRemoveDirectiveModal" style="margin: 0 0 0 0;">
+    <div class="modal-dialog" style="width: 600px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+                <h3>确认操作</h3>
+            </div>
+            <div class="modal-body">
+                <div class="bootbox-body">
+                    <p style="text-align: center;">
+                        <i class="icon-warning-sign"></i> 您是否确定要删除该指令（type为{{directiveToBeRemove.type}}) ？
+                    </p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button ng-click="removeDirective();" class="btn btn-primary">确定</button>
+                <button type="button" data-dismiss="modal" class="btn">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- 添加新指令 -->
+<div aria-hidden="false" role="dialog" data-backdrop="false" class="bootbox modal" id="addDirectiveModal"
+     style="margin: 0 0 0 0;">
+    <div class="modal-dialog" style="width: 600px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+                <h3>添加新指令</h3>
+            </div>
+            <div class="modal-body">
+                <div class="bootbox-body">
+                    <div id="addDirectiveAlertDiv"></div>
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label no-padding-right" for="">选择指令类型：</label>
+
+                            <div class="col-sm-7">
+                                <select id="addDirectiveType" ng-model="directiveToBeAdd.type"
+                                        ng-options="key as key for (key,directiveDefinedInput) in directiveDefinedInputs">
+                                    <option value="">-- 选择类型 --</option>
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" ng-click="addDirective()" class="btn btn-primary">确定</button>
+                <button type="button" data-dismiss="modal" class="btn">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 添加规则 -->
+<div aria-hidden="false" role="dialog" data-backdrop="false" class="bootbox modal bootbox-confirm " id="addAspectModal"
+     style="margin: 0 0 0 0;">
+    <div class="modal-dialog" style="width: 600px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+                <h3 class="modal-title">添加新规则</h3>
+            </div>
+            <div class="modal-body">
+                <div class="bootbox-body">
+                    <div id="addAspectAlertDiv"></div>
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label no-padding-right">规则名</label>
+
+                            <div class="col-sm-7">
+                                <input id="addAspectName" ng-trim="true" ng-model="aspectToBeAdd.name"
+                                       ng-enter="addAspect()" type="text" class="input"
+                                       placeholder="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label no-padding-right">类型</label>
+
+                            <div class="col-sm-7">
+                                <select ng-model="aspectToBeAdd.pointCut" ng-enter="addAspect()">
+                                    <option value="BEFORE">前置规则</option>
+                                    <option value="AFTER">后置规则</option>
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" ng-click="addAspect()" class="btn btn-primary">确定</button>
+                <button type="button" data-dismiss="modal" class="btn">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 确认对话框 -->
+<div aria-hidden="false" role="dialog" data-backdrop="false" class="bootbox modal bootbox-confirm "
+     id="affirmRemoveAspectModal" style="margin: 0 0 0 0;">
+    <div class="modal-dialog" style="width: 500px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+                <h4 class="modal-title">确认操作</h4>
+            </div>
+            <div class="modal-body">
+                <div class="bootbox-body">
+                    <p style="text-align: center;">
+                        <i class="icon-warning-sign"></i> 您是否确定要删除该规则（
+                        <code>{{aspectToBeRemove.name}}</code>
+                        ） ？
+                    </p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button data-bb-handler="confirm" type="button" ng-click="removeAspect();" class="btn btn-primary">确定
+                </button>
+                <button type="button" data-dismiss="modal" class="btn">取消</button>
+            </div>
+        </div>
+    </div>
+</div>

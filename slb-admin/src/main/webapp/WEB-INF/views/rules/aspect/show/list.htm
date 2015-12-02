@@ -1,0 +1,25 @@
+<span style="font-size: 12px;">所在位置：<a href="javascript:;" ng-click="switchAspectList();">所有公共规则</a> &nbsp;&nbsp;<span
+        ng-show="aspectEditing">/ &nbsp;&nbsp; 公共规则（{{aspectEditing.name}}）</span>
+</span>
+<div ng-hide="aspectEditing">
+    <h5 style="margin-top: 30px">公共规则列表</h5>
+    <table class="table table-bordered" style="width: 80%">
+        <thead>
+        <tr>
+            <th>规则名称</th>
+            <th>类型</th>
+            <th style="width: 130px;">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="aspect in aspects">
+            <td>{{aspect.name}}</td>
+            <td ng-show="aspect.pointCut == 'BEFORE'">前置规则</td>
+            <td ng-show="aspect.pointCut == 'AFTER'">后置规则</td>
+            <td><a href="javascript:void(0);" ng-click="switchAspect($index);"><i class="icon-edit"></i> 详细 </a></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+#parse("rules/aspect/${editOrShow}/detail.htm")

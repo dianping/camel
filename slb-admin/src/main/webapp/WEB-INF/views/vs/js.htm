@@ -1,0 +1,29 @@
+<script type="text/javascript" src="${contextPath}/static/js/myangular-vs.js?t=20140617"></script>
+
+<!-- HTML5 shim, for IE6-8 support of HTML elements -->
+<!--[if lt IE 9]>
+<script src="${contextPath}/static/js/html5.js"></script>
+<![endif]-->
+<script type="text/javascript">
+    $("[rel=tooltip]").tooltip();
+    $(document).ready(function () {
+        // pom
+        var nginxConfigEditor = ace.edit("nginxConfigEditor");
+        nginxConfigEditor.setFontSize(14);
+        nginxConfigEditor.setTheme("ace/theme/eclipse");
+        nginxConfigEditor.getSession().setMode("ace/mode/java");
+        nginxConfigEditor.setReadOnly(true);
+        window.nginxConfigEditor = nginxConfigEditor;
+                    
+                    ##parse("${tabName}/initJs.htm")
+        angular.element($('#VsController')).scope().getVs('${virtualServerName}');
+
+        //search
+    });
+</script>
+
+<script type="text/javascript" src="${contextPath}/static/js/myangular-profile.js?t=20130623"></script>
+<script type="text/javascript" src="${contextPath}/static/js/myangular-location.js?t=20130623"></script>
+<script type="text/javascript" src="${contextPath}/static/js/myangular-vs-aspect.js?t=20130623"></script>
+<script type="text/javascript" src="${contextPath}/static/js/diffview.js?t=20130623"></script>
+<script type="text/javascript" src="${contextPath}/static/js/difflib.js?t=20130623"></script>

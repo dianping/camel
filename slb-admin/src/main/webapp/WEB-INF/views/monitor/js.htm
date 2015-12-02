@@ -1,0 +1,56 @@
+<script type="text/javascript"
+        src="${contextPath}/assets/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript"
+        src="${contextPath}/assets/js/jquery.dataTables.bootstrap.js"></script>
+<script type="text/javascript"
+        src="${contextPath}/assets/js/jquery-dateFormat.min.js"></script>
+
+<script type="text/javascript"
+        src="${contextPath}/static/js/myangular-monitor.js?t=20130623"></script>
+<script type="text/javascript"
+        src="${contextPath}/static/js/highcharts/highcharts.js"></script>
+<script type="text/javascript"
+        src="${contextPath}/static/js/highcharts/exporting.js"></script>
+
+<script type="text/javascript" src="${contextPath}/static/js/myangular-degrade.js?t=20130623"></script>
+<script type="text/javascript" src="${contextPath}/static/js/myangular-rule.js?t=20130623"></script>
+<script type="text/javascript" src="${contextPath}/static/js/myangular-statustrend.js?t=20130623"></script>
+
+<!-- HTML5 shim, for IE6-8 support of HTML elements -->
+<!--[if lt IE 9]>
+<script src="${contextPath}/static/js/html5.js"></script>
+<![endif]-->
+
+<script type="text/javascript">
+    $(document).ready(
+            function () {
+
+                if ($('#MonitorController').length > 0) {
+                    angular.element($('#MonitorController')).scope().getQps(
+                            '${poolName}');
+                }
+
+                if ($("#singleApp").length > 0) {
+                    angular.element($('#singleApp')).scope().getSinleAppStatus(
+                            '${app}');
+                }
+
+                if ($("#degradeController").length > 0) {
+
+                    $('#taskListTable').dataTable({
+                        "dom": '<"top"i>rt<"bottom"flp><"clear">',
+                        "bFilter": true,
+                        "bPaginate": false,
+                        "bLengthChange": false,
+                        "bInfo": true,
+                        "aaSorting": [[1, 'asc']]
+                    });
+					
+					#foreach($status in $degradeStatusResult)
+                    angular.element($('#degradeController')).scope().add(['$status.dengineIp'], '$status.degradeStatus.upstreamName');
+					#end
+                }
+
+            });
+</script>
+

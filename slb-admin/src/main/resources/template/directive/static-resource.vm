@@ -1,0 +1,2 @@
+root $directive.getDynamicAttribute("root-doc");
+            expires $directive.getDynamicAttribute("expires");

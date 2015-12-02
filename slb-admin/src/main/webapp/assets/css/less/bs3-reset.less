@@ -1,0 +1,29 @@
+//bootstrap mentions that the following need not be floated, as they are full width (100%)
+//but in our case it's needed, because sidebar is floated left(not position:absolute) and
+//the .row elements containing .col-*-12 have .clearfix behaviour,
+//which doesn't allow any floating elements on left or side, thus causing problems with our sidebar
+.col-xs-12 , .col-sm-12 , .col-md-12, .col-lg-12 {
+ float:left; 
+}
+
+.col-xs-reset { width: auto; padding-left:0; padding-right:0; float:none; }
+
+@media (min-width: @screen-tablet) {
+ .col-sm-reset { width: auto; padding-left:0; padding-right:0; float:none; }
+}
+@media (min-width: @screen-desktop) {
+ .col-md-reset { width: auto; padding-left:0; padding-right:0; float:none; }
+}
+@media (min-width: @screen-lg-desktop) {
+ .col-lg-reset { width: auto; padding-left:0; padding-right:0; float:none; }
+}
+
+
+.jqstooltip , .legendColorBox div {
+ .box-sizing(content-box);
+}
+.legendLabel {
+ .box-sizing(content-box);
+ height:20px; 
+ font-size:10px;
+}

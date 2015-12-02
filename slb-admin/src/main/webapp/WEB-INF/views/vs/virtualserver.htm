@@ -1,0 +1,100 @@
+<div class="main-container-inner" ng-init="editOrShow='${editOrShow}'" ng-app="MyApp" ng-controller="VsController"
+     id="VsController">
+    #parse("vs/sidebar.htm")
+    <div class="main-content" style="opacity: 0.1;">
+        #parse("vs/breadcrumb.htm")
+        <div class="page-content">
+            <div class="page-header">
+                <!-- 预览/创建发布版本/发布 -->
+                <a class="btn btn-sm btn-pink" href="javascript:;" ng-click="preview()" title="预览当前生成的 nginx config 文件">
+                    <i
+                            class="icon-eye-open bigger-110"></i><span class="bigger-110 no-text-shadow">预览</span></a>
+                <a
+                        ng-show="editOrShow=='show'" class="btn btn-sm btn-primary" ng-hide="addingTag"
+                        href="javascript:;"
+                        ng-click="addTag();" target="_blank"> <i class="icon-external-link bigger-110"></i><span
+                        class="bigger-110 no-text-shadow">创建发布版本</span></a> <a class="btn btn-sm" ng-show="addingTag"
+                                                                               href="javascript:;"
+                                                                               target="_blank"><i
+                    class="icon-spinner icon-spin orange bigger-125"></i><span
+                    class="bigger-110 no-text-shadow"> 正在创建...</span></a> <a ng-show="editOrShow=='show'"
+                                                                             class="btn btn-sm btn-danger"
+                                                                             ng-href="${contextPath}/console/deploy#showInfluencing:{{vs.name}}&{{tags[0]}}"
+                                                                             target="_blank"> <i
+                    class="icon-external-link bigger-110"></i><span class="bigger-110 no-text-shadow">发布</span></a>
+                <!-- 编辑/取消/保存 -->
+                <a ng-show="editOrShow=='edit' && !newVs" ng-click="cancleEdit()" href="javascript:;"
+                   style="float: right; margin-left: 20px; margin-top: 0px" class="btn">取消</a> <a
+                    ng-show="editOrShow=='edit' && newVs" ng-href="${contextPath}/"
+                    style="float: right; margin-left: 20px; margin-top: 0px" class="btn">取消</a>
+                <button ng-show="editOrShow=='edit'" ng-click="save()" style="float: right; margin-top: 0px"
+                        class="btn btn-primary">
+                    <i class="icon-ok bigger-110"></i>保存
+                </button>
+                <a ng-hide="editOrShow=='edit'" ng-click="edit()" href="javascript:;"
+                   style="float: right; margin-right: 20px; margin-top: 0px" class=""> <i class="icon-edit"></i>&nbsp;编辑
+                </a>
+                <!-- 已创建的版本 -->
+                <div id="tagsUl" class="btn-group" style="margin-left: 10px;">
+                    <button data-toggle="dropdown" class="btn btn-info btn-xs dropdown-toggle">
+                        已创建的发布版本 <i class="icon-angle-down icon-on-right"></i>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li ng-repeat="tag in tags"><a ng-click="viewTag(tag)" tabindex="-1" href="javascript:void(0)">{{
+                            tag }} <i class="icon-ok-sign" ng-show="newTag==tag"> (刚刚新增的版本)</i>
+                        </a></li>
+                    </ul>
+                </div>
+                <!-- 更多操作 -->
+                <div class="btn-group" style="margin-left: 10px;">
+                    <button data-toggle="dropdown" class="btn btn-info btn-xs dropdown-toggle">
+                        更多操作 <i class="icon-angle-down icon-on-right"></i>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a href="javascript:app.openRemoveVirtualServerModal();"><span style="color: #b94a48"
+                                                                                           class="number">删除站点</span></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row">
+                <div id="alertMessageDiv" style="text-align: center;"></div>
+                <!-- /.page-header -->
+                <div class="tabbable tabs-left">
+                    <ul ng-model="selectedTab" style="height: 30px;" class="nav nav-tabs">
+                        <li ng-class="isActive('profile')"><a href="#profile" ng-click="selectedTab='profile';"><i
+                                class="blue icon-cogs bigger-120"></i>&nbsp;基本配置&nbsp;</a></li>
+                        <li ng-class="isActive('location')"><a href="#location" ng-click="selectedTab='location'"><i
+                                class="blue icon-exchange bigger-120"></i>&nbsp;映射规则&nbsp;</a></li>
+                        <li ng-class="isActive('aspect')"><a href="#aspect" ng-click="selectedTab='aspect'"><i
+                                class="blue icon-dashboard bigger-120"></i>&nbsp;公共规则&nbsp;</a></li>
+                        <li ng-class="isActive('diff')"><a href="#diff" ng-click="selectedTab='diff'"><i
+                                class="blue icon-food bigger-120"></i>&nbsp;版本对比&nbsp;</a></li>
+                    </ul>
+                    <form class="form-horizontal" role="form">
+                        <div class="tab-content" ng-switch on="selectedTab">
+                            <div style="min-height: 400px;" ng-class="isActiveTabPanel('profile')"
+                                 ng-controller="ProfileController">
+                                #parse("vs/profile/${editOrShow}/content.htm")#parse("vs/profile/modals.htm")
+                            </div>
+                            <div style="min-height: 400px;" ng-class="isActiveTabPanel('location')"
+                                 ng-controller="LocationController">
+                                #parse("vs/location/${editOrShow}/list.htm")#parse("vs/location/modals.htm")
+                            </div>
+                            <div style="min-height: 400px;" ng-class="isActiveTabPanel('aspect')"
+                                 ng-controller="VsAspectController">
+                                #parse("vs/aspect/${editOrShow}/list.htm")#parse("vs/aspect/modals.htm")
+                            </div>
+                            <div style="min-height: 400px;" ng-class="isActiveTabPanel('diff')">#parse("vs/diff.htm")
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- /.page-content -->
+    </div>
+
+    #parse("vs/modals.htm")
+</div>
+

@@ -1,0 +1,24 @@
+<script type="text/javascript" src="${contextPath}/assets/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="${contextPath}/assets/js/jquery.dataTables.bootstrap.js"></script>
+<script type="text/javascript" src="${contextPath}/assets/js/jquery-dateFormat.min.js"></script>
+
+<script type="text/javascript" src="${contextPath}/static/js/myangular-taskList.js?t=20130623"></script>
+
+<script type="text/javascript">
+    $("[rel=tooltip]").tooltip();
+    $(document).ready(function () {
+        $('#taskListTable').dataTable({
+            "bPaginate": false,
+            "bLengthChange": false,
+            "bInfo": false,
+            "bFilter": true,
+            "aoColumns": [{
+                "bSortable": false
+            }, {
+                "bSortable": false
+            }, null, null],
+            "aaSorting": [[3, 'desc']]
+        });
+    });
+</script>
+

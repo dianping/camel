@@ -1,0 +1,396 @@
+//some file input variables
+@file-input-bg:#FFF;
+@file-input-border:#D5D5D5;
+@file-input-shadow:~"0 0 0 4px rgba(0,0,0,0.06)";
+
+@file-input-hover-border:#F59942;
+@file-input-hover-shadow:~"0 0 0 4px rgba(245, 153, 66, 0.3)";
+
+@file-input-btn-bg:#6FB3E0;
+@file-input-name-color:#888;
+@file-input-selected-name-color:#666;
+
+@file-input-icon-bg:#D1D1D1;//!ignore
+@file-input-selected-icon-bg:#EFAD62;//!ignore
+@file-input-selected-icon-picture-bg:#BD7A9D;//!ignore
+@file-input-selected-icon-film-bg:#87B87F;//!ignore
+@file-input-selected-icon-music-bg:#8B7AC9;//!ignore
+@file-input-selected-icon-archive-bg:#EFAD62;//!ignore
+
+@file-remove-bg:#FB7142;
+@file-multi-remove-color:#F4C0B1;
+@file-multi-border:#AAA;
+
+
+
+.ace-file-input {
+  position:relative;
+  height:38px;
+  line-height:38px;
+  margin-bottom:9px;
+
+  input[type=file] {
+	position:fixed;
+	z-index:-2;
+	.opacity(0);
+  }
+
+
+  .file-label {
+	display:block;
+	position:absolute;
+	top:0; left:0; right:0; height:30px;
+ 
+	background-color:@file-input-bg;
+	border:1px solid @file-input-border;
+
+	cursor:pointer;
+ 
+	//.box-shadow(@file-input-shadow);
+	.box-shadow(none);
+ 
+	.transition(~"all 0.15s");
+	
+	&:hover {
+		//.box-shadow(@file-input-hover-shadow);
+		.box-shadow(none);
+		border-color:@file-input-hover-border;
+	}
+	&:before { /* the button */
+		 display:inline-block;
+		 content:attr(data-title);
+		  
+		 position:absolute;
+		 right:0; top:0; bottom:0; padding:0 8px;
+		 line-height:24px;
+		 text-align:center;
+		 
+		 background-color:@file-input-btn-bg;
+		 color:#FFF;
+		 font-size:11px; font-weight:bold;
+		 
+		 border:2px solid #FFF;
+		 border-left-width:4px;
+ 
+		.transition(~"all 0.3s");
+	}
+	
+	
+	.file-name { /* the file name container */
+		display:inline-block;
+		height:28px; max-width:80%;  white-space:nowrap;  overflow:hidden;
+		line-height:28px;
+		color:@file-input-name-color;
+		font-size:13px;
+		vertical-align: top;
+		 
+		position:static;
+		padding-left:30px;
+		
+		&:after { /* the file name */
+			display:inline-block;
+			content:attr(data-title);
+		}
+	}
+	&.selected  {
+		right:16px;
+		.file-name {
+			color:@file-input-selected-name-color;
+		}
+		
+	}
+	
+	[class*="icon-"] {
+		.ace-file-icon();
+	    background-color:@file-input-icon-bg;//should be here
+	}
+	&.selected .file-name {
+		[class*="icon-"]  {
+			background-color:@file-input-selected-icon-bg;
+		}
+		.icon-picture {
+			background-color:@file-input-selected-icon-picture-bg;
+		}
+		.icon-film {
+			background-color:@file-input-selected-icon-film-bg;
+		}
+		.icon-music {
+			background-color:@file-input-selected-icon-music-bg;
+		}
+		.icon-archive {
+			background-color:@file-input-selected-icon-archive-bg;
+		}
+	}
+	&.hide-placeholder:before {
+		display:none;
+	}
+
+  }
+ 
+  a:hover{
+	text-decoration:none;
+  }
+  .remove { /* the remove button */
+	 position:absolute;
+	 right:-8px; top:6px;
+	 display:none;
+
+	 width:17px; text-align:center;
+	 height:17px; line-height:15px;
+	 
+	 font-size:11px; font-weight:normal;
+
+	 background-color:@file-remove-bg;
+	 .border-radius(100%);
+	 color:#FFF;
+	 text-decoration:none;
+  }
+  .file-label.selected + .remove {
+	 display:inline-block;
+  }
+  
+
+
+}
+
+
+
+
+
+
+.ace-file-icon() {
+  display:inline-block;
+  position:absolute;
+  left:0; top:0; bottom:0;
+  line-height:24px;
+  width:26px;
+  text-align:center;
+
+  font-family:FontAwesome; font-size:13px;
+
+
+  border:2px solid #FFF;
+
+  color:#FFF;
+
+  .transition(~"all 0.1s");
+}
+
+
+
+
+
+
+
+
+
+
+
+.ace-file-multiple {
+  height:auto;
+  .file-label {
+	 position:relative;
+	 height:auto;
+	 border:1px dashed @file-multi-border;
+	 border-radius:4px;
+	 text-align:center;
+
+	 &:before {/* the button */
+		 display:inline-block;
+		 content:attr(data-title);
+		  
+		 position:relative;
+		 right:0; left:0; margin:12px;
+		 line-height:22px;
+		 
+		 background-color:#FFF;
+		 color:#CCC;
+		 font-size:18px; font-weight:bold;
+		 
+		 border:none;
+	 }
+	 &.selected .file-name [class*="icon-"] {
+		.ace-file-icon();
+	 }
+
+	 
+	 .file-name {
+		position:relative;
+		display:block;
+		padding:0;
+		height:auto;
+		width:auto; max-width:100%; margin:0 4px;
+		border-bottom:1px solid #DDD;
+		text-align:left;
+		
+		&:first-child {
+			margin-top:1px;
+		}
+		&:last-child {
+			border-bottom-width:0;
+			margin-bottom:1px;
+		}
+		img {
+			padding:2px;
+			border:1px solid #D7D7D7;
+			background-color:#FFF;
+			background-repeat:no-repeat;
+			background-position: center;
+	 
+			margin:4px 8px 4px 1px;
+		}
+		&:after { /* the file name */
+			display:none;
+		}
+	}
+	&.selected .file-name:after { /* the file name */
+		display:inline-block;
+		white-space:pre;
+	}
+	.file-name img + [class*="icon-"] , &.selected .file-name img + [class*="icon-"]  {
+		display:none;
+	}
+	
+	
+  }
+
+
+  .remove {
+	right:-11px; top:-11px;
+	border:3px solid #BBB;
+	border-radius:32px;
+
+	background-color:#FFF;
+	color:red;
+	
+	width:22px; 
+	height:22px;
+	line-height:15px;
+  }
+  .file-label.selected + .remove:hover {
+	border-color:@file-multi-remove-color;
+  }
+
+}
+
+
+
+
+
+.ace-file-multiple .file-label {
+	.file-name [class*="icon-"] {
+	  position:relative;
+	  display:block;
+	  text-align:center;
+	  height:auto; line-height:64px;
+	  width:auto;
+	  
+	  font-size:64px; color:#D5D5D5;
+	 
+	  margin:4px 0;
+
+	  background-color:transparent;
+	}
+	
+	&.selected:after {
+		display:none;
+	}
+	&.selected .file-name [class*="icon-"]  {
+		position:relative;
+		margin-right:4px; margin-left:2px;
+		line-height:24px;
+	}
+	
+	
+	.file-name.large {
+		text-align:center;
+		border-bottom:2px solid #222;
+		margin:0 1px 3px;
+		
+		&:last-child {
+			margin:0 1px;
+			border-bottom-width:0;
+		}
+		&:after { /* image caption */
+			position:absolute;
+			top:auto; bottom:0; left:0; right:0;
+			padding:0 4px;
+			background-color:#555;
+			color:#FFF;
+			.opacity(0.8);
+		}
+
+		img {
+			border-width:0;
+			margin:0;
+			padding:0;
+		}
+	}
+	
+}
+
+
+
+
+.ace-file-input input[type=file] {
+	&.disabled , &[disabled] , &[readonly] {
+		+ .file-label {
+			cursor: not-allowed;
+			background-color:#EEE;
+			&:hover {
+				//box-shadow: 0 0 0 4px rgba(0,0,0,0.06);
+				.box-shadow(none);
+				border-color:#E3E3E3;
+			}
+			&:before {
+				border-color:#EEE;
+				background-color:#A1AAAF;
+			}
+		}
+	}
+	&[readonly] + .file-label {
+		cursor:default;
+	}
+	
+}
+
+
+.ace-file-multiple input[type=file] {
+	&.disabled , &[disabled] , &[readonly] {
+		+ .file-label {
+			&:hover {
+				border-color:#AAA;
+			}
+			&:before {
+				background-color:transparent;
+			}
+			
+			[class*="icon-"] {
+				border-color:#EEE;
+			}
+		}
+	}
+}
+
+
+
+
+
+/* IE9 needs this like IE8 to prevent "ACCESS denied" errors! */
+.ace-file-input input[type=file] {
+ /*must be visible and on top for ie8/9 to actually work */
+ width:~'100% \0/'; height:~'30px \0/';
+ position:~'absolute \0/';
+ z-index:~'1 \0/';
+ filter:alpha(opacity=0);
+ cursor:~'pointer \0/';
+}
+.ace-file-input input[type=file]:hover + .file-label {
+ border-color: @file-input-hover-border~'\0/';
+}
+.ace-file-multiple input[type=file] {
+ height:~'100%\0/';
+}
+.ace-file-input .remove {
+ z-index:~'2\0/';
+}

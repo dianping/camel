@@ -1,0 +1,4 @@
+    error_page 400 @400; 
+    location @400 {
+        $value
+    }

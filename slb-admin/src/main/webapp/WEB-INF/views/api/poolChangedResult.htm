@@ -1,0 +1,75 @@
+#set($menu = "api")
+<div class="main-container-inner" ng-app="MyApp" ng-controller="TaskController" id="TaskController" style="">
+    #parse("api/sidebar.htm")
+    <div class="main-content" style="">
+        <div class="page-content">
+            <div class="row" style="margin-top: 10px;">
+                <p>修改pool的功能。可以填写多行，每行的格式：旧pool名称,新pool名称</p>
+
+                <div class="accordion-style1 panel-group" id="accordion_10.2.8.14" style="width: 60%;">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion"
+                                   href="#collapse_form"> <i
+                                        class="bigger-110 icon-angle-down" data-icon-hide="icon-angle-down"
+                                        data-icon-show="icon-angle-right"></i>
+                                    展开/折合
+                                </a>
+                            </h4>
+                        </div>
+                        <div style="height: auto;" id="collapse_form"
+                             class="panel-collapse #if($changedContexts.size()>0)collapse #else in #end">
+                            <div class="panel-body">
+                                <form style="margin-top: 10px;" action="" method="post" class="form-horizontal"
+                                      role="form">
+                                    <div class="form-group">
+                                        <div class="col-sm-9">
+                      <textarea name="postBody" class="form-control"
+                                style="word-wrap: break-word;height: 312px;">$!postBody</textarea>
+                                        </div>
+                                    </div>
+                                    <button class="btn btn-info" type="submit">
+                                        <i class="icon-ok bigger-110"></i> 提交
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br> <br>
+
+                <div class="accordion-style1 panel-group" id="accordion_10.2.8.14" style="width: 60%;">
+                    #foreach($changedContext in $changedContexts)
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion"
+                                   href="#collapse_${velocityCount}"> <i class="bigger-110 icon-angle-down"
+                                                                         data-icon-hide="icon-angle-down"
+                                                                         data-icon-show="icon-angle-right"></i> &nbsp;$changedContext.oldName
+                                    -> $changedContext.newName #if($changedContext.hasError()) <span
+                                            style="color: red; float: right;">Error</span>
+                                    #elseif($changedContext.hasWarn()) <span
+                                            style="color: #FE9A2E; float: right;">Warn</span> #else <span
+                                            style="color: green; float: right;">Success</span> #end
+                                </a>
+                            </h4>
+                        </div>
+                        <div style="height: auto;" id="collapse_${velocityCount}" class="panel-collapse in">
+                            <div class="panel-body">
+                                #foreach($line in $changedContext.output) $line <br> #end
+                            </div>
+                        </div>
+                    </div>
+                    #end
+                </div>
+
+                <div class="space-4"></div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+

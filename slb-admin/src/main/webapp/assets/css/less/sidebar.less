@@ -1,0 +1,868 @@
+//some sidebar variables
+@sidebar-bg:#F2F2F2;
+@sidebar-border-right:#CCC;
+
+//@menu-active-color:#0B6CBC;
+
+@menu-bg:#F9F9F9;
+@menu-color:#585858;
+@menu-hover-indicator:#3382AF;
+@menu-subarrow-color:#666;
+@menu-open-bg:#FAFAFA;
+@menu-active-bg:#FFF;
+
+@submenu-border:#E5E5E5;
+@submenu-bg:#FFF;
+@submenu-item-color:#616161;
+@submenu-item-border:#E4E4E4;
+@submenu-item-hover:#4B88B7;
+@submenu-item-active-icon:#C86139;
+
+
+@3rd-level-icon-color:#6A7D87;
+@submenu-left-border-style:dotted;
+
+//@submenu-left-border:#CCD7E2;
+//@submenu-active-left-border:#BCCFE0;
+
+
+
+@menumin-btn-bg:#F3F3F3;
+@menumin-btn-border:#E0E0E0;
+@menumin-icon-color:#AAA;
+@menumin-icon-border:#BBB;
+@menumin-icon-bg:#FFF;
+@menumin-bg:#F5F5F5;
+
+@menumin-text-border:#DDD;
+@menumin-shadow:~"2px 1px 2px 0 rgba(0,0,0,0.2)";
+
+@shortcuts-bg:#FAFAFA;
+@shortcuts-border:#DDD;
+
+
+
+
+
+.sidebar {
+ width:@sidebar-width;
+ 
+ float:left;
+ position:relative;
+ //why not simply position:absolute?
+ //because we need the page height to be at least as high as the sidebar in case the page content is too small
+
+
+ border:1px solid @sidebar-border-right;
+ border-width:0 1px 0 0;
+
+ 
+ background-color:@sidebar-bg;
+ 
+  &:before {/* the grey background of sidebar */
+
+	 content:""; display:block;
+	 width:@sidebar-width;
+		
+	 position:fixed; bottom:0; top:0;
+	 z-index:-1;
+		
+	 background-color:@sidebar-bg;
+	 border:1px solid @sidebar-border-right;
+	 border-width:0 1px 0 0;
+ }
+ 
+ &.fixed , &.sidebar-fixed {
+	position: fixed;
+	z-index: @zindex-navbar-fixed - 1;
+	top: @navbar-mh;
+	left: 0;
+	&:before {
+		left: 0;
+		right: auto;
+	}
+ }
+}
+
+
+
+/* side navigation */
+li [class^="icon-"], li [class*=" icon-"]{
+ & , .nav-list & {
+	width:auto;
+ }
+}
+
+.nav-list {
+ margin:0; padding:0;
+ list-style:none;
+}
+
+.nav-list .open > a, .nav-list .open > a:hover, .nav-list .open > a:focus {
+ background-color: @menu-open-bg;
+}
+
+.nav-list > li > a, .nav-list .nav-header {
+ margin:0;
+}
+
+.nav-list > li {
+ display:block;
+ padding:0;
+ margin:0;
+
+ border:none;
+ border-top:1px solid #FCFCFC;
+ border-bottom:1px solid #E5E5E5;
+
+ position:relative;
+
+ &:first-child {
+	border-top:none;
+ }
+}
+
+.nav-list li > a:focus {
+	outline: none;
+}
+
+.nav-list > li {
+ > a {
+	 display:block;
+	 height:38px; line-height:36px;
+
+	 padding:0 16px 0 7px; 
+	 background-color:@menu-bg;
+
+	 color:@menu-color;
+	 text-shadow:none !important;
+
+	 font-size:13px;
+	 text-decoration:none;
+
+	 > [class*="icon-"]:first-child {
+		display:inline-block;
+		vertical-align:middle;
+
+		min-width:30px;
+		text-align:center;
+
+		font-size:18px;
+		font-weight:normal;
+		
+		margin-right:2px;
+	 }
+	 
+	 &:focus {
+		background-color:@menu-bg;
+		color:@menu-focus-color;
+	 }
+	 
+	 &:hover  {
+		background-color:#FFF;
+		color:@menu-focus-color;
+		&:before {
+			display:block; content:"";
+			position:absolute;
+			top:-1px; bottom:0; left:0;
+			width:3px; max-width:3px; overflow:hidden;
+			background-color:@menu-hover-indicator;
+		}
+	 }
+
+ }
+ 
+ /* the submenu indicator arrow */
+ a > .arrow {
+	display:inline-block;
+	width:14px !important; height:14px;
+	line-height:14px;
+ 
+	text-shadow:none;
+	font-size:18px;
+ 
+	position:absolute;
+	right:11px;
+	top:11px;
+ 
+	padding:0;
+	color:@menu-subarrow-color;
+ }
+ a:hover > .arrow , &.active > a  > .arrow , &.open > a > .arrow  {
+	color:@menu-focus-color;
+ }
+
+
+
+ &.separator {
+	 height:3px;
+	 background-color:transparent;
+	 position:static;
+	 margin:1px 0;
+
+	 .box-shadow(none);
+ }
+
+ /* menu active/open states */
+ &.open > a {
+	background-color:@menu-open-bg;
+	color:@menu-focus-color;
+ }
+
+ &.active {
+  background-color:@menu-active-bg;
+   > a
+  {
+	 & , &:hover, &:focus, &:active {
+		 background-color:@menu-active-bg;
+		 color:@menu-active-color;
+		 font-weight:bold;
+		 font-size:13px;
+	 }
+
+	 > [class*="icon-"] {
+		font-weight:normal;
+     }
+
+	 &:hover:before {/* no left side menu item border on active state */
+		display:none;
+	 }
+  }
+  //////
+
+
+  &:after {/* the border on right of active item */
+	display:inline-block; content:"";
+	position:absolute;
+	right:-2px; top:-1px; bottom:0;
+	z-index:1;
+	
+	border:2px solid @menu-active-color;
+	border-width: 0 2px 0 0;
+  }
+ }
+
+
+
+ /* submenu */
+ &.open {
+  border-bottom-color:@submenu-border;
+ }
+
+
+ &.active .submenu {
+  display:block;
+ }
+ .submenu {
+   display:none;
+   list-style:none;
+   margin:0; padding:0;
+
+   position:relative;
+   background-color:@submenu-bg;
+
+   border-top:1px solid @submenu-border;
+
+   > li {
+	 margin-left:0;
+	 position:relative;
+	 
+	 > a {
+		 display:block;
+		 position:relative;
+		 color:@submenu-item-color;
+
+		 padding:7px 0 9px 37px;
+		 margin:0;
+		 
+		 border-top:1px dotted @submenu-item-border;
+		 &:focus {
+			text-decoration:none;
+		 }
+		 &:hover{
+			text-decoration:none;
+			color:@submenu-item-hover;
+		}
+	 }
+
+	 &.active > a {
+		color:@menu-active-color;
+	 }
+
+
+	/* optional icon before each item */
+	a > [class*="icon-"]:first-child {
+		display:none;
+
+		font-size:12px; font-weight:normal;
+		width:18px; height:auto; line-height:12px; text-align:center;
+		position:absolute; left:10px; top:11px; z-index:1;
+
+		background-color:#FFF;
+	}
+	&.active > a > [class*="icon-"]:first-child,
+	&:hover > a > [class*="icon-"]:first-child {
+		display:inline-block;
+	}
+	&.active > a > [class*="icon-"]:first-child {
+		color:@submenu-item-active-icon;
+	}
+
+  }// > li
+ }//end of submenu
+
+
+ > .submenu {//the first level submenu
+	> li {
+		//tree like menu 
+		&:before {
+			 /* the horizontal line */
+			content:""; display:inline-block;
+			position:absolute;
+			
+			width:7px;		 
+			left:20px; top:17px;
+			border-top:1px @submenu-left-border-style @submenu-left-border;
+		}
+		&:first-child > a {
+			border-top:1px solid #FAFAFA;
+		}
+	}
+
+	&:before {
+		content:"";
+		display:block;
+		position:absolute; z-index:1;
+		left:18px;
+		top:0; bottom:0;
+ 
+		border: 1px @submenu-left-border-style @submenu-left-border;
+		border-width: 0 0 0 1px;
+	}
+ }
+ &.active {
+	> .submenu {
+		> li {
+			&:before {
+				border-top-color:@submenu-active-left-border;
+			}
+		}
+		&:before {
+			border-left-color:@submenu-active-left-border;
+		}
+	}
+ }
+
+
+}//end of .nav-list > li 
+
+
+//.nav-list li 
+.nav-list li {
+ .active_state_caret() {
+	display:block;
+	content:"";
+	 
+	position:absolute !important;
+	right:0; top:4px;
+
+	border: 8px solid transparent;
+	border-width: 14px 10px;
+	border-right-color: @menu-active-color;
+ }
+
+ .submenu {
+	/* needed for webkit based browsers to slideToggle without problem */
+	overflow:hidden;
+ }
+
+ &.active > a:after {
+	.active_state_caret();
+ }
+
+ &.open > a:after {/* no caret for open menu item */ //we put this after .active > a:after to override it
+	display:none;
+ }
+ &.active.open > .submenu > li.active.open > a.dropdown-toggle:after {
+	/* don't display caret on active open item who is open and has children */
+	display: none;
+ }
+ &.active > .submenu > li.active > a:after {
+	/** don't display caret on active item whose parent is not open
+	useful for hiding the caret when submenu is sliding up */
+	display: none;
+ }
+ &.active.open > .submenu > li.active > a:after {
+	/* display caret on active item whose parent is open */
+	display: block;
+ }
+
+
+ &.active.no-active-child {
+	> a:after {/* show caret for active menu item with childs which is not open(i.e. no submenu item is active) */
+		display:inline-block !important;
+	}
+ }
+}//end of .nav-list li 
+
+
+
+.nav-list a {
+ .badge , .label {
+	font-size:12px;
+	padding-left:6px; padding-right:6px;
+	position:absolute;
+	top:9px; right:11px;
+	opacity:0.88;
+	[class*="icon-"] {
+		vertical-align:middle;
+		margin:0;
+	}
+ }
+ &.dropdown-toggle {
+	.badge , .label {
+		right:28px;
+	}
+ }
+ &:hover {
+	.badge , .label {
+		opacity:1;
+	}
+  }
+ 
+}
+
+.nav-list .submenu .submenu a {
+ .badge , .label {
+	top:6px;
+ }
+}
+
+
+
+
+/* side menu minimizer icon */
+.sidebar-collapse  {
+ border-bottom:1px solid @menumin-btn-border;
+ background-color:@menumin-btn-bg;
+ 
+ text-align:center;
+ padding:3px 0;
+ 
+ position:relative;
+ 
+ 
+ > [class*="icon-"]{
+	 display:inline-block;
+	 
+	 cursor:pointer;
+	 font-size:14px;
+	 color:@menumin-icon-color;
+	 
+	 border:1px solid @menumin-icon-border;
+	 padding:0 5px;
+	 line-height:18px;
+	 
+	 border-radius:16px;
+
+	 background-color:@menumin-icon-bg;
+	 position:relative;
+ }
+ 
+ &:before {
+	content:"";
+	display:inline-block;
+	 
+	height:0;
+	border-top:1px solid @menumin-btn-border; 
+	position:absolute;
+	left:15px; right:15px; top:13px;
+ }
+
+}
+
+
+
+/* sidebar shortcuts icon */
+.sidebar-shortcuts {
+ background-color:@shortcuts-bg;
+ border-bottom:1px solid @shortcuts-border;
+ text-align:center;
+ 
+ line-height:@breadcrumb-height - 2;
+ max-height:@breadcrumb-height;
+ margin-bottom:0;
+}
+.sidebar-shortcuts-large {
+ padding-bottom:4px;
+ 
+ > .btn {
+	width:41px;
+	line-height:24px;
+	
+	margin-top:-2px;
+	padding:0;
+	
+	border-width:4px;
+	
+	text-align:center;
+	> [class*="icon-"] { margin:0; }	
+ }
+ 
+}
+.sidebar-shortcuts-mini {
+ display:none;
+ font-size:0;
+ width:42px;
+ line-height:18px;
+ padding-top:2px; padding-bottom:2px;
+ 
+ background-color:@submenu-bg;
+ 
+  > .btn{
+	 border-width:0 !important;
+	 font-size:0;
+	 line-height:0;
+	 padding:8px !important;
+	 margin:0 1px;
+	 
+	 border-radius:0 !important;
+	 .opacity(0.85);
+  }
+}
+
+@media screen and (-webkit-min-device-pixel-ratio:0) { 
+    ::safari-only,.sidebar-shortcuts-mini > .btn {//safari only
+		margin: 0;
+    }
+}
+
+
+//3rd & 4th level menu
+.nav-list > li > .submenu {
+  li > .submenu {
+	border-top:none;
+	background-color:transparent;
+	display:none;
+  }
+  li.active > .submenu {
+	display:block;
+  }
+
+  a > .arrow {
+	right:11px; top:10px;
+	font-size:16px;
+	color:#6B828E;
+  }
+  
+  .open > a, .open > a:hover, .open > a:focus {
+	background-color: transparent;
+	border-color: @submenu-item-border;
+  }
+
+  li > .submenu > li > a > .arrow {
+	right:12px;
+	top:9px;
+  }
+
+
+  li > .submenu > li {
+		line-height:16px;
+		&:before {//the tree like menu
+			display:none;
+		}
+
+		> a {/*3rd level*/
+			margin-left:20px;
+			padding-left:22px;
+		}
+		> .submenu > li > a {/*4th level*/
+			margin-left:20px;
+			padding-left:38px;
+		}
+
+		a > [class*="icon-"]:first-child {
+			display:inline-block;
+			color:inherit;
+			font-size:14px;
+			
+			position:static;
+			background-color:transparent;
+			margin-right: 1px;
+		}
+
+
+		a {
+			font-size:13px;
+			color:#777;
+			
+			&:hover {
+				color:desaturate(@menu-focus-color, 25%);
+				text-decoration:underline;
+				[class*="icon-"] {
+					text-decoration:none;
+					color:desaturate(@menu-focus-color, 25%);
+				}
+			}
+		}
+
+  }
+
+  li.open > a {
+	color:desaturate(@menu-focus-color, 12%);
+	>  [class*="icon-"]:first-child {
+		display:inline-block;
+	}
+	.arrow {
+		color:desaturate(@menu-focus-color, 12%);
+	}
+  }
+  li > .submenu li.open > a {
+	color:desaturate(@menu-focus-color, 12%);
+	>  [class*="icon-"]:first-child {
+		display:inline-block;
+		color:@menu-focus-color;
+	}
+	
+	.arrow {
+		color:desaturate(@menu-focus-color, 12%);
+	}
+  }
+
+  li > .submenu li.active > a {
+	color:desaturate(@menu-active-color, 8%);
+	>  [class*="icon-"]:first-child {
+		display:inline-block;
+		color:desaturate(@menu-active-color, 8%);
+	}
+  }
+
+
+}//.nav-list > li > .submenu
+
+
+.nav-list > li {
+  &.active.open li.active > a:after {
+	top:2px;
+	border-width:14px 8px;
+  }
+  &.active.open li.active.open li.active > a:after {
+	top:0;
+  }
+}
+
+
+
+
+
+
+
+
+
+@import "sidebar-min.less";//minimized sidebar mode
+
+
+
+/* side menu toggler in mobile view */
+.menu-toggler { 
+ display:none;
+}
+
+
+
+/* responsive sidebar */
+@media only screen and (max-width: @screen-sm-max) {
+ .sidebar:before {
+	display:none;
+ }
+ .sidebar {
+	display:none;
+	float:none;
+	
+	position:absolute;
+	z-index:999;
+	left:0;
+	bottom:auto;
+	top:auto !important;/*so that it's applied even if it's .sidebar-fixed */
+	margin-top:40px;
+
+	border:1px solid #CCC;
+	border-left-width:0;
+	box-shadow:2px 1px 2px 0 rgba(0,0,0,0.2);
+ }
+ 
+ .sidebar.display {
+	display:block;
+ }
+
+
+ .menu-toggler {
+	display:inline-block;
+	position:absolute; left:0; z-index:998;
+	width:52px; height:32px;
+	margin-right:2px;
+	
+	line-height:normal;
+	padding-left:33px; padding-top:7px; padding-bottom:1px;
+	
+	font-size:13px; font-weight:bold;
+	text-transform:uppercase;
+
+	background-color:#444;
+	color:#F3F3F3;
+	
+	.box-sizing(content-box);
+	
+ }
+ .menu-toggler:hover {
+	text-decoration:none;
+ }
+ .menu-toggler:before {
+	border-top: 1px solid #87B87F;
+	border-bottom: 1px solid #6FB3E0;
+	height:2px; width:24px;
+	content: "";
+	position: absolute; z-index:11;
+	top: 13px; left:4px;
+
+	.transition(~"all 0.1s ease");
+	-o-transition: none;
+	
+	.box-sizing(content-box);
+ }
+ .menu-toggler:after {
+	border-top: 1px solid #FFA24D;
+	border-bottom: 1px solid #D15B47;
+	content: "";
+	height:2px;	width:24px;
+	position: absolute;
+	top:19px; left:4px;
+
+
+	.transition(~"all 0.1s ease");
+	-o-transition: none;
+	
+	.box-sizing(content-box);
+ }
+ .menu-toggler.display:before {
+	height:4px;
+	top: 8px;
+	border-width:2px;
+ }
+ .menu-toggler.display:after {
+	height:4px;
+	top:20px;
+	border-width:2px;
+ }
+
+
+ .menu-toggler > .menu-text {
+	display:block;
+	position:absolute;
+	bottom:-18px; left:0;
+	border:1px solid transparent;
+	border-width:9px 42px;
+	border-top-color:#444;
+ }
+ .menu-toggler > .menu-text:after {
+	display:block;
+	color:#FFF;
+	
+	content: @menu-button-text;
+	
+	position:absolute;
+	left: -8px;//change these to adjust text placement
+	top: -41px;
+ }
+
+ 
+ 
+ .nav-list > li.active:after {
+	display:none;
+ }
+ .nav-list  li.active > a:after {
+	display:none;
+ }
+
+ .nav-list li.active.open > .submenu > li.active > a:after {
+	display:none;
+ }
+ 
+ .menu-min .nav-list > li.active:after {
+	display:block;
+ }
+ .menu-min .nav-list >  li.active > a:after {
+	display:block;
+ }
+}
+
+
+@media only screen and (max-width: @screen-tiny) {
+ .menu-toggler {
+	width:0;
+ }
+ .menu-toggler > .menu-text{
+	border-width:7px 16px;
+	bottom:-14px;
+ }
+ .menu-toggler > .menu-text:after {
+	font-size:9px; font-weight:normal;
+	color:#FFF;
+	position:absolute;
+	left:-13px; top:-42px;
+ }
+
+ .menu-toggler:before ,  .menu-toggler:after {
+	margin-top: 8px;
+ }
+ .menu-toggler.display:before ,  .menu-toggler.display:after {
+	height:2px;
+	border-width:1px;
+ }
+ .menu-toggler.display:before {
+	top:13px;
+ }
+ .menu-toggler.display:after {
+	top:19px;
+ }
+}
+
+
+
+
+
+/* not used yet */
+/**
+@media only screen and (max-width: 979px) {
+ .sidebar.responsive-min {
+   display:block;
+   float:none;
+   position:absolute;
+   border-width:0 1px 1px 0;
+  
+   border-left:none;
+   box-shadow:none;
+   margin-top:0;
+   z-index:14;
+ }
+
+ .sidebar.responsive-min.menu-min {
+	border-bottom:none;
+ }
+ .sidebar.responsive-min.menu-min:before {
+   display:block;
+ }
+
+.sidebar.responsive-min + .main-content {
+	margin-left:43px !important;
+ }
+ .sidebar.responsive-min + .main-content .breadcrumbs.breadcrumbs-fixed { left:43px; }
+ .sidebar.responsive-min + .main-content .breadcrumbs .breadcrumb {margin-left:10px;}
+
+ .menu-toggler.responsive-min {
+	display:none !important;
+ }
+}
+*/
+
+

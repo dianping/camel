@@ -1,0 +1,26 @@
+<div class="breadcrumbs" id="breadcrumbs">
+    <script type="text/javascript">
+        try {
+            ace.settings.check('breadcrumbs', 'fixed')
+        } catch (e) {
+        }
+    </script>
+    <ul class="breadcrumb">
+        <li class="active">当前位置：Nginx集群 {{ slbPool.name }} #if(${editOrShow}=='edit') (编辑模式) #end &nbsp; <span
+                class="label label-warning" ng-show="newSlbPool"><i class=" icon-exclamation-sign"></i>&nbsp; 新建Nginx集群，请填写后保存。 </span>
+        </li>
+    </ul>
+    <!-- .breadcrumb -->
+    <a style="position: absolute;right:200px;" href="javascript:app.openAddSlbPoolModal();" class=""><i
+            class="icon-plus"></i> 新增Nginx集群</a>
+
+    <div class="nav-search" id="nav-search">
+        <form class="form-search">
+      <span class="input-icon"> <input type="text" placeholder="Search ..." class="nav-search-input"
+                                       id="nav-search-input" autocomplete="off"> <i
+              class="icon-search nav-search-icon"></i>
+      </span>
+        </form>
+    </div>
+    <!-- #nav-search -->
+</div>

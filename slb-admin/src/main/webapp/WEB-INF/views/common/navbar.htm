@@ -1,0 +1,91 @@
+<div class="navbar navbar-default navbar-fixed-top" id="navbar">
+    <script type="text/javascript">
+        try {
+            ace.settings.check('navbar', 'fixed')
+        } catch (e) {
+        }
+    </script>
+
+    <div class="navbar-container" id="navbar-container">
+        <div class="navbar-header pull-left">
+            <a href="#" class="navbar-brand">
+                <small><i
+                        class="icon-leaf"></i> 软负载 管理中心
+                </small>
+            </a> <a href="${contextPath}/" class="navbar-brand">
+            <button
+                    class="btn #if(${menu}=='vs')btn-purple #else btn-info#end btn-xs">
+                <i class="icon-globe align-top bigger-125 icon-on-right"></i> 站点管理
+            </button>
+        </a> <a href="${contextPath}/console/pool" class="navbar-brand">
+            <button
+                    class="btn #if(${menu}=='pool')btn-purple #else btn-info#end btn-xs">
+                <i class="icon-cloud  align-top bigger-125 icon-on-right"></i> 集群管理
+            </button>
+        </a> <a href="${contextPath}/console/slbPool" class="navbar-brand">
+            <button
+                    class="btn #if(${menu}=='slbPool')btn-purple #else btn-info#end btn-xs">
+                <i class="icon-laptop align-top bigger-125 icon-on-right"></i>
+                Nginx管理
+            </button>
+        </a> <a href="${contextPath}/console/aspect" class="navbar-brand">
+            <button
+                    class="btn #if(${menu}=='rules')btn-purple #else btn-info#end btn-xs">
+                <i class="icon-laptop align-top bigger-125 icon-on-right"></i>
+                公共规则管理
+            </button>
+        </a>
+            <a href="${contextPath}/console/deploy" class="navbar-brand">
+                <button
+                        class="btn #if(${menu}=='deployList' || ${menu}=='batchTag' || ${menu}=='deploy')btn-purple #else btn-info#end btn-xs">
+                    <i class="icon-cloud-upload align-top bigger-125 icon-on-right"></i>
+                    发布管理
+                </button>
+            </a>
+            <a href="${contextPath}/monitor/index" class="navbar-brand">
+                <button
+                        class="btn #if(${menu}=='monitor') btn-purple #else btn-info#end btn-xs">
+                    <i class="icon-cloud-upload align-top bigger-125 icon-on-right"></i>
+                    监控
+                </button>
+            </a>
+            <a href="${contextPath}/config/index" class="navbar-brand">
+                <button
+                        class="btn #if(${menu}=='config') btn-purple #else btn-info#end btn-xs">
+                    <i class="icon-laptop align-top bigger-125 icon-on-right"></i>
+                    配置
+                </button>
+            </a>
+            <a href="${contextPath}/api/pool/changePoolName" target="_blank"
+               class="navbar-brand" style="font-size: 13px;"> <i
+                    class="icon-edit align-top icon-on-right"></i> 批量改集群名
+            </a>
+            <!-- /.brand -->
+        </div>
+        <!-- /.navbar-header -->
+
+        <div class="navbar-buttons navbar-header pull-right" role="navigation">
+            <ul class="nav ace-nav">
+                <li class="light-blue"><a href="${contextPath}/console/help">
+				<span style="font-size:small"><i
+                        class="icon-ambulance align-top bigger-125 icon-on-right"></i> 帮助</span>
+                </a></li>
+                <li class="light-blue"><a data-toggle="dropdown" href="#"
+                                          class="dropdown-toggle"> <span class="user-info"> <small>欢迎
+                </small> ${userName}
+					</span> <i class="ace-icon fa fa-caret-down"></i>
+                </a>
+
+                    <ul
+                            class="user-menu dropdown-menu-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
+                        <li><a href="${logoutURL}"> <i
+                                class="ace-icon fa fa-power-off"></i> 登出
+                        </a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <!-- /.navbar-header -->
+    </div>
+    <!-- /.container -->
+</div>

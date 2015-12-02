@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>#parse("common/header.htm")
+</head>
+<!--[if lt IE 7 ]>
+<body class="ie ie6"> <![endif]-->
+<!--[if IE 7 ]>
+<body class="ie ie7 "> <![endif]-->
+<!--[if IE 8 ]>
+<body class="ie ie8 "> <![endif]-->
+<!--[if IE 9 ]>
+<body class="ie ie9 "> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!-->
+<body class="navbar-fixed">
+<!--<![endif]-->
+#parse("common/navbar.htm") $screen_content #parse("common/modals.htm") #parse("common/baseJs.htm")
+
+#parse("${menu}/js.htm")
+
+</body>
+</html>

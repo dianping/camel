@@ -1,0 +1,36 @@
+<div class="sidebar" id="sidebar">
+    <script type="text/javascript">
+        try {
+            ace.settings.check('sidebar', 'fixed')
+        } catch (e) {
+        }
+    </script>
+
+    <ul class="nav nav-list">
+        #foreach($group in $groups)
+        <li class="open"><a href="#" class="dropdown-toggle"> <i class="icon-desktop"></i> <span class="menu-text">
+          $group.name </span> <b class="arrow icon-angle-down"></b>
+        </a>
+            <ul class="submenu" style="display: block;">
+                #foreach($virtualServer in $group.virtualServers)
+                <li class="#if($virtualServer.name == $virtualServerName)active #end"><a
+                        href="${contextPath}/console/vs/$virtualServer.name"><i class="icon-globe"></i>
+                    $virtualServer.name </a></li>
+                #end
+            </ul>
+        </li>
+        #end
+    </ul>
+    <!-- /.nav-list -->
+
+    <div class="sidebar-collapse" id="sidebar-collapse">
+        <i class="icon-double-angle-left" data-icon1="icon-double-angle-left" data-icon2="icon-double-angle-right"></i>
+    </div>
+
+    <script type="text/javascript">
+        try {
+            ace.settings.check('sidebar', 'collapsed')
+        } catch (e) {
+        }
+    </script>
+</div>

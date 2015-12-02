@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+    <classPathEntry location="/data/appdatas/mysql-connector-java-5.1.18.jar"/>
+
+    <context id="slb" targetRuntime="MyBatis3">
+        <plugin type="org.mybatis.generator.plugins.RowBoundsPlugin"></plugin>
+        <plugin type="org.mybatis.generator.plugins.SerializablePlugin"></plugin>
+        <commentGenerator>
+            <property name="suppressDate" value="true"/>
+        </commentGenerator>
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://localhost:3306/phoenix-lb?useUnicode=true&amp;characterEncoding=utf8&amp;zeroDateTimeBehavior=convertToNull&amp;noAccessToProcedureBodies=true"
+                        userId="root" password="123456">
+        </jdbcConnection>
+        <javaTypeResolver>
+            <property name="forceBigDecimals" value="false"/>
+        </javaTypeResolver>
+        <javaModelGenerator targetPackage="com.dianping.phoenix.lb.deploy.model"
+                            targetProject="./src/main/java">
+            <property name="enableSubPackages" value="true"/>
+            <property name="trimStrings" value="true"/>
+        </javaModelGenerator>
+        <sqlMapGenerator targetPackage="com.dianping.phoenix.lb.deploy.dao"
+                         targetProject="./src/main/resources">
+            <property name="enableSubPackages" value="true"/>
+        </sqlMapGenerator>
+        <javaClientGenerator type="XMLMAPPER"
+                             targetPackage="com.dianping.phoenix.lb.deploy.dao"
+                             targetProject="./src/main/java">
+            <property name="enableSubPackages" value="true"/>
+        </javaClientGenerator>
+
+        <table tableName="deploy_task">
+            <generatedKey column="id" sqlStatement="MySql"
+                          identity="true"/>
+            <columnOverride column="agent_batch"
+                            javaType="com.dianping.phoenix.lb.deploy.model.AgentBatch"
+                            jdbcType="VARCHAR"/>
+            <columnOverride column="error_policy"
+                            javaType="com.dianping.phoenix.lb.deploy.model.ErrorPolicy"
+                            jdbcType="VARCHAR"/>
+            <columnOverride column="status"
+                            javaType="com.dianping.phoenix.lb.deploy.model.DeployTaskStatus"
+                            jdbcType="VARCHAR"/>
+            <columnOverride column="state_action"
+                            javaType="com.dianping.phoenix.lb.deploy.model.StateAction"
+                            jdbcType="VARCHAR"/>
+        </table>
+
+        <table tableName="deploy_vs">
+            <generatedKey column="id" sqlStatement="MySql"
+                          identity="true"/>
+            <columnOverride column="status"
+                            javaType="com.dianping.phoenix.lb.deploy.model.DeployVsStatus"
+                            jdbcType="VARCHAR"/>
+        </table>
+
+        <table tableName="deploy_agent">
+            <generatedKey column="id" sqlStatement="MySql"
+                          identity="true"/>
+            <columnOverride column="status"
+                            javaType="com.dianping.phoenix.lb.deploy.model.DeployAgentStatus"
+                            jdbcType="VARCHAR"/>
+        </table>
+
+        <table tableName="agent_id_sequence">
+            <generatedKey column="agent_id" sqlStatement="MySql"
+                          identity="true"/>
+        </table>
+
+    </context>
+
+    <context id="slb-api" targetRuntime="MyBatis3">
+        <plugin type="org.mybatis.generator.plugins.RowBoundsPlugin"></plugin>
+        <plugin type="org.mybatis.generator.plugins.SerializablePlugin"></plugin>
+        <commentGenerator>
+            <property name="suppressDate" value="true"/>
+        </commentGenerator>
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://localhost:3306/phoenix-lb?useUnicode=true&amp;characterEncoding=utf8&amp;zeroDateTimeBehavior=convertToNull&amp;noAccessToProcedureBodies=true"
+                        userId="root" password="123456">
+        </jdbcConnection>
+        <javaTypeResolver>
+            <property name="forceBigDecimals" value="false"/>
+        </javaTypeResolver>
+        <javaModelGenerator targetPackage="com.dianping.phoenix.lb.deploy.model.api"
+                            targetProject="./src/main/java">
+            <property name="enableSubPackages" value="true"/>
+            <property name="trimStrings" value="true"/>
+        </javaModelGenerator>
+        <sqlMapGenerator targetPackage="com.dianping.phoenix.lb.deploy.dao.api"
+                         targetProject="./src/main/resources">
+            <property name="enableSubPackages" value="true"/>
+        </sqlMapGenerator>
+        <javaClientGenerator type="XMLMAPPER"
+                             targetPackage="com.dianping.phoenix.lb.deploy.dao.api"
+                             targetProject="./src/main/java">
+            <property name="enableSubPackages" value="true"/>
+        </javaClientGenerator>
+
+        <table tableName="deploy_task_api">
+            <generatedKey column="id" sqlStatement="MySql"
+                          identity="true"/>
+            <columnOverride column="status"
+                            javaType="com.dianping.phoenix.lb.deploy.model.DeployTaskStatus"
+                            jdbcType="VARCHAR"/>
+            <columnOverride column="state_action"
+                            javaType="com.dianping.phoenix.lb.deploy.model.StateAction"
+                            jdbcType="VARCHAR"/>
+        </table>
+
+        <table tableName="deploy_agent_api">
+            <generatedKey column="id" sqlStatement="MySql"
+                          identity="true"/>
+            <columnOverride column="status"
+                            javaType="com.dianping.phoenix.lb.deploy.model.DeployAgentStatus"
+                            jdbcType="VARCHAR"/>
+        </table>
+
+    </context>
+
+
+</generatorConfiguration>

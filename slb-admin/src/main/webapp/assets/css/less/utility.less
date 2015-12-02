@@ -1,0 +1,227 @@
+.lighter { font-weight:lighter; }
+.bolder { font-weight:bolder; }
+.inline { display:inline-block !important; }
+.block { display:block !important; }
+
+.center , .align-center{ text-align:center !important; }
+.align-left { text-align:left !important; }
+.align-right { text-align:right !important; }
+
+.middle { vertical-align:middle; }
+.align-middle { vertical-align:middle !important; }
+.align-top { vertical-align:top !important; }
+.align-bottom { vertical-align:bottom !important; }
+
+.position-relative { position:relative; }
+.position-absolute { position:absolute; }
+
+.line-height-normal { line-height: normal !important; }
+.line-height-1 { line-height: 1 !important; }
+
+.dark { color:@ace-dark !important; }
+.white { color:@ace-white !important; }
+.red { color:@ace-red !important; }
+.light-red { color:@ace-light-red !important; }
+.blue { color:@ace-blue !important; }
+.light-blue { color:@ace-light-blue !important; }
+.green { color:@ace-green !important; }
+.light-green { color:@ace-light-green !important;}
+.orange { color:@ace-orange !important; }
+.light-orange {color:@ace-light-orange !important;}
+.orange2 { color:@ace-orange2 !important; }
+.purple { color:@ace-purple !important; }
+.pink { color:@ace-pink !important; }
+.pink2 { color:@ace-pink2  !important; }
+.brown { color:@ace-brown !important; }
+.grey { color:@ace-grey !important; }
+.light-grey { color:@ace-light-grey !important; }
+
+
+
+.biggerX (@index) when (@index < 310) {
+	.bigger-@{index} { font-size: unit(@index,~"%"); }
+	.biggerX(@index + 10);
+}
+.biggerX(110);
+.bigger-125 { font-size:125%;}
+.bigger-175 { font-size:175%; }
+.bigger-225 { font-size:225%; }
+.bigger-275 { font-size:275%; }
+
+.smallerX (@index) when (@index > 10) {
+	.smaller-@{index} { font-size: unit(@index,~"%"); }
+	.smallerX(@index - 10);
+}
+.smallerX(90);
+.smaller-75 { font-size:75%;}
+
+.widthX (@index) when (@index < 105) {
+	.width-@{index} { width: unit(@index,~"%") !important; }
+	.widthX(@index + 5);
+}
+.widthX(20);
+.width-48 { width: 48% !important; }
+.width-auto { width: auto !important; }
+.height-auto { height: auto !important; }
+
+
+.no-padding { padding:0 !important; }
+.no-padding-bottom { padding-bottom:0 !important; }
+.no-padding-top { padding-top:0 !important; }
+.no-padding-left { padding-left:0 !important; }
+.no-padding-right { padding-right:0 !important; }
+.no-margin { margin:0 !important; }
+.no-margin-bottom { margin-bottom:0 !important; }
+.no-margin-top { margin-top:0 !important; }
+.no-margin-left { margin-left:0 !important; }
+.no-margin-right { margin-right:0 !important; }
+
+.no-border { border:none; }
+.no-border-bottom { border-bottom:none; }
+.no-border-top { border-top:none; }
+.no-border-left { border-left:none; }
+.no-border-right { border-right:none; }
+
+
+.no-underline {
+ text-decoration:none !important;
+}
+.no-hover-underline:hover {
+ text-decoration:none !important;
+}
+
+.no-shadow , .no-box-shadow {
+ .box-shadow(none) !important;
+}
+.no-text-shadow {
+ text-shadow:none !important;
+}
+
+.overflow-hidden {overflow:hidden !important;}
+.overflow-auto {overflow:auto !important;}
+.overflow-scroll {overflow:scroll !important;}
+.overflow-visible {overflow:visible !important;}
+
+/* <hr /> like spacing by using div, e.g <div class="hr hr-32"></div> */
+.hr {
+ display:block;
+ height:0px; overflow:hidden; font-size:0;
+ border-top:1px solid #E3E3E3;
+ margin:12px 0;
+}
+.hr-double {
+ height:3px;
+ border-top:1px solid #E3E3E3;
+ border-bottom:1px solid #E3E3E3;
+}
+.hr.dotted , .hr-dotted{ border-top-style:dotted;}
+.hr-double.dotted { border-bottom-style:dotted;}
+
+
+.hrX (@index) when (@index > 0) {
+	.hr-@{index}, .hr@{index} { margin:unit(@index,px) 0; }
+	.hrX(@index - 2);
+}
+.hrX(32);
+
+
+
+/* some spacing classes, use like <div class="space-24"></div> */
+.space() {
+	max-height:1px;
+	min-height:1px;
+	overflow:hidden;
+}
+.space { .space(); margin:12px 0; }
+.vspace-xs , .vspace-sm, .vspace-md, .vspace-lg { .space(); display:none; margin:12px 0; } /* visible only on smaller devices where grid columns are stacked on top of each other */
+
+.spaceX (@index) when (@index > 0) {
+	.space-@{index} { .space(); margin:unit(@index,px) 0 unit(@index - 1,px); }
+	.vspace-@{index} ,
+	.vspace-xs-@{index} ,
+	.vspace-sm-@{index} ,
+	.vspace-md-@{index} ,
+	.vspace-lg-@{index} 
+	{
+		.space();
+		margin:unit(@index,px) 0 unit(@index - 1,px) 0;
+	}
+	.spaceX(@index - 2);
+}
+.spaceX(32);//produce spaces
+
+
+
+
+/* headers */
+.header {
+ line-height:28px;
+ margin-bottom:16px;
+ margin-top:18px;
+ padding-bottom:4px;
+ border-bottom:1px solid #CCC;
+ 
+ &.blue {
+	border-bottom-color:desaturate(lighten(@ace-blue, 35%), 10%);
+ }
+ &.green {
+	border-bottom-color:desaturate(lighten(@ace-green, 35%), 6%);
+ }
+ &.purple {
+	border-bottom-color:desaturate(lighten(@ace-purple, 28%), 5%);
+ }
+ &.orange {
+	border-bottom-color:desaturate(lighten(@ace-orange, 25%), 5%);
+ }
+ &.orange2 {
+	border-bottom-color:desaturate(lighten(@ace-orange2, 20%), 5%);
+ }
+ &.red {
+	border-bottom-color:desaturate(lighten(@ace-red, 30%), 5%);
+ }
+ &.grey {
+	border-bottom-color:desaturate(lighten(@ace-grey, 30%), 5%);
+ }
+ &.pink {
+	border-bottom-color:desaturate(lighten(@ace-pink, 32%), 5%);
+ }
+ &.pink2 {
+	border-bottom-color:desaturate(lighten(@ace-pink2, 20%), 5%);
+ }
+ &.light-blue {
+	border-bottom-color:desaturate(lighten(@ace-light-blue, 15%), 5%);
+ }
+ &.light-red {
+	border-bottom-color:desaturate(lighten(@ace-light-red, 15%), 5%);
+ }
+ &.light-green {
+	border-bottom-color:desaturate(lighten(@ace-light-green, 15%), 5%);
+ }
+ &.brown {
+	border-bottom-color:desaturate(lighten(@ace-brown, 32%), 5%);
+ }
+
+  > [class*="icon-"] {
+	margin-right:2px;
+  }
+}
+
+.no-radius { .border-radius(0) !important; }
+
+
+
+
+
+
+.action-buttons a {
+  margin:0 3px;
+  display:inline-block;
+  opacity:0.85;
+   .transition(~"all 0.1s");
+  
+  &:hover {
+	text-decoration:none;
+	.transform(~"scale(1.2)");
+	opacity:1;
+  }
+}

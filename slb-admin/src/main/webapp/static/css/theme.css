@@ -1,0 +1,52 @@
+.deployBody {
+	background: #fff;
+	background-image:;
+}
+
+table.slb-datatable thead {
+	color: #0073ea;
+}
+
+.my-progress-bar .progress {
+	position: relative;
+	margin-bottom: 0px;
+}
+
+.my-progress-bar .progress>p {
+	position: absolute;
+}
+
+div.modal h3,div.modal h4 {
+	text-align: center;
+}
+
+div.alert {
+	text-align: center;
+}
+
+th {
+	text-align: center;
+	vertical-align: middle;
+}
+
+tr {
+	text-align: center;
+	vertical-align: middle;
+}
+
+.page-content {
+	padding-left: 30px;
+	min-height: 550px;
+}
+
+.td-success {
+	color: green;
+}
+
+.td-failed {
+	color: red;
+}
+
+#diffoutput tr {
+	text-align: left;
+}

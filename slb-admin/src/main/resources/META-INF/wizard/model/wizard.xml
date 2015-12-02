@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wizard package="com.dianping.phoenix.lb.model">
+    <model package="com.dianping.phoenix.lb.model" name="slb-model">
+        <sample-model>src/test/resources/slb-model.xml</sample-model>
+    </model>
+    <model package="com.dianping.phoenix.lb.config" name="runtime-config">
+        <sample-model>src/test/resources/runtime-config.xml</sample-model>
+    </model>
+    <model package="com.dianping.phoenix.agent.response" name="response">
+        <sample-model>src/test/resources/agent-response.xml</sample-model>
+    </model>
+    <model package="com.dianping.phoenix.lb.nginxlog" name="nginx-log">
+        <sample-model>src/test/resources/nginx_log.xml</sample-model>
+    </model>
+    <model package="com.dianping.phoenix.lb.model.nginxstatus" name="nginx-hour-statistics">
+        <sample-model>src/test/resources/nginx_hour_statistics.xml</sample-model>
+    </model>
+</wizard>

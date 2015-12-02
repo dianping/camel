@@ -1,0 +1,13 @@
+<div class="row">
+    <div style="margin: 0 auto; text-align: center;">
+        <select ng-model="tagCompare1" ng-options="tag as tag for tag in tags">
+            <option value="">-- 选择待比较的版本 --</option>
+        </select> &nbsp; &nbsp; vs &nbsp; &nbsp; <select ng-model="tagCompare2" ng-options="tag as tag for tag in tags">
+        <option value="">-- 选择待比较的版本 --</option>
+    </select> &nbsp;&nbsp; <label class="checkbox inline"> <input ng-model="inline" type="checkbox"> 单页显示
+    </label>
+        <button style="margin-left: 20px;" type="button" ng-click="diff()" class="btn btn-xs btn-primary">对比</button>
+    </div>
+    <div style="padding: 10px; text-align: left;" id="diffoutput"></div>
+</div>
+

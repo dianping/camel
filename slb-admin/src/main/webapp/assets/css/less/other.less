@@ -1,0 +1,214 @@
+@ace-settings-box-border:#FFB34B;
+@datepicker-active-bg:#2283C5;
+@datepicker-disabled-bg:#8B9AA3;
+@datepicker-active-bg2:#7D8893;//inside .well
+
+/* other page sections */
+
+
+.ace-settings-container {
+ position:absolute;
+ right:0; top:50px;
+ z-index:12;
+
+ .breadcrumbs-fixed & {
+	top:50px - (@breadcrumb-height);
+ }
+}
+.btn.ace-settings-btn {
+ float:left;
+ display:inline-block; 
+ width:42px !important;
+ text-align:center;
+
+ .border-radius(~"6px 0 0 6px") !important;
+ .opacity(0.55);
+
+ vertical-align:top;
+ margin:0;
+ 
+ &:hover , &.open {
+	.opacity(1);
+ }
+
+}
+
+.ace-settings-box {
+ display:none;
+ float:left;
+ width:175px; padding:0 14px;
+ background-color:#FFF;
+
+ border:2px solid @ace-settings-box-border;
+ 
+ &.open {
+	display:inline-block;
+ }
+ 
+ > div {
+	margin:6px 0;
+	color:#444;
+	max-height:24px;
+	> label {
+		font-size:13px;
+	}
+ }
+
+}
+
+
+
+
+
+.btn-scroll-up {
+  border:none;
+  position:absolute;
+  right:2px;
+  bottom:2px;
+  z-index:11;
+}
+@media (min-width: @screen-tablet) {
+ .main-container.container > .btn-scroll-up {
+	right: auto;
+	margin-left: @container-tablet - 36;
+ }
+}
+@media (min-width: @screen-desktop) {
+ .main-container.container > .btn-scroll-up {
+	right: auto;
+	margin-left: @container-desktop - 36;
+ }
+}
+@media (min-width: @screen-lg-desktop) {
+ .main-container.container > .btn-scroll-up {
+	right: auto;
+	margin-left: @container-lg-desktop - 36;
+ }
+}
+
+
+
+
+
+
+.grid2, .grid3, .grid4 {
+	.box-sizing(border-box);
+	display:block;
+	margin:0;
+	float:left;
+
+	border-left:1px solid #E3E3E3;
+	&:first-child {
+		border-left:none;
+	}
+}
+
+.grid2 {
+	width:48%;
+	padding:0 2%;
+}
+
+
+.grid3 {
+	width:33%;
+	padding:0 2%;
+}
+
+.grid4 {
+	width:23%;
+	margin:0 1%; padding:0 1%;
+}
+
+
+.draggable-placeholder { /* for when dragging items around */
+  border:2px dashed #D9D9D9 !important;
+  background-color:#F7F7F7 !important;
+}
+
+/* scrollbar */
+.slimScrollBar  { .border-radius(0) !important; }
+.slimScrollRail { .border-radius(0) !important; }
+
+
+
+/* date & time picker */
+.datepicker , .daterangepicker  {
+	td , th { .border-radius(0) !important; font-size: 13px; }
+	
+	td.active {
+	  & , &:hover {	background:@datepicker-active-bg !important; }
+	  
+	  &.disabled {
+		& , &:hover { background:@datepicker-disabled-bg !important; }
+	  }
+	}
+}
+.datepicker {
+ td , th { min-width: 32px; }
+}
+
+.datepicker-months .month , .datepicker-years .year {
+  border-radius:0 !important;
+}
+.datepicker-months .month.active , .datepicker-years .year.active {
+  & , &:hover , &:focus, &:active {
+	  background-image:none !important;
+	  background-color:@datepicker-active-bg !important;
+  }
+}
+.bootstrap-timepicker-widget table td input {
+	width:32px;
+}
+
+
+
+.bootstrap-timepicker-widget table td a:hover {
+	.border-radius(0);
+}
+
+.well .datepicker table tr td.day:hover {
+	background-color:@datepicker-active-bg2;
+	color:#FFF;
+}
+
+
+
+
+
+/* a few small third party css files put here to reduce http file requests */
+/* jquery.easy-pie-chart.css */
+.easyPieChart {
+    position: relative;
+    text-align: center;
+	
+	canvas {
+		position: absolute;
+		top: 0;
+		left: 0;
+	}
+}
+
+.knob-container {
+	direction:ltr;
+	text-align:left;
+}
+
+
+
+
+
+/* ie8/9 specific */
+.navbar .navbar-inner , .navbar .btn-navbar {
+	filter:progid:DXImageTransform.Microsoft.gradient(enabled=false) !important;
+}
+.dropdown-menu li > a,
+.dropdown-submenu > a  {
+	filter:progid:DXImageTransform.Microsoft.gradient(enabled=false) !important;
+}
+.btn {
+	filter:progid:DXImageTransform.Microsoft.gradient(enabled=false) !important;
+}
+.progress , .progress .bar {
+	filter:progid:DXImageTransform.Microsoft.gradient(enabled=false) !important;
+}
+

@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model>
+    <entity name="slb-model-tree" root="true">
+        <attribute name="tag" value-type="long"/>
+        <attribute name="tag-date" value-type="Date" format="yyyy-MM-dd HH:mm:ss"/>
+        <entity-ref name="strategy" type="list" names="strategies" xml-indent="true"/>
+        <entity-ref name="pool" type="list" names="pools" xml-indent="true"/>
+        <entity-ref name="aspect" type="list" names="aspects" xml-indent="true"/>
+        <entity-ref name="variable" type="list" names="variables" xml-indent="true"/>
+        <entity-ref name="slb-pool" type="list" names="slb-pools" xml-indent="true"/>
+        <entity-ref name="virtualServer" type="list" names="virtualServers"/>
+        <entity-ref name="monitor-rule" type="list" names="monitor-rules" xml-indent="true"/>
+    </entity>
+    <entity name="strategy">
+        <attribute name="version" value-type="int"/>
+        <attribute name="group" value-type="String"/>
+        <attribute name="type" value-type="String"/>
+        <attribute name="target" value-type="String"/>
+        <attribute name="method" value-type="String"/>
+        <attribute name="creation-date" value-type="Date" format="yyyy-MM-dd HH:mm:ss"/>
+        <attribute name="last-modified-date" value-type="Date" format="yyyy-MM-dd HH:mm:ss"/>
+    </entity>
+    <entity name="pool">
+        <attribute name="version" value-type="int"/>
+        <attribute name="name" value-type="String"/>
+        <attribute name="loadbalance-strategy-name" value-type="String"/>
+        <attribute name="min-available-member-percentage" value-type="int"/>
+        <attribute name="creation-date" value-type="Date" format="yyyy-MM-dd HH:mm:ss"/>
+        <attribute name="last-modified-date" value-type="Date" format="yyyy-MM-dd HH:mm:ss"/>
+        <entity-ref name="check"/>
+        <entity-ref name="member" type="list" names="members"/>
+        <attribute name="degradeRate" value-type="int"/>
+        <attribute name="degradeForceState" value-type="int"/>
+        <attribute name="keepalive" value-type="int"/>
+        <attribute name="keepalive_timeout" value-type="int"/>
+        <entity-ref name="upstreamFilter"/>
+    </entity>
+    <entity name="upstreamFilter">
+        <attribute name="authFilterOpen" value-type="boolean"/>
+        <attribute name="authFilterPassPattern" value-type="String"/>
+    </entity>
+    <entity name="check">
+        <attribute name="interval" value-type="int"/>
+        <attribute name="rise" value-type="int"/>
+        <attribute name="fall" value-type="int"/>
+        <attribute name="timeout" value-type="int"/>
+        <attribute name="default_down" value-type="boolean"/>
+        <attribute name="type" value-type="String"/>
+        <attribute name="port" value-type="int"/>
+        <attribute name="check_keepalive_requests" value-type="int"/>
+        <attribute name="check_http_send" value-type="String"/>
+        <attribute name="check_http_expect_alive" value-type="String"/>
+        <attribute name="check_http_expect_pattern" value-type="String"/>
+        <attribute name="check_shm_size" value-type="String"/>
+        <attribute name="check_status" value-type="String"/>
+    </entity>
+    <entity name="member">
+        <attribute name="name" value-type="String"/>
+        <attribute name="ip" value-type="String"/>
+        <attribute name="port" value-type="int"/>
+        <attribute name="weight" value-type="int"/>
+        <attribute name="max-fails" value-type="int"/>
+        <attribute name="fail-timeout" value-type="String"/>
+        <attribute name="state" value-type="String"/>
+        <!-- <attribute name="availability" value-type="String" /> -->
+    </entity>
+    <entity name="aspect">
+        <attribute name="version" value-type="int"/>
+        <attribute name="key" value-type="String"/>
+        <attribute name="point-cut" value-type="String"/>
+        <attribute name="ref" value-type="String"/>
+        <entity-ref name="directive" type="list" names="directives"/>
+    </entity>
+    <entity name="variable">
+        <attribute name="version" value-type="int"/>
+        <attribute name="key" value-type="String"/>
+        <attribute name="value" value-type="String"/>
+    </entity>
+    <entity name="directive">
+        <attribute name="type" value-type="String"/>
+        <attribute name="matches" value-type="String"/>
+        <attribute name="target-pattern" value-type="String"/>
+        <attribute name="flag" value-type="String"/>
+        <attribute name="response-code" value-type="int"/>
+        <attribute name="path" value-type="String"/>
+        <attribute name="format" value-type="String"/>
+        <attribute name="pool-name" value-type="String"/>
+        <attribute name="root-doc" value-type="String"/>
+        <attribute name="expires" value-type="String"/>
+    </entity>
+    <entity name="slb-pool">
+        <attribute name="version" value-type="int"/>
+        <attribute name="name" value-type="String"/>
+        <entity-ref name="instance" type="list" names="instances"/>
+    </entity>
+    <entity name="instance">
+        <attribute name="ip" value-type="String"/>
+    </entity>
+    <entity name="virtualServer">
+        <attribute name="name" value-type="String"/>
+        <attribute name="state" value-type="String"/>
+        <attribute name="default-pool-name" value-type="String"/>
+        <attribute name="domain" value-type="String"/>
+        <attribute name="port" value-type="int"/>
+        <attribute name="creation-date" value-type="Date" format="yyyy-MM-dd HH:mm:ss"/>
+        <attribute name="last-modified-date" value-type="Date" format="yyyy-MM-dd HH:mm:ss"/>
+        <attribute name="version" value-type="int"/>
+        <attribute name="access_log" value-type="String"/>
+        <attribute name="group" value-type="String"/>
+        <attribute name="slb-pool" value-type="String"/>
+        <entity-ref name="aspect" type="list" names="aspects" xml-indent="true"/>
+        <entity-ref name="location" type="list" names="locations" xml-indent="true"/>
+    </entity>
+    <entity name="location">
+        <attribute name="match-type" value-type="String"/>
+        <attribute name="pattern" value-type="String"/>
+        <attribute name="case-sensitive" value-type="boolean"/>
+        <entity-ref name="directive" type="list" names="directives"/>
+    </entity>
+    <entity name="monitor-rule">
+        <attribute name="id" value-type="String"/>
+        <attribute name="pool" value-type="String"/>
+        <attribute name="status-code" value-type="String"/>
+        <attribute name="value" value-type="int"/>
+        <attribute name="minute" value-type="int"/>
+        <attribute name="mail-receivers" value-type="String"/>
+        <attribute name="sms-receivers" value-type="String"/>
+    </entity>
+</model>
+

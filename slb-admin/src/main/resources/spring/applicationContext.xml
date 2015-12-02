@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:task="http://www.springframework.org/schema/task" xmlns:context="http://www.springframework.org/schema/context"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+			http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+			http://www.springframework.org/schema/context
+            http://www.springframework.org/schema/context/spring-context-3.0.xsd
+            http://www.springframework.org/schema/task
+    		http://www.springframework.org/schema/task/spring-task-3.0.xsd">
+
+
+    <!-- annotation scan -->
+    <context:component-scan base-package="com.dianping.phoenix.lb">
+    </context:component-scan>
+
+    <!-- execute scheduled job -->
+    <task:annotation-driven/>
+
+    <import resource="applicationContext-properties.xml"/>
+    <import resource="applicationContext-database.xml"/>
+    <import resource="applicationContext-mongo.xml"/>
+
+</beans>

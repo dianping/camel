@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+            http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+    		http://www.springframework.org/schema/data/mongo
+          	http://www.springframework.org/schema/data/mongo/spring-mongo-1.0.xsd">
+
+    <mongo:mongo id="mongo" replica-set="${slb-admin.mongodb.url}">
+        <mongo:options connections-per-host="${connections-per-host}"
+                       threads-allowed-to-block-for-connection-multiplier="5"
+                       connect-timeout="1000"
+                       max-wait-time="15000"
+                       auto-connect-retry="true"
+                       socket-keep-alive="true"
+                       socket-timeout="1500"
+                       slave-ok="${slb-admin.slave-ok}"
+                       write-number="1"
+                       write-timeout="0"
+                       write-fsync="true"/>
+    </mongo:mongo>
+
+    <mongo:db-factory id="dbConfig" dbname="${slb-admin.mongodb.dbname_config}" mongo-ref="mongo"/>
+
+    <mongo:db-factory id="dbNginxLog" dbname="${slb-admin.mongodb.dbname_nginx_log}" mongo-ref="mongo"/>
+
+    <mongo:db-factory id="dbRecord" dbname="record" mongo-ref="mongo"/>
+
+    <mongo:db-factory id="dbRuntime" dbname="${slb-admin.mongodb.dbname_runtime}" mongo-ref="mongo"/>
+
+    <bean id="mongoTemplateConfig" class="org.springframework.data.mongodb.core.MongoTemplate">
+        <constructor-arg name="mongoDbFactory" ref="dbConfig"/>
+        <property name="writeResultChecking">
+            <value type="org.springframework.data.mongodb.core.WriteResultChecking">EXCEPTION</value>
+        </property>
+    </bean>
+
+    <bean id="nginxLogMongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
+        <constructor-arg name="mongoDbFactory" ref="dbNginxLog"/>
+        <property name="writeResultChecking">
+            <value type="org.springframework.data.mongodb.core.WriteResultChecking">EXCEPTION</value>
+        </property>
+    </bean>
+
+    <bean id="recordMongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
+        <constructor-arg name="mongoDbFactory" ref="dbRecord"/>
+        <property name="writeResultChecking">
+            <value type="org.springframework.data.mongodb.core.WriteResultChecking">EXCEPTION</value>
+        </property>
+    </bean>
+
+    <bean id="mongoTemplateRuntime" class="org.springframework.data.mongodb.core.MongoTemplate">
+        <constructor-arg name="mongoDbFactory" ref="dbRuntime"/>
+    </bean>
+
+
+</beans>

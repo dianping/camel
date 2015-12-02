@@ -1,0 +1,25 @@
+<div class="main-container-inner" ng-init="editOrShow='${editOrShow}'"
+     ng-app="MyApp" ng-controller="RuleController" id="RuleController">
+    #parse("/monitor/sidebar.htm")
+    <div class="main-content" style="display: none;">
+        <div class="page-content">
+            <div class="page-header">
+                <a ng-show="editOrShow=='edit'" ng-click="cancleEdit()"
+                   href="javascript:;" style="float: right; margin-left: 20px;"
+                   class="btn">取消</a> <a ng-show="editOrShow=='edit'"
+                                         ng-click="save()" style="float: right;" class="btn btn-primary">
+                <i class="icon-ok bigger-110"></i>保存
+            </a> <a ng-hide="editOrShow=='edit'" ng-click="add()"
+                    href="javascript:;"
+                    style="float: right; margin-right: 20px; margin-top: 0px"
+                    class="btn btn-primary"> <i class="icon-edit"></i>&nbsp;添加新规则
+            </a> <br/> <br/>
+            </div>
+            <div class="row">
+                <div id="ruleDiv" style="text-align: center;"></div>
+                #parse("/monitor/rule/list.htm")
+                #parse("/monitor/rule/detail.htm")
+            </div>
+        </div>
+    </div>
+</div>

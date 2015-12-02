@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model>
+    <entity name="response" root="true">
+        <element name="status" value-type="String"/>
+        <element name="message" value-type="String"/>
+        <element name="ip" value-type="String"/>
+        <element name="version" value-type="String"/>
+        <entity-ref name="container"/>
+        <entity-ref name="domain" type="list" names="domains"/>
+    </entity>
+    <entity name="container">
+        <attribute name="name" value-type="String"/>
+        <attribute name="version" value-type="String"/>
+        <attribute name="status" value-type="String"/>
+        <element name="install-path" value-type="String"/>
+    </entity>
+    <entity name="domain">
+        <entity-ref name="war"/>
+        <entity-ref name="kernel"/>
+    </entity>
+    <entity name="war">
+        <attribute name="name" value-type="String"/>
+        <attribute name="version" value-type="String"/>
+        <entity-ref name="lib" type="list" names="libs"/>
+    </entity>
+    <entity name="lib">
+        <attribute name="group-id" value-type="String"/>
+        <attribute name="artifact-id" value-type="String"/>
+        <attribute name="version" value-type="String"/>
+    </entity>
+    <entity name="kernel">
+        <entity-ref name="war"/>
+    </entity>
+</model>
+

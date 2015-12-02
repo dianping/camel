@@ -1,0 +1,25 @@
+<div ng-show="slbPool" class="col-xs-12">
+    <form class="form-horizontal" role="form">
+        <div class="form-group" style="">
+            <label class="col-sm-2 control-label no-padding-right">Nginx集群名</label>
+
+            <div class="col-sm-7">
+                <input disabled class="" value="{{slbPool.name}}" type="text">
+            </div>
+        </div>
+        <br>
+        <table class="table table-bordered" style="width: 30%;margin-left:50px;">
+            <thead>
+            <tr>
+                <th>IP</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="instance in slbPool.instances">
+                <td><input ng-trim="true" class="" disabled ng-model="instance.ip" type="text"></td>
+            </tr>
+            </tbody>
+        </table>
+    </form>
+</div>
+

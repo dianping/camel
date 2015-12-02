@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<slb-model-tree>
+    <variables>
+        <variable key="allow" value="allow 127.0.0.1; allow 10.1.104.162"/>
+        <variable key="DianPingOAIP" value="$(DianPingIP);$(deny)"/>
+        <variable key="DianPingIP" value="allow 113.107.6.170"/>
+        <variable key="deny" value="deny all"/>
+        <variable key="hello" value="echo hello_world"/>
+        <variable key="notRelatedVariable" value="echo hello_world"/>
+    </variables>
+    <strategies>
+        <strategy name="uri-hash" type="hash" target="$request_uri"
+                  creation-date="2013-10-15 16:40:00" last-modified-date="2013-10-15 16:40:00"/>
+        <strategy name="ip-hash" type="ip-hash" creation-date="2013-10-15 16:40:00"
+                  last-modified-date="2013-10-15 16:40:00"/>
+        <strategy name="round-robin" type="round-robin"
+                  creation-date="2013-10-15 16:40:00" last-modified-date="2013-10-15 16:40:00"/>
+        <strategy name="fair" type="fair" creation-date="2013-10-15 16:40:00"
+                  last-modified-date="2013-10-15 16:40:00"/>
+    </strategies>
+    <pools>
+        <pool name="Web.Tuangou" loadbalance-strategy-name="uri-hash"
+              min-available-member-percentage="50" creation-date="2013-10-15 16:40:00"
+              last-modified-date="2013-10-15 16:40:00">
+            <member name="tuangou-web01" ip="10.1.1.1" port="8080" weight="5"
+                    max-fails="5" fail-timeout="30s" state="ENABLED" availability="AVAILABLE"/>
+            <member name="tuangou-web02" ip="10.1.1.2" port="8080" weight="5"
+                    max-fails="5" fail-timeout="30s" state="ENABLED" availability="AVAILABLE"/>
+        </pool>
+        <pool name="Web.Index" loadbalance-strategy-name="uri-hash"
+              min-available-member-percentage="50" creation-date="2013-10-15 16:40:00"
+              last-modified-date="2013-10-15 16:40:00">
+            <member name="index-web01" ip="10.1.1.3" port="8080" weight="5"
+                    max-fails="5" fail-timeout="30s" state="ENABLED" availability="AVAILABLE"/>
+            <member name="index-web02" ip="10.1.1.4" port="8080" weight="5"
+                    max-fails="5" fail-timeout="30s" state="ENABLED" availability="AVAILABLE"/>
+        </pool>
+    </pools>
+    <aspects>
+        <aspect name="commonRequest" point-cut="BEFORE">
+            <directive type="more_set_input_headers" value="'commonReq : 123'"/>
+        </aspect>
+        <aspect name="commonResponse" point-cut="AFTER">
+            <directive type="more_set_headers" value="'server : nginx'"/>
+        </aspect>
+        <aspect name="notRelatedAspect" point-cut="AFTER">
+            <directive type="more_set_headers" value="'server : nginx'"/>
+        </aspect>
+    </aspects>
+    <slb-pools>
+        <slb-pool name="test-pool">
+            <instance ip="10.2.1.1"/>
+            <instance ip="10.2.1.2"/>
+        </slb-pool>
+        <slb-pool name="test-pool2">
+            <instance ip="10.2.1.3"/>
+            <instance ip="10.2.1.4"/>
+        </slb-pool>
+    </slb-pools>
+</slb-model-tree>

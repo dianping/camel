@@ -1,0 +1,38 @@
+<span style="font-size: 12px;">所在位置：<a href="javascript:;" ng-click="switchAspectList();">所有规则</a> &nbsp;&nbsp;<span
+        ng-show="aspectEditing">/ &nbsp;&nbsp; 规则（{{aspectEditing.name}}）</span>
+</span>
+<div ng-hide="aspectEditing">
+    <!-- 公共规则 -->
+    <a style="float: right; margin-right: 30px;" href="javascript:;" ng-click="openAddRefAspectModal()"> <i
+            class="icon-plus"></i> 预设规则
+    </a> <a style="float: right; margin-right: 30px;" href="javascript:;" ng-click="openAddAspectModal()"> <i
+        class="icon-plus"></i> 自定义规则
+</a>
+    <h5 style="margin-top: 30px">公共规则列表</h5>
+    <table class="table table-bordered" style="width: 80%">
+        <thead>
+        <tr>
+            <th>规则信息</th>
+            <th>类型</th>
+            <th style="width: 230px;">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="aspect in vs.aspects">
+            <td ng-show="!aspect.ref"><span class="label label-info">{{aspect.name}}</span></td>
+            <td ng-show="!aspect.ref">{{displayPointCut(aspect.pointCut)}}</td>
+            <td ng-show="!aspect.ref"><a href="javascript:void(0);" ng-click="switchAspect($index);"><i
+                    class="icon-edit"></i> 详细 </a>&nbsp;&nbsp;<a href="javascript:void(0);"
+                                                                 ng-click="affirmRemoveAspectModal($index);">删除</a></td>
+            <td ng-show="aspect.ref">引用自预设规则：<span class="label label-info">{{aspect.ref}}</span></td>
+            <td ng-show="aspect.ref">{{displayPointCut(getPointCut(aspect.ref))}}</td>
+            <td ng-show="aspect.ref"><a ng-href="${contextPath}/console/aspect#{{aspect.ref}}" target="_blank">
+                查看该预设规则 </a>&nbsp;&nbsp;<a href="javascript:void(0);"
+                                           ng-click="affirmRemoveAspectModal($index);">删除</a></td>
+        </tr>
+        </tbody>
+    </table>
+    <p ng-show="vs.aspects.length==0" style="width: 80%; text-align: center">尚未添加公共规则</p>
+</div>
+
+#parse("vs/aspect/${editOrShow}/detail.htm")

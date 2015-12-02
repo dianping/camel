@@ -1,0 +1,30 @@
+<div ng-show="slbPool" class="col-xs-12">
+    <form class="form-horizontal" role="form">
+        <div class="form-group">
+            <label class="col-sm-2 control-label no-padding-right">Nginx集群名</label>
+
+            <div class="col-sm-7">
+                <input disabled class="" value="{{slbPool.name}}" type="text">
+            </div>
+        </div>
+        <br> <a style="float: right; margin-right: 30px;" ng-click="addInstance();" href="javascript:;"> <i
+            class="icon-plus"></i> 添加新Nginx节点
+    </a>
+        <table class="table table-bordered" style="width: 30%;margin-left:50px;text-align: center;">
+            <thead>
+            <tr>
+                <th>IP</th>
+                <th style="">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="instance in slbPool.instances">
+                <td><input ng-trim="true" class="" ng-model="instance.ip" type="text"></td>
+                <td><a href="javascript:void(0);" ng-click="removeInstance($index);"><span
+                        class='removeIcon'></span> 删除 </a></td>
+            </tr>
+            </tbody>
+        </table>
+    </form>
+</div>
+

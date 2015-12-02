@@ -1,0 +1,191 @@
+<!-- 添加nginx集群 -->
+<div aria-hidden="false" role="dialog" data-backdrop="true" class="bootbox modal" id="addSlbPoolModal"
+     style="margin: 0 0 0 0;">
+    <div class="modal-dialog" style="width: 500px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+                <h4 class="modal-title">添加新Nginx集群</h4>
+            </div>
+            <div class="modal-body">
+                <div class="bootbox-body">
+                    <h6 style="text-align: center;">此处填写新集群名称</h6>
+
+                    <div id="addSlbPoolAlertDiv"></div>
+                    <form class="form-horizontal" onsubmit="return false;">
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label no-padding-right">Nginx集群名</label>
+
+                            <div class="col-sm-7">
+                                <div class="input-prepend">
+                                    <span class="add-on"></span><input id="addSlbPoolName"
+                                                                       onkeyup="if(event.keyCode==13)app.addPool()"
+                                                                       type="text" class="" placeholder="">
+                                </div>
+                                <span class="muted">（必填）</span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button data-bb-handler="confirm" type="button" onclick="app.addSlbPool()" class="btn btn-primary">确定
+                </button>
+                <button type="button" data-dismiss="modal" class="btn">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 添加集群 -->
+<div aria-hidden="false" role="dialog" data-backdrop="true" class="bootbox modal" id="addPoolModal"
+     style="margin: 0 0 0 0;">
+    <div class="modal-dialog" style="width: 500px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+                <h4 class="modal-title">添加新集群</h4>
+            </div>
+            <div class="modal-body">
+                <div class="bootbox-body">
+                    <h6 style="text-align: center;">此处填写新集群名称</h6>
+
+                    <div id="addPoolAlertDiv"></div>
+                    <form class="form-horizontal" onsubmit="return false;">
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label no-padding-right">集群名</label>
+
+                            <div class="col-sm-7">
+                                <div class="input-prepend">
+                                    <span class="add-on"></span><input id="addPoolName"
+                                                                       onkeyup="if(event.keyCode==13)app.addPool()"
+                                                                       type="text" class="" placeholder="">
+                                </div>
+                                <span class="muted">（必填）</span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button data-bb-handler="confirm" type="button" onclick="app.addPool()" class="btn btn-primary">确定
+                </button>
+                <button type="button" data-dismiss="modal" class="btn">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 添加站点 -->
+<div aria-hidden="false" role="dialog" data-backdrop="true" class="bootbox modal" id="addVirtualServerModal"
+     style="margin: 0 0 0 0;">
+    <div class="modal-dialog" style="width: 500px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+                <h4 class="modal-title">添加新站点</h4>
+            </div>
+            <div class="modal-body">
+                <div class="bootbox-body">
+                    <h6 style="text-align: center;">此处填写新站点名称</h6>
+
+                    <div id="addVirtualServerAlertDiv"></div>
+                    <form class="form-horizontal" onsubmit="return false;">
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label no-padding-right">站点名</label>
+
+                            <div class="col-sm-7">
+                                <div class="input-prepend">
+                                    <span class="add-on"></span><input id="addVirtualServerName"
+                                                                       onkeyup="if(event.keyCode==13)app.addVirtualServer()"
+                                                                       type="text" class="" placeholder="">
+                                </div>
+                                <span class="muted">（必填）</span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button data-bb-handler="confirm" type="button" onclick="app.addVirtualServer()"
+                        class="btn btn-primary">确定
+                </button>
+                <button type="button" data-dismiss="modal" class="btn">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 预览 -->
+<div aria-hidden="false" role="dialog" data-backdrop="true" class="bootbox modal bootbox-confirm"
+     id="previewVirtualServerModal" style="margin: 0 0 0 0;">
+    <div class="modal-dialog" style="width: 900px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+                <h4 class="modal-title">预览 (只读)</h4>
+            </div>
+            <div class="modal-body">
+                <div class="bootbox-body">
+                    <div id="previewVirtualServerAlertDiv"></div>
+                    <div id="nginxConfigEditor"
+                         style="width: 840px; height: 99%; margin-top: -10px; border: 1px solid #A9E2F3;"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 进度条 -->
+<div style="display: none" id="progress">
+    <div class="progress progress-striped active">
+        <div class="progress-bar" style="width: 100%;"></div>
+    </div>
+</div>
+<!-- 成功的消息条 -->
+<div style="display: none" id="alert_success">
+    <div class="alert alert-success">
+        <button type="button" class="close" data-dismiss="alert">
+            <i class="icon-remove icon-white"></i>
+        </button>
+        <span style="text-align: center;"><i class="icon-ok-sign"></i>&nbsp; <span></span></span>
+    </div>
+</div>
+<!-- 错误消息条 -->
+<div style="display: none" id="alert_error">
+    <div class="alert alert-danger">
+        <button type="button" class="close" data-dismiss="alert">
+            <i class="icon-remove icon-white"></i>
+        </button>
+        <span style="text-align: center;"><i class="icon-info-sign"></i>&nbsp; <span></span></span>
+    </div>
+</div>
+<!-- 警告的消息条 -->
+<div style="display: none" id="alert_warn">
+    <div class="alert alert-warn">
+        <button type="button" class="close" data-dismiss="alert">
+            <i class="icon-remove icon-white"></i>
+        </button>
+        <span style="text-align: center;"><i class="icon-exclamation-sign"></i>&nbsp; <span></span></span>
+    </div>
+</div>
+<!-- 错误消息弹出框 -->
+<div aria-hidden="false" role="dialog" data-backdrop="true" class="bootbox modal" id="errorMsg"
+     style="margin: 0 0 0 0;">
+    <div class="modal-dialog" style="width: 600px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-hidden="true" data-dismiss="modal" class="close" type="button">
+                    <i class="icon-remove"></i>
+                </button>
+                <h3></h3>
+            </div>
+            <div class="modal-body">
+                <p style="text-align: center"></p>
+            </div>
+            <div class="modal-footer">
+                <button data-dismiss="modal" class="btn btn-info">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+

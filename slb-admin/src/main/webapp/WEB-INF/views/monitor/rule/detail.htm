@@ -1,0 +1,103 @@
+<form class="form-horizontal" role="form" ng-show="editOrShow=='edit'">
+    <label><b class="text-info">监控规则</b></label><br/><br/>
+
+    <div class="col-sm-6">
+        <div class="form-group">
+            <label for="inputEmail3" class="col-sm-3 control-label">ID</label>
+
+            <div class="col-sm-3">
+                <input class="" ng-model="currentRule.id" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="inputEmail3" class="col-sm-3 control-label">阈值</label>
+
+            <div class="col-sm-3">
+                <input class="" ng-model="currentRule.value" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="inputEmail3" class="col-sm-3 control-label">统计分钟</label>
+
+            <div class="col-sm-3">
+                <input class="" ng-model="currentRule.minute" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="inputEmail3" class="col-sm-3 control-label">邮件通知人</label>
+
+            <div class="col-sm-3">
+                默认通知业务开发及运维
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="inputEmail3" class="col-sm-3 control-label">短信通知人</label>
+
+            <div class="col-sm-3">
+                默认通知业务开发及运维
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6"
+         style="margin-top: 0px; border-left: 1px solid #ddd;">
+        <br/>
+
+        <div class="form-group">
+            <label for="inputEmail3" class="col-sm-3 control-label">集群</label>
+
+            <div class="tags">
+				<span class="tag" ng-repeat="selectedPool in selectedPools">
+					{{selectedPool}}
+					<button type="button" class="close" ng-click="removeSelectedPool($index)">×</button>
+				</span>
+
+                <form class="form-search">
+                    <br/>
+					<span class="input-icon"> <br/><input type="text"
+                                                          placeholder="      选择多个个集群..."
+                                                          class="nav-search-input" name="a" id="pool-search-nav"
+                                                          autocomplete="off">
+						<ul class="typeahead dropdown-menu"
+                            style="top: 28px; left: 0px; display: none;">
+                        </ul>
+					</span>
+                </form>
+            </div>
+        </div>
+        <div ng-show="showFilterPools()">
+            <div class="form-group">
+                <label for="inputEmail3" class="col-sm-3 control-label">过滤集群</label>
+
+                <div class="tags">
+					<span class="tag" ng-repeat="filterPool in filterPools">
+						{{filterPool}}
+						<button type="button" class="close"
+                                ng-click="removeFilterPool($index)">×
+                        </button>
+					</span>
+
+                    <form class="form-search">
+                        <br/> <span class="input-icon"> <br/>
+						<input type="text" placeholder="      选择多个个集群..."
+                               class="nav-search-input" name="a" id="pool-search-filter-nav"
+                               autocomplete="off">
+							<ul class="typeahead dropdown-menu"
+                                style="top: 28px; left: 0px; display: none;">
+                            </ul>
+						</span>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="inputEmail3" class="col-sm-3 control-label">状态码</label>
+            <select ng-model="currentRule.statusCode">
+                <option ng-repeat="statusCode in statusCodes" value="{{statusCode}}"
+                        ng-selected="{{statusCode == currentRule.statusCode}}">
+                    {{statusCode}}
+                </option>
+            </select>
+        </div>
+    </div>
+</form>
+

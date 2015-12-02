@@ -1,0 +1,1 @@
+more_set_input_headers $directive.getDynamicAttribute("value");

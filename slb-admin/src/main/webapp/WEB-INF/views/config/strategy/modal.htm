@@ -1,0 +1,127 @@
+<div aria-hidden="false" role="dialog" data-backdrop="false" class="bootbox modal" id="addStrategyModal"
+     style="margin: 0 0 0 0;">
+    <div class="modal-dialog" style="">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+                <h3>添加负载策略</h3>
+            </div>
+            <div class="modal-body">
+                <div id="add_result_div" class="hide">
+                    <strong>
+                        <div class="result_message"></div>
+                    </strong>
+                </div>
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-4 col-sm-4 control-label no-padding-right no-padding-right">策略名称</label>
+
+                        <div class="col-sm-7">
+                            <div class="input-prepend">
+                                <span class="add-on"></span><input ng-trim="true" id="newStrategyName"
+                                                                   type="text" class="input" placeholder="">
+                            </div>
+                            <span class="muted">（必填）</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 col-sm-4 control-label no-padding-right no-padding-right">策略类型</label>
+
+                        <div class="col-sm-7">
+                            <div class="input-prepend">
+                                <span class="add-on"></span>
+                                <select id="newStrategyType">
+                                    <option value="round-robin">round-robin</option>
+                                    <option value="ip-hash">ip-hash</option>
+                                    <option value="fair">fair</option>
+                                    <option value="hash">hash</option>
+                                    <option value="consistent_hash">consistent_hash</option>
+                                </select>
+                            </div>
+                            <span class="muted">（必填）</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 col-sm-4 control-label no-padding-right no-padding-right">可选参数</label>
+
+                        <div class="col-sm-7">
+                            <div class="input-prepend">
+                                <span class="add-on"></span><input ng-trim="true" id="newStrategyArgument"
+                                                                   type="text" class="input" placeholder="">
+                            </div>
+                            <span class="muted">（选填）</span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" ng-click="submitNewStrategy()" class="btn btn-primary">确定</button>
+                <button type="button" data-dismiss="modal" class="btn">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div aria-hidden="false" role="dialog" data-backdrop="false" class="bootbox modal" id="editStrategyModal"
+     style="margin: 0 0 0 0;">
+    <div class="modal-dialog" style="">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+                <h3>编辑负载策略</h3>
+            </div>
+            <div class="modal-body">
+                <div id="edit_result_div" class="hide">
+                    <strong>
+                        <div class="result_message"></div>
+                    </strong>
+                </div>
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-4 col-sm-4 control-label no-padding-right no-padding-right">策略名称</label>
+
+                        <div class="col-sm-7">
+                            <div class="input-prepend">
+                                <span class="add-on"></span><input ng-trim="true" id="editedStrategyName"
+                                                                   type="text" class="input" placeholder="">
+                            </div>
+                            <span class="muted">（必填）</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 col-sm-4 control-label no-padding-right no-padding-right">策略类型</label>
+
+                        <div class="col-sm-7">
+                            <div class="input-prepend">
+                                <span class="add-on"></span>
+                                <select id="editedStrategyType">
+                                    <option value="round-robin">round-robin</option>
+                                    <option value="ip-hash">ip-hash</option>
+                                    <option value="fair">fair</option>
+                                    <option value="hash">hash</option>
+                                    <option value="consistent_hash">consistent_hash</option>
+                                </select>
+                            </div>
+                            <span class="muted">（必填）</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 col-sm-4 control-label no-padding-right no-padding-right">可选参数</label>
+
+                        <div class="col-sm-7">
+                            <div class="input-prepend">
+                                <span class="add-on"></span><input ng-trim="true" id="editedStrategyArgument"
+                                                                   type="text" class="input" placeholder="">
+                            </div>
+                            <span class="muted">（选填）</span>
+                        </div>
+                    </div>
+                    <input id="editedStrategyVersion" type="hidden"/>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" ng-click="submitEditedStrategy()" class="btn btn-primary">确定</button>
+                <button type="button" data-dismiss="modal" class="btn">取消</button>
+            </div>
+        </div>
+    </div>
+</div>

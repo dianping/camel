@@ -1,0 +1,34 @@
+<div class="sidebar" id="sidebar">
+    <script type="text/javascript">
+        try {
+            ace.settings.check('sidebar', 'fixed')
+        } catch (e) {
+        }
+    </script>
+    <ul class="nav nav-list">
+        <li class="open"><a href="#" class="dropdown-toggle"> <i class="icon-desktop"></i> <span class="menu-text">
+          默认分组 </span> <b class="arrow icon-angle-down"></b>
+        </a>
+            <ul class="submenu" style="display: block;">
+                #foreach($slbPool in $slbPools)
+                <li class="#if($slbPool.name == $slbPoolName)active #end"><a
+                        href="${contextPath}/console/slbPool/$slbPool.name"><i
+                        class="icon-globe"></i> $slbPool.name </a></li>
+                #end
+            </ul>
+        </li>
+    </ul>
+    <!-- /.nav-list -->
+
+    <div class="sidebar-collapse" id="sidebar-collapse">
+        <i class="icon-double-angle-left" data-icon1="icon-double-angle-left" data-icon2="icon-double-angle-right"></i>
+    </div>
+
+    <script type="text/javascript">
+        try {
+            ace.settings.check('sidebar', 'collapsed')
+        } catch (e) {
+        }
+    </script>
+</div>
+

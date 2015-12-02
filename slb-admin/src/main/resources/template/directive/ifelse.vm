@@ -1,0 +1,8 @@
+if ($directive.getDynamicAttribute("if-condition")) {
+                 $directive.getDynamicAttribute("if-statement");
+            }
+#if($directive.getDynamicAttribute("else-statement"))
+            else {
+                 $directive.getDynamicAttribute("else-statement");
+            }
+#end

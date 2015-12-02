@@ -1,0 +1,31 @@
+<div ng-hide="editOrShow=='edit'">
+    <h5 style="margin-top: 30px">监控规则列表</h5>
+    <table class="table table-bordered" style="width: 80%">
+        <thead>
+        <tr>
+            <th>规则id</th>
+            <th>集群</th>
+            <th>状态码</th>
+            <th>阈值</th>
+            <th>统计分钟</th>
+            <th>邮件通知人</th>
+            <th>短信通知人</th>
+            <th style="width: 130px;">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="rule in rules">
+            <td>{{rule.id}}</td>
+            <td>{{rule.pool}}</td>
+            <td>{{rule.statusCode}}</td>
+            <td>{{rule.value}}</td>
+            <td>{{rule.minute}}</td>
+            <td>{{rule.mailReceivers}}</td>
+            <td>{{rule.smsReceivers}}</td>
+            <td><a href="javascript:void(0);" ng-click="edit($index);"><i
+                    class="icon-edit"></i>编辑</a>&nbsp;
+                <a href="javascript:void(0);" ng-click="remove($index);">删除</a></td>
+        </tr>
+        </tbody>
+    </table>
+</div>

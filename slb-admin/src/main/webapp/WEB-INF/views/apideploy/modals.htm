@@ -1,0 +1,62 @@
+<!-- 添加任务 -->
+<div aria-hidden="true" role="dialog" data-backdrop="true" class="bootbox modal" id="addTaskModal"
+     style="margin: 0 0 0 0;">
+    <div class="modal-dialog" style="">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+                <h3>添加任务</h3>
+            </div>
+            <div class="modal-body">
+                <div id="addTaskAlertDiv"></div>
+                <form class="form-horizontal ng-pristine ng-valid" style="margin-top: 30px;">
+                    <div class="control-group">
+                        <label class="control-label" for="">任务名</label>
+
+                        <div class="controls">
+                            <input id="addTaskModalInput" ng-trim="true" type="text" ng-model="newTask.taskName"
+                                   placeholder="输入任务名"
+                                   class="ng-pristine ng-valid">
+                        </div>
+                    </div>
+                </form>
+                <a style="float: right; margin-bottom: 10px;" ng-click="addVsAndTag()" href="javascript:void(0)">
+                    添加站点 </a>
+
+                <form class="form-horizontal">
+                    <table style="margin-top: 0px;" class="slb-datatable table table-bordered table-condensed lion">
+                        <thead>
+                        <tr>
+                            <th style="width: 46%;">站点名</th>
+                            <th style="width: 46%;">发布版本</th>
+                            <th style="width: 8%;">移除</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="selectedVsAndTag in newTask.selectedVsAndTags">
+                            <td><select ng-model="selectedVsAndTag.vsName" ng-change="getTags(selectedVsAndTag.vsName)"
+                                        ng-options="vs.name as vs.name for vs in vsList">
+                                <option value="" class="">-- 选择站点
+                                    --
+                                </option>
+                            </select></td>
+                            <td><select ng-model="selectedVsAndTag.tag"
+                                        ng-options="tag for tag in vs2Tags[selectedVsAndTag.vsName]">
+                                <option value="" class="">--
+                                    选择发布版本 --
+                                </option>
+                            </select></td>
+                            <td><a href="javascript:;" ng-click="newTask.selectedVsAndTags.splice($index,1)"><i
+                                    class="icon-remove"></i></a></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" ng-click="addTask()" class="btn btn-primary">确定</button>
+                <button type="button" data-dismiss="modal" class="btn">取消</button>
+            </div>
+        </div>
+    </div>
+</div>

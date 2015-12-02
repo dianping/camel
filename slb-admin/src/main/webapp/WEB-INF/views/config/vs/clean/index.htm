@@ -1,0 +1,80 @@
+<div class="main-container-inner" ng-app="MyApp" ng-controller="ConfigVSController" id="ConfigVSController">
+    #parse("config/sidebar.htm")
+    <div class="main-content">
+        <div class="page-content">
+            <div class="row">
+                <div role="tabpanel" ng-show="isVSListReady">
+                    <div class="alert alert-success" ng-show="op_result == 'success'">操作成功！</div>
+                    <ul class="nav nav-tabs" role="tablist" id="vsPanel" style="height: 100px">
+                        <li role="presentation" ng-repeat="agentPool in agentPools"
+                            ng-class="{true: 'active', false: ''}[$first]">
+                            <a href="#{{agentPool.poolName}}" aria-controls="{{agentPool.poolName}}" role="tab"
+                               data-toggle="tab">
+                                {{agentPool.poolName}} </a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div role="tabpanel" id="{{agentPool.poolName}}" ng-repeat="agentPool in agentPools"
+                             ng-class="{true: 'tab-pane active', false: 'tab-pane'}[$first]">
+                            <div ng-repeat="agent in agentPool.agents">
+                                <h4>{{agent.host}}</h4>
+                                <table class="table table-striped table-bordered table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th>
+                                            <button class="btn btn-xs btn-primary" ng-show="!agent.checkAll"
+                                                    ng-click="checkAll(agent)">全选
+                                            </button>
+                                            <button class="btn btn-xs btn-danger" ng-show="agent.checkAll"
+                                                    ng-click="uncheckAll(agent)">清空
+                                            </button>
+                                        </th>
+                                        <th>域名</th>
+                                        <th>
+                                            操作&nbsp;
+                                            <button class="btn btn-xs btn-primary"
+                                                    ng-click="removeByAgent(agentPool.poolName, agent)">批量删除
+                                            </button>
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="vs in agent.vsList">
+                                        <td width="50px">
+                                            <label>
+                                                <input class="ace" ng-click="checkVS(vs)" type="checkbox"
+                                                       ng-model="vs.selected">
+                                                <span class="lbl"></span>
+                                            </label>
+                                        </td>
+                                        <td>
+                                            <b>{{vs.name}}</b>
+                                        </td>
+                                        <td style="width: 180px">
+                                            <div ng-if="agent.host == 'COMMON'">
+                                                <a href="javascript:void(0);"
+                                                   ng-click="removeVSByPool(agentPool.poolName, vs.name);">
+                                                    <span class="label label-danger">&nbsp; 删除 </span>
+                                                </a>
+                                            </div>
+                                            <div ng-if="agent.host != 'COMMON'">
+                                                <a href="javascript:void(0);" ng-click="removeVS(agent.host, vs.name);">
+                                                    <span class="label label-danger">&nbsp; 删除 </span>
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div ng-hide="isVSListReady" style="margin-top: 100px" class="col-md-2 col-md-offset-5"
+                ">
+                <div class="loader-inner line-scale-pulse-out"></div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>

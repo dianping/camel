@@ -1,0 +1,111 @@
+<!-- 确认删除对话框 -->
+<div aria-hidden="false" role="dialog" data-backdrop="false" tabindex="-1" class="bootbox modal"
+     id="affirmRemoveVariableModal" style="margin: 0 0 0 0;">
+    <div class="modal-dialog" style="width: 600px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+                <h3>确认操作</h3>
+            </div>
+            <div class="modal-body">
+                <div class="bootbox-body">
+                    <p style="text-align: center;">
+                        <i class="icon-warning-sign"></i> 您是否确定要删除该变量？
+                    </p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button ng-click="removeVariable();" class="btn btn-primary">确定</button>
+                <button type="button" data-dismiss="modal" class="btn">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- 添加变量 -->
+<div aria-hidden="false" role="dialog" data-backdrop="false" class="bootbox modal" id="addVariableModal"
+     style="margin: 0 0 0 0;">
+    <div class="modal-dialog" style="width: 600px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+                <h3>添加新变量</h3>
+            </div>
+            <div class="modal-body">
+                <div class="bootbox-body">
+                    <div id="addVariableAlertDiv"></div>
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <div class="row">
+
+                                <label class="col-sm-4 control-label" for="">变量名:</label>
+
+                                <div class="col-sm-7">
+                                    <input class="" ng-model="variableToBeAdded.key"/>
+                                </div>
+                            </div>
+                            <div class="row">
+
+                                <label class="col-sm-4 control-label" for="">变量值:</label>
+
+                                <div class="col-sm-7">
+                                    <input class="" ng-model="variableToBeAdded.value"/>
+                                </div>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" ng-click="addVariable()" class="btn btn-primary">确定</button>
+                <button type="button" data-dismiss="modal" class="btn">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- 编辑变量 -->
+<div aria-hidden="false" role="dialog" data-backdrop="false" class="bootbox modal" id="editVariableModal"
+     style="margin: 0 0 0 0;">
+    <div class="modal-dialog" style="width: 600px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+                <h3>添加新变量</h3>
+            </div>
+            <div class="modal-body">
+                <div class="bootbox-body">
+                    <div id="addVariableAlertDiv"></div>
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <div class="row">
+
+                                <label class="col-sm-4 control-label" for="">变量名:</label>
+
+                                <div class="col-sm-7">
+                                    <input class="" ng-model="variableToBeEdited.key"/>
+                                </div>
+                            </div>
+                            <div class="row">
+
+                                <label class="col-sm-4 control-label" for="">变量值:</label>
+
+                                <div class="col-sm-7">
+                                    <input class="" ng-model="variableToBeEdited.value"/>
+                                </div>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" ng-click="editVariable()" class="btn btn-primary">确定</button>
+                <button type="button" data-dismiss="modal" class="btn">取消</button>
+            </div>
+        </div>
+    </div>
+</div>

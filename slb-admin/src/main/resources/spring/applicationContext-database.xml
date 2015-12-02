@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+            http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+
+
+            http://www.springframework.org/schema/aop
+            http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+
+    <aop:aspectj-autoproxy/>
+
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="configLocation" value="classpath:spring/sqlmap-config.xml"/>
+        <property name="mapperLocations">
+            <list>
+                <value>classpath*:com/dianping/phoenix/lb/**/*Mapper.xml</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- 数据源 -->
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+          destroy-method="close">
+        <property name="driverClass">
+            <value>${slb-admin.jdbc.driverClassName}</value>
+        </property>
+        <property name="jdbcUrl">
+            <value>${slb-admin.jdbc.url}</value>
+        </property>
+        <property name="user">
+            <value>${slb-admin.jdbc.username}</value>
+        </property>
+        <property name="password">
+            <value>${slb-admin.jdbc.password}</value>
+        </property>
+        <property name="maxPoolSize">
+            <value>${slb-admin.jdbc.maxPoolSize}</value>
+        </property>
+        <property name="minPoolSize">
+            <value>${slb-admin.jdbc.minPoolSize}</value>
+        </property>
+        <property name="initialPoolSize">
+            <value>${slb-admin.jdbc.initialPoolSize}</value>
+        </property>
+        <property name="idleConnectionTestPeriod">
+            <value>${slb-admin.jdbc.idleConnectionTestPeriod}
+            </value>
+        </property>
+        <property name="maxIdleTime">
+            <value>${slb-admin.jdbc.maxIdleTime}</value>
+        </property>
+        <property name="checkoutTimeout">
+            <value>${slb-admin.jdbc.checkoutTimeout}</value>
+        </property>
+    </bean>
+
+    <!-- scan for mappers and let them be autowired -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.dianping.phoenix.lb.deploy.dao"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
+    </bean>
+
+    <!-- 事务管理者 -->
+    <bean id="transactionManager"
+          class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <!-- 事务管理拦截器 -->
+    <bean id="transactionInterceptor"
+          class="org.springframework.transaction.interceptor.TransactionInterceptor">
+        <property name="transactionManager">
+            <ref local="transactionManager"/>
+        </property>
+        <property name="transactionAttributes">
+            <props>
+                <!-- query -->
+                <prop key="query*">PROPAGATION_REQUIRED,readOnly</prop>
+                <prop key="is*">PROPAGATION_REQUIRED,readOnly</prop>
+                <prop key="find*">PROPAGATION_REQUIRED,readOnly</prop>
+                <prop key="get*">PROPAGATION_REQUIRED,readOnly</prop>
+                <prop key="load*">PROPAGATION_REQUIRED,readOnly</prop>
+                <prop key="count*">PROPAGATION_REQUIRED,readOnly</prop>
+                <prop key="list*">PROPAGATION_REQUIRED,readOnly</prop>
+                <prop key="check*">PROPAGATION_REQUIRED,readOnly</prop>
+                <!-- update -->
+                <prop key="save*">PROPAGATION_REQUIRED,-Throwable</prop>
+                <prop key="add*">PROPAGATION_REQUIRED,-Throwable</prop>
+                <prop key="create*">PROPAGATION_REQUIRED,-Throwable</prop>
+                <prop key="edit*">PROPAGATION_REQUIRED,-Throwable</prop>
+                <prop key="update*">PROPAGATION_REQUIRED,-Throwable</prop>
+                <prop key="mod*">PROPAGATION_REQUIRED,-Throwable</prop>
+                <prop key="do*">PROPAGATION_REQUIRED,-Throwable</prop>
+                <!-- delete -->
+                <prop key="del*">PROPAGATION_REQUIRED,-Throwable</prop>
+                <prop key="remove*">PROPAGATION_REQUIRED,-Throwable</prop>
+                <!-- other -->
+                <prop key="*">PROPAGATION_REQUIRED,readOnly</prop>
+            </props>
+        </property>
+    </bean>
+
+    <!-- 配置要拦截哪些类，并使用那些拦截器 -->
+    <bean
+            class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+        <property name="proxyTargetClass" value="true"></property>
+        <property name="beanNames">
+            <list>
+                <!-- 由于有不少Service不需要事务，所以干脆不使用事务了 -->
+                <value>*ServiceImpl____</value>
+            </list>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>transactionInterceptor</value>
+                <!-- 事务拦截器, 直接配成 transactionInterceptor 去掉 trasactionMethodPointcutAdvisor
+                    bean 也可以， -->
+            </list>
+        </property>
+    </bean>
+
+
+</beans>

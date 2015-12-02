@@ -1,0 +1,13 @@
+<plexus>
+    <components>
+        <component>
+            <role>com.dianping.phoenix.lb.configure.ConfigManager</role>
+            <implementation>com.dianping.phoenix.lb.configure.ConfigManager</implementation>
+        </component>
+        <component>
+            <role>com.dianping.phoenix.lb.shell.ScriptExecutor</role>
+            <implementation>com.dianping.phoenix.lb.shell.DefaultScriptExecutor</implementation>
+            <instantiation-strategy>per-lookup</instantiation-strategy>
+        </component>
+    </components>
+</plexus>

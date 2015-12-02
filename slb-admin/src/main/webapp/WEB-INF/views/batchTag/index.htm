@@ -1,0 +1,73 @@
+<div class="main-container-inner" ng-app="MyApp" ng-controller="BatchTagController" id="BatchTagController" style="">
+    #parse("batchTag/sidebar.htm")
+    <div class="main-content">
+        #parse("batchTag/breadcrumb.htm")
+        <div class="page-content">
+            <div class="page-header">
+                <a class="btn btn-sm btn-pink" href="javascript:;" style="visibility: hidden;"
+                   title="预览当前生成的 nginx config 文件">
+                    <i class="icon-eye-open bigger-110"></i><span class="bigger-110 no-text-shadow">用来占行</span>
+                </a> <a class="btn btn-primary" ng-click="start();" href="javascript:;"
+                        style="float: right; margin-right: 20px; margin-top: 0px" class=""> <i class="icon-edit"></i>&nbsp;开始创建
+            </a>
+            </div>
+            <div class="row">
+                <div id="addBatchTagAlertDiv"></div>
+                <div class="tabbable" ng-init="selectedIndex=0">
+                    <ul class="nav nav-tabs padding-12 tab-color-blue background-blue">
+                        <li ng-class="{active: $index==0}" ng-repeat="(groupName, group) in groups"><a data-toggle="tab"
+                                                                                                       href="#tab_{{$index}}">{{group.name}}</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div id="tab_{{$index}}" class="tab-pane" ng-class="{active: $index==0}"
+                             ng-repeat="(groupName, group) in groups">
+                            <form class="form-horizontal">
+                                <table style="" class="table table-striped table-bordered table-hover"
+                                       id="groupTable_{{groupName}}">
+                                    <thead>
+                                    <tr>
+                                        <th>
+                                            <button ng-show="!group.checkAll" class="btn btn-xs btn-primary"
+                                                    ng-click="checkAll(group)">全选
+                                            </button>
+                                            <button ng-show="group.checkAll" class="btn btn-xs btn-danger"
+                                                    ng-click="uncheckAll(group)">清空
+                                            </button>
+                                        </th>
+                                        <th>站点名</th>
+                                        <th style="">操作状态</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="vs in group.vsList">
+                                        <td width="100px"><label><input class="ace" ng-click="check(vs)" type="checkbox"
+                                                                        ng-model="vs.selected"> <span
+                                                class="lbl"></span>
+                                        </label></td>
+                                        <td ng-click="check(vs)"><b>{{vs.name}}</b></td>
+                                        <td width="30%">
+                                            <p ng-show="vs.status == 'done'">
+                                                <span ng-show="vs.success"><span class="label label-sm label-success">创建成功</span>，版本：{{vs.tag}}</span>
+                                                <span ng-hide="vs.success"><span class="label label-sm label-danger">创建失败</span>，原因：{{vs.errorMsg}}</span>
+                                            </p>
+
+                                            <p ng-show="vs.status == 'doing'">
+                                                <i class="icon-spinner icon-spin orange bigger-125"></i>
+                                            </p>
+
+                                            <p ng-show="vs.status == null">--</p>
+                                        </td>
+
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    #parse("batchTag/modals.htm")
+</div>

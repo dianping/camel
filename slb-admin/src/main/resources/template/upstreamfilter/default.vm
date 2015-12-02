@@ -1,0 +1,8 @@
+#if($upstreamFilter.authFilterOpen)
+
+	auth_filter_open #if($upstreamFilter.authFilterOpen) on #else off #end;
+#if($stringUtils.isNotBlank($upstreamFilter.authFilterPassPattern))
+	auth_filter_pass_pattern  $upstreamFilter.authFilterPassPattern;
+#end
+
+#end

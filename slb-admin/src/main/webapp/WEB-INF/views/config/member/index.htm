@@ -1,0 +1,99 @@
+<div class="main-container-inner" ng-app="MyApp" ng-controller="ConfigController" id="ConfigController">
+    #parse("config/sidebar.htm")
+    <div class="main-content">
+        <div class="page-content">
+            <div class="page-header">
+                <span class="bigger-110" style="visibility: hidden;">用来占行</span>
+				<span style="float: right">
+					<span class="input-icon">
+						域账号
+						<input type="text" ng-model="currentUser.account"/>
+						<i class="ace-icon fa fa-leaf blue"></i>
+					</span>
+					&nbsp; &nbsp;
+					<span class="input-icon">
+						姓名
+						<input type="text" ng-model="currentUser.name"/>
+						<i class="ace-icon fa fa-leaf blue"></i>
+					</span>
+					<span class="input-icon">
+						权限
+                        <select class="span1" ng-model="currentUser.isAdmin">
+                            <option value="false">只读</option>
+                            <option value="true">读写</option>
+                        </select>
+						<i class="ace-icon fa fa-leaf blue"></i>
+					</span>
+					&nbsp; &nbsp;
+					<span ng-show="addOrEdit=='add'">
+						<a class="btn btn-primary btn-sm" ng-click="addSubmit()" href="javascript:;"
+                           style="margin-right: 20px; margin-top: 0px">
+                            <i class="icon-edit"></i>
+                            &nbsp;添加用户
+                        </a>
+					</span>
+					<span ng-show="addOrEdit=='edit'">
+						<a class="btn btn-warning btn-sm" ng-click="updateSubmit()" href="javascript:;"
+                           style="margin-right: 20px; margin-top: 0px">
+                            <i class="icon-edit"></i>
+                            &nbsp;更改用户
+                        </a>
+					</span>
+				</span>
+            </div>
+            <div class="row">
+                <td class="table-responsive" ng-show="isUserListReady">
+                    <table class="table table-striped table-bordered table-hover" id="taskListTable">
+                        <thead>
+                        <tr>
+                            <th>域账号</th>
+                            <th>姓名</th>
+                            <th>权限</th>
+                            <!-- <th>
+                                <i class="icon-time bigger-110 hidden-480"></i>
+                                创建时间
+                            </th> -->
+                            <th>
+                                操作&nbsp;
+                                <a href="javascript:void(0)" ng-click="add()">
+                                    <i class="icon-edit">添加</i>
+                                </a>
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="user in users">
+                            <td>
+                                <b>{{user.account}}</b>
+                            </td>
+                            <td>{{user.name}}</td>
+                            <td ng-switch on="user.isAdmin">
+                                    <span ng-switch-when="true">
+                                        读写
+                                    </span>
+                                    <span ng-switch-default>
+                                        只读
+                                    </span>
+                            </td>
+                            <!-- <td style="width: 200px">{{user.createDate}}</td> -->
+                            <td style="width: 200px">
+                                <a href="javascript:void(0);" ng-click="edit($index);">
+                                    <span class="label label-info">&nbsp; 编辑 </span>
+                                </a>
+                                &nbsp;
+                                <a href="javascript:void(0);" ng-click="remove($index);">
+                                    <span class="label label-danger">&nbsp; 删除 </span>
+                                </a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+            </div>
+            <div ng-hide="isUserListReady" style="margin-top: 100px" class="col-md-2 col-md-offset-5"
+            ">
+            <div class="loader-inner line-scale-pulse-out"></div>
+        </div>
+    </div>
+</div>
+</div>
+</div>

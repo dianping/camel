@@ -1,0 +1,60 @@
+<slb-model-tree>
+    <virtualServer name="www" state="ENABLED" availability="AVAILABLE" default-pool-name="Web.Index"
+                   domain="www.dianping.com"
+                   port="80" creation-date="2013-10-15 16:40:00" last-modified-date="2013-10-15 16:40:00" version="1"
+                   access_log="logs/domain2.access.log  main"
+                   test="test a" root="/leo"
+                   error_page_404="more_set_headers 'X-MyHeader: blah' 'X-MyHeader2: foo'; return 302 http://www.dianping.com;"
+                   slb-pool="test-pool">
+        <aspects>
+            <aspect ref="commonRequest"/>
+            <aspect point-cut="BEFORE">
+                <directive type="more_set_headers" value="'X-MyHeader1: 11111111'"/>
+                <directive type="ifelse" if-condition="$remote_addr = 124.131.180.74"
+                           if-statement="proxy_pass http://node"/>
+            </aspect>
+            <aspect point-cut="AFTER">
+                <directive type="more_set_headers" value="'X-MyHeader2: 222222'"/>
+            </aspect>
+            <aspect ref="commonResponse"/>
+        </aspects>
+        <locations>
+            <location match-type="prefix" pattern="/download">
+                <directive type="rewrite" matches="^(/download/.*)/media/(.*)\..*$" target-pattern="$1/mp3/$2.mp3"
+                           flag="break"/>
+                <directive type="rewrite" matches="^(/download/.*)/audio/(.*)\..*$" target-pattern="$1/mp3/$2.ra"
+                           flag="last"/>
+                <directive type="return" response-code="403"/>
+                <directive type="ifelse" if-condition="$sent_http_Server = 'Tengine/1.4.5'"
+                           if-statement="more_set_headers 'X-MyHeader: 1111'"
+                           else-statement="more_set_headers 'X-MyHeader: 2222'"/>
+            </location>
+            <location match-type="prefix" pattern="/shanghai">
+                <directive type="rewrite" matches="^(/shanghai/.*)/media/(.*)\..*$" target-pattern="$1/mp3/$2.mp3"
+                           flag="break"/>
+                <directive type="proxy_pass" pool-name="Web.Index"/>
+            </location>
+            <location match-type="regex" pattern="^/(images|javascript|js|css|flash|media|static)/"
+                      case-sensitive="true">
+                <directive type="static-resource" root-doc="/var/www/virtual/big.server.com/htdocs" expires="30d"/>
+                <directive type="custom" value="test custom"/>
+            </location>
+            <location match-type="prefix" pattern="/beijing">
+                <directive type="proxy_pass" pool-name="Web.Index"/>
+            </location>
+            <location match-type="prefix" pattern="/guangzhou">
+                <directive type="proxy_pass" pool-name="Web.Shop"/>
+            </location>
+            <location match-type="exact" pattern="/a">
+                <directive type="proxy_pass" pool-name="Web.Shop"/>
+            </location>
+            <location match-type="exact" pattern="/b">
+                <directive type="ifelse" if-condition="$remote_addr = 124.131.180.74"
+                           if-statement="proxy_pass http://node2"/>
+            </location>
+            <location match-type="exact" pattern="/c">
+                <directive type="return" response-code="200" response-content="aaa"/>
+            </location>
+        </locations>
+    </virtualServer>
+</slb-model-tree>

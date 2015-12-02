@@ -1,0 +1,110 @@
+<div class="main-container-inner" ng-app="MyApp" ng-controller="TaskController" id="TaskController" style="">
+    #parse("apideploy/sidebar.htm")
+    <div class="main-content" style="display: none">
+        #parse("apideploy/breadcrumb.htm")
+        <div class="page-content">
+            <div class="page-header">
+                <button ng-show="allCollapse" style="margin-right: 20px;" class="btn btn-minier btn-primary"
+                        ng-click="batchUnCollapse()">
+                    <i class="icon-angle-down"></i> 展开
+                </button>
+                <button ng-hide="allCollapse" style="margin-right: 20px;" class="btn btn-minier"
+                        ng-click="batchCollapse()">
+                    <i class="icon-angle-up"></i> 收起
+                </button>
+                <b>任务ID：</b><span>{{task.task.id}}</span> &nbsp;&nbsp; &nbsp; <b>任务名称：</b>
+                <span>{{task.task.name}}</span>
+                &nbsp;&nbsp; &nbsp; <b>任务状态：</b><span
+                    ng-class="{'td-success' : task.task.status=='SUCCESS','td-failed' : task.task.status=='FAILED'}">{{task.task.status}}</span>
+                <button style="margin-left:20px;"
+                        ng-click="showTaskLog()">
+                    Log <i ng-show="currentLogView.showTask"
+                           class="icon-arrow-right icon-on-right"></i>
+                </button>
+                <button style="float: right; margin-bottom: 10px; margin-right: 0px;" type="button"
+                        ng-click="startTask()" ng-show="task.task.stateAction==null || task.task.stateAction=='STOP'"
+                        class="btn btn-primary btn-sm">启动任务
+                </button>
+                <button type="button" style="float: right; margin-bottom: 10px; margin-right: 0px" ng-click="stopTask()"
+                        class="btn btn-danger btn-sm" ng-show="task.task.stateAction=='START'">停止任务
+                </button>
+                <button type="button" style="float: right; margin-bottom: 10px; margin-right: 0px"
+                        ng-click="startTask()"
+                        class="btn btn-danger btn-sm" ng-show="task.task.stateAction=='PAUSE'">继续运行
+                </button>
+        <span class="label" ng-show="task.task.stateAction" style="float: right; margin-top: 8px; margin-right: 20px;">运行状态：
+          {{ task.task.stateAction }}</span>
+            </div>
+            <div class="row">
+                <div id="alertMessageDiv" style="text-align: center;"></div>
+                <div class="col-xs-12">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div ng-repeat="deployAgentBo in task.deployAgentBos"
+                                 style="margin-bottom: 20px; position: relative;">
+                                <button style="position: absolute; z-index: 999; right: 5px; top: 5px;"
+                                        ng-click="showAgentLog(deployAgentBo)">
+                                    Log <i ng-show="currentLogView.agentIp == deployAgentBo.deployAgent.ipAddress"
+                                           class="icon-arrow-right icon-on-right"></i>
+                                </button>
+                                <div id="accordion_{{ deployAgentBo.deployAgent.ipAddress }}"
+                                     class="accordion-style1 panel-group">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title">
+                                                <a class="accordion-toggle" data-toggle="collapse"
+                                                   data-parent="#accordion_{{ deployAgentBo.deployAgent.ipAddress }}"
+                                                   href="#collapse_{{ replaceDot2Underline(deployAgentBo.deployAgent.ipAddress) }}">
+                                                    <i class="bigger-110 icon-angle-down"
+                                                       data-icon-hide="icon-angle-down"
+                                                       data-icon-show="icon-angle-right"></i>
+                          <span style="margin-left: 10px; font-size: 16px"><i class="icon icon-globe"></i> Agent: {{
+                            deployAgentBo.deployAgent.ipAddress }}</span>
+                            <span style="float: right; margin-right: 70px"><span><i
+                                    ng-show="deployAgentBo.isRunning"
+                                    class="icon-spinner icon-spin orange bigger-125"></i>&nbsp;&nbsp;
+                            状态: </span> <span
+                                    ng-class="{'td-success' : deployAgentBo.deployAgent.status=='SUCCESS','td-failed' : deployAgentBo.deployAgent.status=='FAILED'}">{{ deployAgentBo.deployAgent.status }}</span></span>
+                                                </a>
+                                            </h4>
+                                        </div>
+                                        <div class="panel-collapse in"
+                                             id="collapse_{{ replaceDot2Underline(deployAgentBo.deployAgent.ipAddress) }}"
+                                             style="height: auto;">
+                                            <div class="panel-body">
+                                                <table style="margin-top: 0px;"
+                                                       class="slb-datatable table table-bordered table-condensed lion">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>站点</th>
+                                                        <th>版本</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <tr ng-repeat="vsAndTag in deployAgentBo.vsAndTags"
+                                                        class="my-progress-bar">
+                                                        <td width="130px"><a
+                                                                href="${contextPath}/console/vs/{{vsAndTag.vsName}}"
+                                                                target="_blank">{{vsAndTag.vsName}}</a></td>
+                                                        <td width="130px">{{vsAndTag.vsTag}}</td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+              <pre
+                      style="cursor: text; margin-top: 5px; background-color: #3A1042; color: #FFFFFF; font-size: 12px; width: 100%; height: 520px; overflow-x: auto;"
+                      id="console"></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    #parse("apideploy/modals.htm")
+</div>

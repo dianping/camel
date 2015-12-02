@@ -1,0 +1,84 @@
+#if('dashboard' == $secondSubMenu)
+#if($isFullScreen=="true")
+<div class="sidebar menu-min" id="sidebar">
+    #else
+    <div class="sidebar" id="sidebar">
+        #end
+        #else
+        <div class="sidebar" id="sidebar">
+            #end
+            <script type="text/javascript">
+                try {
+                    ace.settings.check('sidebar', 'fixed')
+                } catch (e) {
+                }
+            </script>
+            <ul class="nav nav-list">
+
+                <li class="#if($subMenu == 'slbPool') open #end"><a href="#" class="dropdown-toggle"> <i
+                        class="icon-desktop"></i> <span class="menu-text">
+					Dengine(QPS) </span> <b class="arrow icon-angle-down"></b>
+                </a>
+                    <ul class="submenu" style="display: block;">
+
+                        <li class="#if('all' == $poolName) active #end"><a
+                                href="${contextPath}/monitor/qps/pool/all"><i
+                                class="icon-globe"></i> 全局监控 </a></li>
+                        #foreach($pool in $pools)
+                        <li class="#if($pool.name == $poolName)active #end"><a
+                                href="${contextPath}/monitor/qps/pool/$pool.name"><i
+                                class="icon-globe"></i> $pool.name </a></li>
+                        #end
+                    </ul>
+                </li>
+
+                <li class="#if($subMenu == 'statusMonitor') open #end"><a href="#" class="dropdown-toggle"> <i
+                        class="icon-desktop"></i> <span class="menu-text">
+					状态码监控 </span> <b class="arrow icon-angle-down"></b>
+                </a>
+                    <ul class="submenu" style="display: block;">
+                        <li class="#if('monitorRule' == $secondSubMenu) active #end"><a
+                                href="${contextPath}/monitor/status/rule"><i
+                                class="icon-globe"></i> 规则设置 </a></li>
+                        <li class="#if('monitorData' == $secondSubMenu) active #end"><a
+                                href="${contextPath}/monitor/status/data/all"><i
+                                class="icon-globe"></i> 数据展示 </a></li>
+                        <li class="#if('dashboard' == $secondSubMenu) active #end"><a
+                                href="${contextPath}/monitor/status/dashboard?statusCode=all&size=7&isFullScreen=true&refresh=true"><i
+                                class="icon-globe"></i> 状态码大盘 </a></li>
+                    </ul>
+                </li>
+
+                <li class="#if($subMenu == 'upstream') open #end">
+                    <a href="#" class="dropdown-toggle"> <i
+                            class="icon-desktop"></i> <span class="menu-text"> 应用集群监控 </span> <b
+                            class="arrow icon-angle-down"></b></a>
+                    <ul class="submenu" style="display: block;">
+
+                        <li class="#if('all' == $app) active #end"><a
+                                href="${contextPath}/monitor/app/all"><i class="icon-globe"></i>
+                            UPSTREAM </a></li>
+                    </ul>
+                </li>
+
+                <li class="#if($subMenu == 'degrade') open #end">
+                    <a href="#" class="dropdown-toggle"> <i
+                            class="icon-desktop"></i> <span class="menu-text"> 降级监控 </span> <b
+                            class="arrow icon-angle-down"></b></a>
+                    <ul class="submenu" style="display: block;">
+
+                        <li class="#if('degrade' == $degradeMark) active #end"><a
+                                href="${contextPath}/monitor/degrade"><i class="icon-globe"></i>
+                            DEGRADE </a></li>
+                    </ul>
+                </li>
+
+            </ul>
+            <!-- /.nav-list -->
+
+            <div class="sidebar-collapse" id="sidebar-collapse">
+                <i class="icon-double-angle-left" data-icon1="icon-double-angle-left"
+                   data-icon2="icon-double-angle-right"></i>
+            </div>
+        </div>
+

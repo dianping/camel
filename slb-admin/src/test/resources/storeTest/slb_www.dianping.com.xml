@@ -1,0 +1,52 @@
+<slb-model-tree>
+    <virtualServer name="www.dianping.com" state="ENABLED" availability="AVAILABLE" default-pool-name="Web.Index"
+                   domain="www.dianping.com"
+                   port="80" creation-date="2013-10-15 16:40:00" last-modified-date="2013-10-15 16:40:00" version="1"
+                   access_log="logs/domain2.access.log  main" slb-pool="test-pool">
+        <aspects>
+            <aspect name="" point-cut="BEFORE" ref="commonRequest">
+            </aspect>
+            <aspect name="" point-cut="BEFORE" ref="commonResponse">
+            </aspect>
+        </aspects>
+        <locations>
+            <location match-type="prefix" pattern="/download">
+                <directive type="rewrite" matches="^(/download/.*)/media/(.*)\..*$" target-pattern="$1/mp3/$2.mp3"
+                           flag="break"/>
+                <directive type="rewrite" matches="^(/download/.*)/audio/(.*)\..*$" target-pattern="$1/mp3/$2.ra"
+                           flag="last"/>
+                <directive type="return" response-code="403"/>
+            </location>
+            <location match-type="prefix" pattern="/shanghai">
+                <directive type="access_log" value="logs/access.log main"/>
+                <directive type="rewrite" matches="^(/shanghai/.*)/media/(.*)\..*$" target-pattern="$1/mp3/$2.mp3"
+                           flag="break"/>
+                <directive type="proxy_pass" pool-name="Web.Index"/>
+            </location>
+            <location match-type="regex" pattern="^/(images|javascript|js|css|flash|media|static)/"
+                      case-sensitive="true">
+                <directive type="static-resource" root-doc="/var/www/virtual/big.server.com/htdocs" expires="30d"/>
+            </location>
+            <location match-type="prefix" pattern="/variable">
+                <directive type="custom" value="$(hello)"/>
+            </location>
+            <location match-type="prefix" pattern="/testNginxConfig1">
+                <directive type="proxy_pass" pool-name="Web.Index"/>
+            </location>
+            <location match-type="prefix" pattern="/testNginxConfig2">
+                <directive type="custom" value="proxy_pass http://www.baidu.com"/>
+            </location>
+            <location match-type="prefix" pattern="/testNginxConfig3">
+                <directive type="custom" value="proxy_pass http://Web.Tuangou"/>
+            </location>
+            <location match-type="prefix" pattern="/testNginxConfig4">
+                <directive type="ifelse" if-statement="proxy_pass http://Web.Tuangou"
+                           if-condition="$cookie_cy = &quot;2335&quot;"/>
+            </location>
+            <location match-type="prefix" pattern="/testNginxConfig5">
+                <directive type="ifelse" if-statement="proxy_pass http://www.baidu.com"
+                           if-condition="$cookie_cy = &quot;2335&quot;"/>
+            </location>
+        </locations>
+    </virtualServer>
+</slb-model-tree>

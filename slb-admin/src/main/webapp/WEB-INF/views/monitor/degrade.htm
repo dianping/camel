@@ -1,0 +1,70 @@
+<div class="main-container-inner" ng-app="MyApp"
+     ng-controller="degradeController" id="degradeController">
+
+    #parse("monitor/sidebar.htm")
+    <div style="margin-left: 190px">
+        <div style="float: left; width: 100%">
+            <div class="page-content">
+                <div class="page-header">
+                </div>
+                <div class="row">
+                    <div id="alertMessageDiv" style="text-align: center;"></div>
+                </div>
+                <div class="table-responsive"
+                     style="position: relative; display: block;">
+                    <table class="table table-striped table-bordered table-hover"
+                           class="display" cellspacing="0" id="taskListTable">
+                        <thead>
+                        <tr>
+                            <!--
+                                <th>
+                                    <button ng-show="!isCheckAll" class="btn btn-xs btn-primary" ng-click="checkAll()">全选</button>
+                                    <button ng-show="isCheckAll" class="btn btn-xs btn-danger" ng-click="uncheckAll()">清空</button>
+                                </th>
+                            -->
+                            <th>序号</th>
+                            <th>slbPool</th>
+                            <th>Dengine</th>
+                            <th>upstream</th>
+                            <th>配置降级比例</th>
+                            <th>可用/总数</th>
+                            <th>降级pool可用/总数</th>
+                            <th>强制状态</th>
+                            <th>是否降级</th>
+                        </tr>
+                        </thead>
+                        <tbody id="adList">
+                        #set ($i = 0) #foreach($status in $degradeStatusResult) #set ($i = $i+1)
+                        <tr>
+                            <!--
+                            <td>
+                            <label><input class="ace" ng-click="check('$status.degradeStatus.upstreamName')" type="checkbox"
+                                  ng-model="ups['$status.dengineIp']['$status.degradeStatus.upstreamName']"> <span class="lbl"></span>
+                              </label>
+                            </td>
+                            -->
+                            <td>$i</td>
+                            <td>$status.slbPoolName</td>
+                            <td>$status.dengineIp</td>
+                            <td>$status.degradeStatus.upstreamName</td>
+                            <td>$status.degradeStatus.degradeRate%</td>
+                            <td>$status.degradeStatus.upCount/$status.degradeStatus.serverCount</td>
+                            <td>$status.degradeBackupStatus.upCount/$status.degradeBackupStatus.serverCount</td>
+                            <td>#if($status.degradeStatus.forceState == 1) 强制升级
+                                #elseif($status.degradeStatus.forceState == -1) 强制降级 #else 自动
+                                #end
+                            </td>
+                            <td>#if($status.degradeStatus.forceState == -1 ||
+                                ($status.degradeStatus.degradeState == 0 &&
+                                $status.degradeStatus.forceState == 0)) <span
+                                        class="label-danger">降级</span> #else <span>正常</span> #end
+
+                            </td>
+                        </tr>
+                        #end
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>

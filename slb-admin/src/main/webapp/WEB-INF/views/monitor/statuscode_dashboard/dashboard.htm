@@ -1,0 +1,124 @@
+<link rel="stylesheet" href="${contextPath}/static/css/bootstrap-select.min.css">
+<style>
+    .alert-row {
+        background-color: red;
+        color: white;
+    }
+
+    .alert-row :link {
+        color: white;
+    }
+</style>
+
+<div class="main-container-inner">
+    #parse("/monitor/sidebar.htm")
+    <div class="main-content">
+        <div class="page-content"
+        ">
+        <div class="row" style="height:50px; border-bottom:1px dotted #e2e2e2">
+            <h4 class="col-md-2">状态码选择：</h4>
+            <select id="statusCodeSelector" class="selectpicker col-md-3" multiple data-style="btn-info">
+                #foreach( $statusCode in $statusCodes )
+                <option value="$statusCode">$statusCode</option>
+                #end
+            </select>
+            <button type="button" id="requestButton" class="btn btn-success">确定</button>
+            #if($isFullScreen=="false")
+            <button type="button" id="fullScreenButton" class="btn btn-info">全屏</button>
+            #else
+            <button type="button" id="unfullScreenButton" class="btn btn-danger">取消全屏</button>
+            #end
+            #if($refresh=="false")
+            <button type="button" id="refreshButton" class="btn btn-warning">自动刷新</button>
+            #else
+            <button type="button" id="unrefreshButton" class="btn btn-danger">取消自动刷新</button>
+            #end
+        </div>
+        #foreach( $minuteEntryPair in $minuteEntries.entrySet() )
+        <div>
+            <div class="row" style="height:25px">
+                <span class="label label-info">$minuteEntryPair.key</span>
+            </div>
+            <div class="row">
+                #foreach( $minuteEntry in $minuteEntryPair.value )
+                <table style="float:left;font-size=small;width=150px" border=1>
+                    <tr>
+                        <th colspan="2" class="text-danger" class="text-danger"><h6>$minuteEntry.time</h6></th>
+                    </tr>
+                    <tr>
+                        <td style="width:120px">集群</td>
+                        <td style="width:40px">个数</td>
+                    </tr>
+                    #foreach( $pool in $minuteEntry.pools )
+                    #if($pool.hasAlert=="true")
+                    <tr class="alert-row">
+                        #else
+                    <tr>
+                        #end
+                        <td><a href="$pool.url">$pool.shortName</a></td>
+                        <td>$pool.count</td>
+                    </tr>
+                    #end
+                </table>
+                #end
+            </div>
+            <br>
+        </div>
+        #end
+    </div>
+</div>
+</div>
+<script src='/assets/js/jquery-2.0.3.min.js' type='text/javascript'></script>
+<script src='/static/js/bootstrap-select.min.js' type='text/javascript'></script>
+<script>
+    var statusCode = "$statusCode";
+    var errorMessage = "$errorMessage";
+    var isFullScreen = "$isFullScreen";
+    var refresh = "$refresh";
+    var size = "$size";
+
+    #
+    [[
+    var selector = $('.selectpicker');
+    selector.selectpicker();
+
+    if (statusCode != "") {
+        var codes = statusCode.split(",");
+
+        selector.selectpicker('val', codes);
+    }
+    $(document).ready(function () {
+        if (errorMessage != "") {
+            alert(errorMessage);
+        }
+        if (refresh == "true") {
+            setTimeout(function () {
+                window.location.reload();
+            }, 10000);
+        }
+
+        var selectDiv = $("#statusCodeSelector");
+        var buildPartURL = function () {
+            var statusCode = selectDiv.val();
+
+            return "dashboard?statusCode=" + statusCode + "&size=" + size;
+        }
+
+        $("#requestButton").click(function () {
+            window.location.href = buildPartURL() + "&isFullScreen=" + isFullScreen + "&refresh=" + refresh;
+        });
+        $("#fullScreenButton").click(function () {
+            window.location.href = buildPartURL() + "&isFullScreen=true" + "&refresh=" + refresh;
+        });
+        $("#unfullScreenButton").click(function () {
+            window.location.href = buildPartURL() + "&isFullScreen=false" + "&refresh=" + refresh;
+        });
+        $("#refreshButton").click(function () {
+            window.location.href = buildPartURL() + "&isFullScreen=" + isFullScreen + "&refresh=true";
+        });
+        $("#unrefreshButton").click(function () {
+            window.location.href = buildPartURL() + "&isFullScreen=" + isFullScreen + "&refresh=false";
+        });
+    })
+    ]]#
+</script>

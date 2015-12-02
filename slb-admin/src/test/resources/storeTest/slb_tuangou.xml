@@ -1,0 +1,26 @@
+<slb-model-tree>
+    <virtualServer name="tuangou" state="ENABLED" availability="AVAILABLE" default-pool-name="Web.Tuangou"
+                   domain="www.dianping.com"
+                   port="80" creation-date="2013-10-15 16:40:00" last-modified-date="2013-10-15 16:40:00" version="1"
+                   access_log="logs/domain2.access.log  main" slb-pool="test-pool">
+        <locations>
+            <location match-type="prefix" pattern="/download">
+                <directive type="rewrite" matches="^(/download/.*)/media/(.*)\..*$" target-pattern="$1/mp3/$2.mp3"
+                           flag="break"/>
+                <directive type="rewrite" matches="^(/download/.*)/audio/(.*)\..*$" target-pattern="$1/mp3/$2.ra"
+                           flag="last"/>
+                <directive type="return" response-code="403"/>
+            </location>
+            <location match-type="prefix" pattern="/shanghai">
+                <directive type="access_log" path="logs/access.log" format="main"/>
+                <directive type="rewrite" matches="^(/shanghai/.*)/media/(.*)\..*$" target-pattern="$1/mp3/$2.mp3"
+                           flag="break"/>
+                <directive type="proxy_pass" pool-name="Web.Tuangou"/>
+            </location>
+            <location match-type="regex" pattern="^/(images|javascript|js|css|flash|media|static)/"
+                      case-sensitive="true">
+                <directive type="static-resource" root-doc="/var/www/virtual/big.server.com/htdocs" expires="30d"/>
+            </location>
+        </locations>
+    </virtualServer>
+</slb-model-tree>

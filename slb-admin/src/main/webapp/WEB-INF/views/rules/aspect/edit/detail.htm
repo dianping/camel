@@ -1,0 +1,84 @@
+<div ng-show="aspectEditing">
+    <a style="float: right; margin-right: 30px;" ng-trim="true" href="javascript:;" ng-click="switchAspectList();"> <i
+            class="icon-reply"></i> 返回公共规则列表
+    </a>
+    <h5 style="margin-top: 30px">公共规则基本信息</h5>
+
+    <form class="form-horizontal">
+        <div class="form-group">
+            <label class="col-sm-4 control-label no-padding-right">规则名称</label>
+
+            <div class="col-sm-7">
+                <input ng-model="aspectEditing.name" disabled type="text" class="input" placeholder="">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-4 control-label no-padding-right">类型</label>
+
+            <div class="col-sm-7">
+                <select ng-model="aspectEditing.pointCut" ng-enter="addAspect()">
+                    <option value="BEFORE">前置规则</option>
+                    <option value="AFTER">后置规则</option>
+                </select>
+            </div>
+        </div>
+    </form>
+    <br> <a style="float: right; margin-right: 30px;" ng-click="openAddDirectiveModal();" href="javascript:;"> <i
+        class="icon-plus"></i> 添加新指令
+</a>
+    <h5 style="margin-top: 0px; margin-bottom: 20px">指令列表</h5>
+    <table class="table table-bordered" style="width: 100%">
+        <thead>
+        <tr>
+            <th>指令类型</th>
+            <th>指令详细参数</th>
+            <th style="width: 130px;">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="directive in aspectEditing.directives" ng-init="inputs = getInputs(directive.type)"
+            ng-model="switch">
+            <td>{{directive.type}}</td>
+            <td ng-hide="switch"><span ng-repeat="(name, value) in directive.dynamicAttributes"
+                                       ng-init="input = inputs[name]"> {{ name }}="{{directive.dynamicAttributes[name]}}" &nbsp;</span>
+            </td>
+            <td ng-show="switch">
+                <div class="dropdown" style="float: right; margin-right: 10px">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#"> 增加属性<b class="caret"></b></a>
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                        <li ng-repeat="(name, value) in inputs"><a ng-click="addDynamicAttribute(directive,name)"
+                                                                   tabindex="-1" href="javascript:void(0)"><i
+                                class="icon-plus"></i> 添加 {{ name }}</a></li>
+                    </ul>
+                </div>
+                <form class="form-horizontal" style="margin: 0 auto; width: 80%">
+                    <div class="form-group" ng-repeat="(name, value) in directive.dynamicAttributes"
+                         ng-init="input = inputs[name]">
+                        <label class="col-sm-4 control-label no-padding-right" for="">{{ name }}</label>
+
+                        <div class="col-sm-7">
+                            <input ng-trim="true" ng-show="input.inputType == 'TEXT'"
+                                   ng-model="directive.dynamicAttributes[name]"
+                                   type="text"> <select style="width:200px"
+                                                        ng-class="{'chosen-select':(input.name == 'pool-name')}"
+                                                        ng-show="input.inputType == 'SELECT'"
+                                                        ng-model="directive.dynamicAttributes[name]"
+                                                        ng-options="value0 for value0 in getValueList(input)">
+                            <option value="">-- 选择 --</option>
+                        </select> &nbsp; <a style="margin-left: 10px;" href="javascript:void(0);"
+                                            ng-click="removeDynamicAttribute(directive,name)"><i
+                                class="icon-remove"></i></a>
+                        </div>
+                    </div>
+                </form>
+            </td>
+            <td ng-init="switch=1"><a href="javascript:void(0);" ng-click="switch=(switch+1)%2"><i ng-hide="switch"
+                                                                                                   class="icon-edit"></i><i
+                    ng-show="switch" class="icon-reply"></i></a>&nbsp;<a style="margin-left: 10px;"
+                                                                         href="javascript:void(0);"
+                                                                         ng-click="affirmRemoveDirectiveModal($index)"><i
+                    class="icon-remove"></i></a></td>
+        </tr>
+        </tbody>
+    </table>
+</div>

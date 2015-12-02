@@ -1,0 +1,93 @@
+<slb-model-tree>
+    <strategies>
+        <strategy name="uri-hash" type="hash" target="$request_uri" method="crc32" creation-date="2013-10-15 16:40:00"
+                  last-modified-date="2013-10-15 16:40:00"/>
+        <strategy name="ip-hash" type="ip-hash" creation-date="2013-10-15 16:40:00"
+                  last-modified-date="2013-10-15 16:40:00"/>
+        <strategy name="roundrobin" type="roundrobin" creation-date="2013-10-15 16:40:00"
+                  last-modified-date="2013-10-15 16:40:00"/>
+    </strategies>
+    <pools>
+        <pool name="Web.Tuangou" loadbalance-strategy-name="uri-hash" min-available-member-percentage="50"
+              creation-date="2013-10-15 16:40:00"
+              last-modified-date="2013-10-15 16:40:00">
+            <check interval="5000" rise="2" fall="3" timeout="100" default_down="false" type="http" port="80"
+                   check_keepalive_requests="100"
+                   check_http_send="GET /status.html HTTP/1.1\r\nConnection: keep-alive\r\n\r\n"
+                   check_http_expect_alive="http_2xx" check_shm_size="1M" check_status="json"/>
+            <member name="tuangou-web01" ip="10.1.1.1" port="8080" weight="5" max-fails="5" fail-timeout="30s"
+                    state="ENABLED"
+                    availability="AVAILABLE"/>
+            <member name="tuangou-web02" ip="10.1.1.2" port="8080" weight="5" max-fails="5" fail-timeout="30s"
+                    state="ENABLED"
+                    availability="AVAILABLE"/>
+        </pool>
+        <pool/>
+    </pools>
+    <aspects>
+        <aspect name="commonRequest" point-cut="BEFORE">
+            <directive/>
+            <directive/>
+        </aspect>
+        <aspect name="commonResponse" point-cut="AFTER">
+            <directive/>
+            <directive/>
+        </aspect>
+    </aspects>
+    <slb-pools>
+        <slb-pool name="ppe-slb-pool">
+            <instance ip="10.2.1.1"/>
+            <instance ip="10.2.1.2"/>
+        </slb-pool>
+        <slb-pool/>
+    </slb-pools>
+    <virtualServer name="www" state="ENABLED" availability="AVAILABLE" default-pool-name="Web.Index"
+                   domain="www.dianping.com"
+                   port="80" creation-date="2013-10-15 16:40:00" last-modified-date="2013-10-15 16:40:00" version="1"
+                   access_log="logs/domain2.access.log  main" group="www" slb-pool="ppe-slb-pool">
+        <aspects>
+            <aspect ref="commonRequest"/>
+            <aspect point-cut="BEFORE">
+                <directive/>
+                <directive/>
+                <directive/>
+            </aspect>
+            <aspect point-cut="AFTER">
+                <directive/>
+                <directive/>
+                <directive/>
+            </aspect>
+            <aspect ref="commonResponse"/>
+        </aspects>
+        <locations>
+            <location match-type="prefix" pattern="/download">
+                <directive type="rewrite" matches="^(/download/.*)/media/(.*)\..*$" target-pattern="$1/mp3/$2.mp3"
+                           flag="break"/>
+                <directive type="rewrite" matches="^(/download/.*)/audio/(.*)\..*$" target-pattern="$1/mp3/$2.ra"
+                           flag="last"/>
+                <directive type="return" response-code="403"/>
+            </location>
+            <location match-type="prefix" pattern="/shanghai">
+                <directive type="access_log" path="logs/access.log" format="main"/>
+                <directive type="rewrite" matches="^(/shanghai/.*)/media/(.*)\..*$" target-pattern="$1/mp3/$2.mp3"
+                           flag="break"/>
+                <directive type="proxy_pass" pool-name="Web.Tuangou"/>
+            </location>
+            <location match-type="regex" pattern="^/(images|javascript|js|css|flash|media|static)/"
+                      case-sensitive="true">
+                <directive type="static-resource" root-doc="/var/www/virtual/big.server.com/htdocs" expires="30d"/>
+            </location>
+        </locations>
+    </virtualServer>
+    <virtualServer/>
+    <monitor-rules>
+        <monitor-rule id="rule1" pool="pool" status-code="5XX" value="5" minute="10"
+                      mail-receivers="leon.li@dianping.com" sms-receivers="18662513308"/>
+        <monitor-rule id="rule2" pool="pool" status-code="5XX" value="5" minute="10"
+                      mail-receivers="leon.li@dianping.com" sms-receivers="18662513308"/>
+    </monitor-rules>
+    <status-codes>
+        <status-code id="5XX" value="5XX"></status-code>
+        <status-code id="500" value="400"></status-code>
+    </status-codes>
+</slb-model-tree>

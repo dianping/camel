@@ -1,0 +1,28 @@
+$nginx.lbStrategy($upstream.lbStrategy)
+
+#foreach($server in $upstream.servers)
+ #if($isDegrade) 
+ 	$nginx.upstreamDegradeServer($server, $upstream.lbStrategy) 
+ #else 
+ 	$nginx.upstreamServer($server, $upstream.lbStrategy)  
+ #end 
+#end
+
+#if($upstream.keepalive > 0)
+	keepalive $upstream.keepalive;
+#if($upstream.keepaliveTimeout > 0)
+ 	#set($unit="s")
+	keepalive_timeout $upstream.keepaliveTimeout$unit;
+#end
+#end
+
+
+#if($upstream.degradeRate)
+	upstream_degrade_rate $upstream.degradeRate;
+#end
+#if($upstream.degradeForceState && $upstream.degradeForceState != 0)
+	upstream_degrade_force_state $upstream.degradeForceState;
+#end
+
+$nginx.check($upstream.check)    
+$nginx.upstreamFilter($upstream.upstreamFilter)

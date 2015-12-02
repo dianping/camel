@@ -1,0 +1,36 @@
+<span style="font-size: 12px;">所在位置：<a href="javascript:;" ng-click="switchLocationList();">所有规则</a> &nbsp;&nbsp;<span
+        ng-show="locationEditing">/ &nbsp;&nbsp; 规则（{{locationEditing.pattern.trunc(70)}}）</span>
+</span>
+<div ng-hide="locationEditing">
+    <h5 style="margin-top: 30px">规则列表</h5>
+    <table class="table table-bordered" style="width: 100%">
+        <thead>
+        <tr>
+            <th>路径/正则表达式</th>
+            <th>匹配类型</th>
+            <!-- <th>集群名</th>  -->
+            <th style="width:100px">大小写敏感</th>
+            <th style="width:100px">HTTPS类型</th>
+            <th style="width:100px">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="location in vs.locations">
+            <td>{{location.pattern.trunc(70)}}</td>
+            <td>{{location.matchType}}</td>
+            <!-- <td>{{location.domain}}</td>  -->
+            <td><span ng-show="location.caseSensitive">是</span><span ng-hide="location.caseSensitive">否</span></td>
+            <td ng-switch="location.httpsType">
+                <span ng-switch-when="1">HTTP,HTTPS</span>
+                <span ng-switch-when="2">强制HTTP</span>
+                <span ng-switch-when="3">强制HTTPS</span>
+            </td>
+            <td><a href="javascript:void(0);" ng-click="switchLocation($index);">
+                详细 </a></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+#parse("vs/location/${editOrShow}/detail.htm")
+

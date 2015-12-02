@@ -1,0 +1,2 @@
+#if($directive.getDynamicAttribute("response-content"))more_set_headers 'Content-Type : text/plain';#end
+return $directive.getDynamicAttribute("response-code")#if($directive.getDynamicAttribute("response-content")) "$directive.getDynamicAttribute("response-content")"#end;

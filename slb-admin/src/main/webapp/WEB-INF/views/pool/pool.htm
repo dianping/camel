@@ -1,0 +1,75 @@
+<div class="main-container-inner" ng-init="editOrShow='${editOrShow}'" ng-app="MyApp" ng-controller="PoolController"
+     id="PoolController">
+    #parse("pool/sidebar.htm")
+    <div class="main-content" style="opacity: 0.1;">
+        #parse("pool/breadcrumb.htm")
+        <div class="page-content">
+            <div class="page-header">
+
+                <a class="btn btn-sm btn-pink" href="javascript:;" style="visibility: hidden;" ng-click="preview()"
+                   title="预览当前生成的 nginx config 文件"> <i class="icon-eye-open bigger-110"></i><span
+                        class="bigger-110 no-text-shadow">预览</span></a>
+
+                <div ng-show="editOrShow=='edit'" class="btn-group" style="margin-left: 20px; float: right">
+                    <button data-toggle="dropdown" class="btn btn-info btn-xs dropdown-toggle">
+                        更多操作 <i class="icon-angle-down icon-on-right"></i>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a ng-click="removePool()"><span style="color: #b94a48"
+                                                             class="number">删除pool</span></a></li>
+                    </ul>
+                </div>
+
+                <a ng-show="editOrShow=='edit' && !newPool"
+                   ng-click="cancleEdit()" href="javascript:;" style="float: right; margin-left: 20px;"
+                   class="btn">取消</a>
+                <a
+                        ng-show="editOrShow=='edit' && newPool" ng-href="${contextPath}/"
+                        style="float: right; margin-left: 20px;"
+                        class="btn">取消</a>
+                <button ng-show="editOrShow=='edit'" ng-click="save()" style="float: right;" class="btn btn-primary">
+                    <i class="icon-ok bigger-110"></i>保存
+                </button>
+
+                <a ng-hide="editOrShow=='edit'" ng-click="edit()" href="javascript:;"
+                   style="float: right; margin-right: 20px; margin-top: 0px" class=""> <i class="icon-edit"></i>&nbsp;编辑
+                </a>
+            </div>
+            <div class="row">
+                <div id="alertMessageDiv" style="text-align: center;"></div>
+                <div class="alert alert-warning" ng-show="influencingVsList">
+                    <button type="button" class="close" data-dismiss="alert">
+                        <i class="icon-remove icon-white"></i>
+                    </button>
+          <span style="text-align: center;"><i class="icon-exclamation-sign"></i>&nbsp; <span>
+              本次修改影响了这些站点（ {{influencingVsList.join()}} ），是否前往发布页面？ &nbsp; <a
+                  ng-click="addTagAndDeploy(influencingVsList)" href="javascript:;" target="_blank">去发布</a>
+          </span></span>
+                </div>
+                #parse("/pool/${editOrShow}/detail.htm")
+                <h4 class="blue">
+                    <i style="margin-top: 20px; margin-bottom: 10px; font-size: 12px"
+                       class="icon-hand-right icon-animated-hand-pointer blue"></i> 哪些站点引用了该集群：
+                </h4>
+                <table class="table table-bordered" style="width: 100%">
+                    <thead>
+                    <tr>
+                        <th style="min-width: 120px">站点名称</th>
+                        <th>影响的规则</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="influencingVs in influencingVsDetailList">
+                        <td style="vertical-align:middle"><a target="_blank"
+                                                             href="${contextPath}/console/vs/{{influencingVs.vsName}}#location">{{influencingVs.vsName}}</a>
+                        </td>
+                        <td style="vertical-align:middle"><p ng-repeat="positionDesc in influencingVs.positionDescs">
+                            {{positionDesc}}</p></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    #parse("pool/modals.htm")
+</div>

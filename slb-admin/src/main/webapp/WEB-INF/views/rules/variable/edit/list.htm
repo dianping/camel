@@ -1,0 +1,24 @@
+<a style="float: right; margin-right: 30px;" href="javascript:;"
+   ng-click="openAddVariableModal()"> <i class="icon-plus"></i> 添加新变量
+</a>
+<h5 style="margin-top: 30px">变量列表</h5>
+<table class="table table-bordered" style="width: 80%">
+    <thead>
+    <tr>
+        <th>变量名称</th>
+        <th>变量值</th>
+        <th style="width: 130px;">操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="variable in variables">
+        <td>{{variable.key}}</td>
+        <td>{{variable.value}}</td>
+        <td><a href="javascript:void(0);"
+               ng-click="affirmRemoveVariableModal($index);">删除</a> <a
+                href="javascript:void(0);" ng-click="openEditVariableModal($index);">编辑</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+

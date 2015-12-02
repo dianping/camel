@@ -1,0 +1,13 @@
+<script type="text/javascript" src="${contextPath}/static/js/myangular-slbPool.js?t=20130623"></script>
+
+
+<!-- HTML5 shim, for IE6-8 support of HTML elements -->
+<!--[if lt IE 9]>
+<script src="${contextPath}/static/js/html5.js"></script>
+<![endif]-->
+<script type="text/javascript">
+    $("[rel=tooltip]").tooltip();
+    $(document).ready(function () {
+        angular.element($('#SlbPoolController')).scope().getSlbPool('${slbPoolName}');
+    });
+</script>

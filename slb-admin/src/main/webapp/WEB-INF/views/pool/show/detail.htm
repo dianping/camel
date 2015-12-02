@@ -1,0 +1,250 @@
+<div ng-show="pool" class="col-xs-12">
+    <form class="form-horizontal" role="form">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="col-sm-4 control-label no-padding-right">集群名</label>
+
+                    <div class="col-sm-7">
+                        <input disabled class="" value="{{pool.name}}" type="text">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-4 control-label no-padding-right"
+                           for="inputPassword">负载均衡策略</label>
+
+                    <div class="col-sm-7">
+                        <select disabled class="span2"
+                                ng-model="pool.loadbalanceStrategyName"
+                                ng-options="item.name as item.name for item in strategies"></select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-4 control-label no-padding-right"
+                           for="inputPassword">长连接连接数</label>
+
+                    <div class="col-sm-7">
+                        <input disabled class="input-mini" ng-model="pool.keepalive"
+                               type="text" integer type="number" min="1" max="1000"> <a
+                            href="javascript:;" data-toggle="tooltip"
+                            title="请输入大于等于0的数字，最后的keepalive参数将乘以可用机器数"> <i
+                            class="icon-question-sign"></i></a>
+                    </div>
+                </div>
+                <!-- <div class="form-group">
+              <label class="col-sm-4 control-label no-padding-right" for="inputEmail">最小活动节点占比</label>
+              <div class="col-sm-7">
+                <div class="input-append">
+                  <input disabled class="" ng-model="pool.minAvailableMemberPercentage" type="text" placeholder="输入1-100的数值">
+                  <span class="add-on">%</span>
+                </div>
+              </div>
+            </div> -->
+                <div class="form-group">
+                    <label class="col-sm-4 control-label no-padding-right"
+                           for="inputPassword">健康检查类型</label>
+
+                    <div class="col-sm-7">
+                        <select disabled class="span2" ng-model="pool.check.type">
+                            <option value="TCP">TCP</option>
+                            <option value="HTTP">HTTP</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-4 control-label no-padding-right"
+                           for="inputPassword">pool降级比例</label>
+
+                    <div class="col-sm-7">
+                        <input disabled class="input-mini" ng-model="pool.degradeRate"
+                               type="text" integer type="number" min="0" max="100"> <a
+                            href="javascript:;" data-toggle="tooltip"
+                            title="请输入0~100之间的数值，pool中可用节点数低于此比例时，则进行降级，-1代表使用默认值"> <i
+                            class="icon-question-sign"></i></a>
+                    </div>
+                    <label class="col-sm-4 control-label no-padding-right"
+                           for="inputPassword">pool强制降级</label>
+
+                    <div class="col-sm-7">
+                        <select disabled class="span2" ng-model="pool.degradeForceState">
+                            <option value="0">自动</option>
+                            <option value="1">强制升级</option>
+                            <option value="-1">强制降级</option>
+                        </select>
+                        <a
+                                href="javascript:;" data-toggle="tooltip"
+                                title="强制pool处于某种状态"> <i
+                                class="icon-question-sign"></i></a>
+                    </div>
+                </div>
+
+                <div class="form-group" ng-show="pool.check.type == 'HTTP'">
+                    <div class="row">
+                        <label class="col-sm-4 control-label no-padding-right"
+                               for="inputEmail">健康检查的http报文</label>
+
+                        <div class="col-sm-7">
+                            <div class="input-append">
+                                <input disabled ng-trim="true" class="input-large"
+                                       ng-model="pool.check.checkHttpSend" type="text" placeholder="">
+								<span class="add-on" style="font-size: 8px;"><a
+                                        href="javascript:;" data-toggle="tooltip"
+                                        title="该指令可以配置http健康检查包发送的请求内容。只需要配置Get方法之后的资源路径，默认是/inspect/healthcheck">
+                                    <i class="icon-question-sign"></i>
+                                </a></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label class="col-sm-4 control-label no-padding-right"
+                               for="inputEmail">http返回码</label>
+
+                        <div class="col-sm-7">
+                            <div class="input-append">
+                                <input disabled ng-trim="true" class="input-large"
+                                       ng-model="pool.check.checkHttpExpectAlive" type="text"
+                                       placeholder=""> <span class="add-on"
+                                                             style="font-size: 8px;"><a href="javascript:;"
+                                                                                        data-toggle="tooltip"
+                                                                                        title="该指令可以配置期待的http返回码，默认：http_2xx，可以配置多个，比如：http_2xx http_3xx">
+                                <i class="icon-question-sign"></i>
+                            </a></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <label class="col-sm-4 control-label no-padding-right"
+                               for="inputEmail">http消息体</label>
+
+                        <div class="col-sm-7">
+                            <div class="input-append">
+                                <input disabled ng-trim="true" class="input-large"
+                                       ng-model="pool.check.checkHttpExpectPattern" type="text"
+                                       placeholder=""> <span class="add-on"
+                                                             style="font-size: 8px;"><a href="javascript:;"
+                                                                                        data-toggle="tooltip"
+                                                                                        title="该指令可以配置期待的消息体，支持正则表达式，默认空">
+                                <i
+                                        class="icon-question-sign"></i></a></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-4 control-label no-padding-right"
+                           for="inputEmail">健康检查的超时时间</label>
+
+                    <div class="col-sm-7">
+                        <div class="input-append">
+                            <input disabled ng-trim="true" class="input-large"
+                                   ng-model="pool.check.timeout" type="text" placeholder="">
+							<span class="add-on" style="font-size: 8px;"><a
+                                    href="javascript:;" data-toggle="tooltip"
+                                    title="后端健康请求的超时时间，超时则视为请求失败，累计一次fall"> <i
+                                    class="icon-question-sign"></i></a></span>
+                        </div>
+                    </div>
+                    <label class="col-sm-4 control-label no-padding-right"
+                           for="inputEmail">健康检查的时间间隔</label>
+
+                    <div class="col-sm-7">
+                        <div class="input-append">
+                            <input disabled ng-trim="true" class="input-large"
+                                   ng-model="pool.check.interval" type="text" placeholder="">
+							<span class="add-on" style="font-size: 8px;"><a
+                                    href="javascript:;" data-toggle="tooltip"
+                                    title="后端健康请求的时间间隔，每隔指定时间，检查一次"> <i
+                                    class="icon-question-sign"></i></a></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-5"
+                 style="margin-top: 0px; border-left: 1px solid #ddd;">
+                <div class="form-group">
+                    <label class="col-sm-4 control-label no-padding-right"
+                           for="inputEmail">安全防火墙打开</label>
+
+                    <div class="col-sm-7">
+                        <div class="input-append">
+                            <input class="input-small" disabled
+                                   ng-model="pool.upstreamFilter.authFilterOpen"
+                                   type="checkbox"> <span class="add-on"
+                                                          style="font-size: 8px;"><a href="javascript:;"
+                                                                                     data-toggle="tooltip"
+                                                                                     title="如果开启对接sso功能，将对每个请求，调用sso模块，过滤掉所有非法请求">
+                            <i
+                                    class="icon-question-sign"></i></a></span>
+                        </div>
+                    </div>
+                </div>
+
+                <label class="col-sm-4 control-label no-padding-right"
+                       for="inputEmail">通过的uri格式</label>
+
+                <div class="col-sm-7">
+                    <div class="input-append">
+                        <input ng-trim="true" class="input-large" disabled
+                               ng-model="pool.upstreamFilter.authFilterPassPattern"
+                               type="text" placeholder=""> <span class="add-on"
+                                                                 style="font-size: 8px;"><a href="javascript:;"
+                                                                                            data-toggle="tooltip"
+                                                                                            title="可以通过的uri格式（正则表达式），多个uri格式请用空格隔开，例如(.*\.jpg&nbsp;&nbsp;.*\.png)">
+                        <i class="icon-question-sign"></i>
+                    </a></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <h5 style="margin-top: 0px">集群节点管理</h5>
+            <table class="table table-bordered" style="width: 100%">
+                <thead>
+                <tr>
+                    <th style="min-width: 120px">节点名称</th>
+                    <th>IP</th>
+                    <th>端口</th>
+                    <th>权重</th>
+                    <th>最大失败次数</th>
+                    <th>失败超时时间</th>
+                    <th style="width: 130px;">状态控制</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="member in pool.members">
+                    <td><input class="input" disabled class="input-small"
+                               ng-model="member.name" type="text"></td>
+                    <td><input class="input" disabled class="input-small"
+                               ng-model="member.ip" type="text"></td>
+                    <td><input disabled class="input-mini" ng-model="member.port"
+                               type="text"></td>
+                    <td><input disabled class="input-mini"
+                               ng-model="member.weight" type="text"></td>
+                    <td><input disabled class="input-mini"
+                               ng-model="member.maxFails" type="text"></td>
+                    <td><input disabled class="input-mini"
+                               ng-model="member.failTimeout" type="text"></td>
+                    <td><label class="radio inline"> <input disabled
+                                                            ng-model="member.state" type="radio" value="ENABLED">
+                        ENABLED
+                    </label> <label class="radio inline"> <input disabled
+                                                                 ng-model="member.state" type="radio" value="DISABLED">
+                        DISABLED
+                    </label> <label class="radio inline"> <input disabled
+                                                                 ng-model="member.state" type="radio"
+                                                                 value="FORCED_OFFLINE">
+                        FORCED_OFFLINE
+                    </label> <label class="radio inline"> <input disabled
+                                                                 ng-model="member.state" type="radio" value="DEGRADE">
+                        DEGRADE
+                    </label></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </form>
+</div>

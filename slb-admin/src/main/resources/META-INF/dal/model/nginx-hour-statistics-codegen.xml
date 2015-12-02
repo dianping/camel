@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model>
+    <entity name="nginx-hour-statistics" root="true">
+        <attribute name="hour" value-type="String"/>
+        <entity-ref name="pool" type="list" names="pools"/>
+    </entity>
+    <entity name="pool">
+        <attribute name="id" value-type="String"/>
+        <entity-ref name="server" type="list" names="servers"/>
+    </entity>
+    <entity name="server">
+        <attribute name="ip" value-type="String"/>
+        <entity-ref name="domain" type="list" names="domains"/>
+    </entity>
+    <entity name="domain">
+        <attribute name="id" value-type="String"/>
+        <entity-ref name="period" type="list" names="periods"/>
+    </entity>
+    <entity name="period">
+        <attribute name="minute" value-type="int"/>
+        <entity-ref name="status" type="list" names="statuses"/>
+    </entity>
+    <entity name="status">
+        <attribute name="code" value-type="int"/>
+        <attribute name="count" value-type="int"/>
+    </entity>
+</model>
+

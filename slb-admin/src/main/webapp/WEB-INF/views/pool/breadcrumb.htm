@@ -1,0 +1,27 @@
+<div class="breadcrumbs" id="breadcrumbs">
+    <script type="text/javascript">
+        try {
+            ace.settings.check('breadcrumbs', 'fixed')
+        } catch (e) {
+        }
+    </script>
+    <ul class="breadcrumb">
+        <li class="active">当前位置：集群 {{ pool.name }} #if(${editOrShow}=='edit') (编辑模式) #end &nbsp; <span
+                class="label label-warning" ng-show="newPool"><i class=" icon-exclamation-sign"></i>&nbsp; 新建集群，请填写后保存。 </span>
+        </li>
+    </ul>
+    <!-- .breadcrumb -->
+    <a style="position: absolute;right:350px;" href="javascript:app.openAddPoolModal();" class=""><i
+            class="icon-plus"></i> 新增集群</a>
+
+    <div class="nav-search" id="nav-search">
+        <form class="form-search">
+      <span class="input-icon"> <input type="text" placeholder="快速切换集群 ..." style="width: 300px"
+                                       class="nav-search-input" name="a" id="pool-search-nav" autocomplete="off">
+        <ul class="typeahead dropdown-menu" style="top: 28px; left: 0px; display: none;">
+        </ul> <i class="icon-search nav-search-icon"></i>
+      </span>
+        </form>
+    </div>
+    <!-- #nav-search -->
+</div>

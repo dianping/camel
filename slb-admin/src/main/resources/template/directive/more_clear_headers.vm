@@ -1,0 +1,1 @@
+more_clear_headers $directive.getDynamicAttribute("value");

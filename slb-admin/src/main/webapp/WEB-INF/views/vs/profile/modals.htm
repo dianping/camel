@@ -1,0 +1,46 @@
+<!-- 输入key -->
+<div aria-hidden="false" role="dialog" data-backdrop="false" class="bootbox modal" id="addParamModal"
+     style="margin: 0 0 0 0;">
+    <div class="modal-dialog" style="">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+                <h3>添加自定义参数</h3>
+            </div>
+            <div class="modal-body">
+                <div id="addParamAlertDiv"></div>
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-4 col-sm-4 control-label no-padding-right no-padding-right">参数名</label>
+
+                        <div class="col-sm-7">
+                            <div class="input-prepend">
+                                <span class="add-on"></span><input ng-trim="true" id="addParamKey"
+                                                                   ng-enter="addNewDynamicAttribute()"
+                                                                   type="text" class="input" placeholder="">
+                            </div>
+                            <span class="muted">（必填）</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 col-sm-4 control-label no-padding-right no-padding-right">参数值</label>
+
+                        <div class="col-sm-7">
+                            <div class="input-prepend">
+                                <span class="add-on"></span><input ng-trim="true" id="addParamValue"
+                                                                   ng-enter="addNewDynamicAttribute()"
+                                                                   type="text" class="input" placeholder="">
+                            </div>
+                            <span class="muted">（可稍后再填）</span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" ng-click="addNewDynamicAttribute()" class="btn btn-primary">确定</button>
+                <button type="button" data-dismiss="modal" class="btn">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+

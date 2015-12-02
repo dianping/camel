@@ -1,0 +1,144 @@
+<div class="dropdown" style="float: right; margin-right: 45px">
+    <a class="dropdown-toggle" data-toggle="dropdown" href="#"> 增加自定义参数<b class="caret"></b></a>
+    <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+        <li ng-repeat="(key,definedParam) in propertiesDefinedInputs"><a ng-click="addDynamicAttribute(key)"
+                                                                         tabindex="-1" href="javascript:void(0)"><i
+                class="icon-plus"></i> 添加 {{ key }}</a></li>
+        <li class="divider"></li>
+        <li><a tabindex="-1" href="javascript:app.openAddParamModal();"><i class="icon-pencil"></i> 自定义参数 </a></li>
+    </ul>
+</div>
+
+<div class="row">
+    <div class="col-sm-6">
+        <div class="form-group">
+            <label class="col-sm-3 control-label no-padding-right">状态控制</label>
+
+            <div class="col-sm-9">
+                <label class="radio inline"> <input ng-model="vs.state" type="radio" value="ENABLED"> ENABLED
+                </label> <label class="radio inline"> <input ng-model="vs.state" type="radio" value="DISABLED"> DISABLED
+            </label> <label class="radio inline"> <input ng-model="vs.state" type="radio" value="FORCED_OFFLINE">
+                FORCED_OFFLINE
+            </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label no-padding-right" for="">域名</label>
+
+            <div class="col-sm-9">
+                <input ng-trim="true" type="text" ng-model="vs.domain" placeholder="输入站点的域名">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label no-padding-right" for="inputEmail">端口</label>
+
+            <div class="col-sm-9">
+                <input ng-trim="true" type="text" ng-model="vs.port" placeholder="输入站点的端口号">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label no-padding-right" for="">默认Pool名</label>
+
+            <div class="col-sm-9">
+                <select style="width:250px;" ng-class="{'chosen-select':isActive4Boolean('profile')}"
+                        ng-model="vs.defaultPoolName"
+                        ng-options="pool.name as pool.name for pool in pools" class="chosen-select">
+                    <option value="">-- 选择集群 --</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label no-padding-right" for="">默认Pool名</label>
+
+            <div class="col-sm-9">
+                <input ng-trim="true" type="text" ng-model="vs.defaultPoolName" placeholder="">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label no-padding-right" for="">目标Nginx集群</label>
+
+            <div class="col-sm-9">
+                <select ng-model="vs.slbPool" ng-options="slbPool.name as slbPool.name for slbPool in slbPools">
+                    <option value="">-- 选择Nginx集群 --</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label no-padding-right" for="">分组</label>
+
+            <div class="col-sm-9">
+                <input ng-trim="true" type="text" ng-model="vs.group" placeholder="输入站点的分组">
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-4" style="margin-top: 0px; border-left: 1px solid #ddd;">
+        <div class="form-group">
+            <label class="col-sm-3 control-label no-padding-right" for="">使用HTTPS</label>
+
+            <div class="col-sm-9">
+                <select ng-model="vs.httpsOpen">
+                    <option value="true">是</option>
+                    <option value="false">否</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label no-padding-right" for="">默认路径类型</label>
+
+            <div class="col-sm-9">
+                <select ng-model="vs.defaultHttpsType">
+                    <option value="1">HTTP,HTTPS</option>
+                    <option value="2">强制HTTP</option>
+                    <option value="3">强制HTTPS</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group" ng-show="vs.httpsOpen">
+            <label class="col-sm-3 control-label no-padding-right" for="">端口</label>
+
+            <div class="col-sm-9">
+                <input ng-trim="true" type="text" ng-model="vs.httpsPort" placeholder="https默认端口443">
+            </div>
+        </div>
+        <div class="form-group" ng-show="vs.httpsOpen">
+            <label class="col-sm-3 control-label no-padding-right" for="">证书</label>
+            <br/>
+
+            <div class="col-sm-9">
+              <textarea cols="40" rows="20" ng-trim="true" type="text" ng-model="vs.sslCertificate"
+                        placeholder="HTTPS证书">
+              </textarea>
+            </div>
+        </div>
+        <div class="form-group" ng-show="vs.httpsOpen">
+            <label class="col-sm-3 control-label no-padding-right" for="">私钥key</label>
+            <br/>
+
+            <div class="col-sm-9">
+              <textarea cols="40" rows="20" ng-trim="true" type="text" ng-model="vs.sslCertificateKey"
+                        placeholder="HTTPS key">
+              </textarea>
+            </div>
+        </div>
+        <div class="form-group" ng-repeat="(key, value) in vs.dynamicAttributes"
+             ng-init="valueList = getValueList(key)">
+            <label class="col-sm-3 control-label no-padding-right">{{ key }}</label>
+
+            <div ng-show="getInputType(key) == 'SELECT'" class="col-sm-9">
+                <select ng-init="vs.dynamicAttributes[key] = getInitSelectValue(vs.dynamicAttributes[key],valueList)"
+                        ng-model="vs.dynamicAttributes[key]" ng-options="value0 for value0 in valueList"></select>
+                &nbsp;&nbsp;<a
+                    href="javascript:;" ng-click="removeDynamicAttribute(key)""><i class="icon-remove"></i></a>
+            </div>
+            <div ng-show="getInputType(key) == 'TEXT'" class="col-sm-9">
+                <input ng-trim="true" ng-model="vs.dynamicAttributes[key]" type="text"> &nbsp;&nbsp;<a
+                    href="javascript:;" ng-click="removeDynamicAttribute(key)"><i class="icon-remove"></i></a>
+            </div>
+            <div ng-show="getInputType(key) == 'TEXTAREA'" class="col-sm-9">
+                <textarea ng-trim="true" ng-model="vs.dynamicAttributes[key]" rows="5" type="textarea"></textarea>
+                &nbsp;&nbsp;<a href="javascript:;" ng-click="removeDynamicAttribute(key)"><i
+                    class="icon-remove"></i></a>
+            </div>
+        </div>
+    </div>
+</div>

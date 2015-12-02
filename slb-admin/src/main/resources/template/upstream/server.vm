@@ -1,0 +1,1 @@
+server $server.member.ip#if($server.member.port):$server.member.port#end #if($server.member.maxFails)max_fails=$server.member.maxFails#end #if($server.member.weight)weight=$server.member.weight#end #if($server.member.failTimeout)fail_timeout=$server.member.failTimeout#end;

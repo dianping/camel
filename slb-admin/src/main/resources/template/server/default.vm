@@ -1,0 +1,245 @@
+# gen-time: $config.tagTime
+# vs-name : $config.name
+
+#foreach($upstream in $config.upstreams)
+#if($upstream.used)
+upstream $nginx.poolName($config.name,$upstream.name) {
+	$nginx.upstreamContent($upstream, false)
+}
+
+#if($upstream.needDegrade)
+upstream $nginx.poolDegradeName($config.name,$upstream.name) {
+	$nginx.upstreamContent($upstream, true)
+}
+#end
+
+#end
+#end
+
+## below is valid when https is not open. Many duplicate codes, for decreasing risk
+#if( ! $config.server.httpsOpen)
+server {
+    listen       $config.server.listen;
+    server_name  $config.server.serverName;
+$nginx.properties($config.server.properties)
+    
+    location /{
+        dp_domain $nginx.poolName($config.name,$config.server.defaultPool);
+
+        set $hcv "-";
+        if ( $http_cookie ~* "_hc.v=(\S+)(;.*|$)"){
+            set $hcv $1;
+        }
+
+        set $dper "-";
+        if ( $http_cookie ~* "dper=(\S+)(;.*|$)"){
+            set $dper $1;
+        }
+
+#foreach( $aspect in $config.server.aspects)
+#if($aspect.pointCut == 'BEFORE')
+#foreach( $directive in $aspect.directives)
+        $nginx.directive($config.name,$directive)
+#end
+#end
+#end
+
+#foreach( $location in $config.server.locations)
+        location $nginx.locationMatchOp($location.matchType) $nginx.rewriteLocationIfNeeded($location.matchType, $location.pattern) {
+#foreach( $directive in $location.directives)
+            $nginx.directive($config.name,$directive)
+#end
+        }
+
+#end
+
+        error_page                    500 502 503 504  /50x.html;
+        location = /50x.html {
+            root                        html;
+        }
+
+        if ( !-f $request_filename ) {
+            proxy_pass                http://$dp_upstream;
+            break;
+        }
+
+#foreach( $aspect in $config.server.aspects)
+#if($aspect.pointCut == 'AFTER')
+#foreach( $directive in $aspect.directives)
+        $nginx.directive($config.name,$directive)
+#end
+#end
+#end
+
+    }
+}
+#end
+
+## below is valid when https open
+#if($config.server.httpsOpen)
+server {
+	listen       $config.server.httpsPort ssl;
+	server_name  $config.server.serverName;
+	ssl on;
+	ssl_certificate /usr/local/nginx/conf/phoenix-slb/$config.name/ssl.crt;
+	ssl_certificate_key /usr/local/nginx/conf/phoenix-slb/$config.name/ssl.key;
+$nginx.properties($config.server.properties)
+
+	location /{
+		dp_domain $nginx.poolName($config.name,$config.server.defaultPool);
+
+		set $hcv "-";
+		if ( $http_cookie ~* "_hc.v=(\S+)(;.*|$)"){
+			set $hcv $1;
+		}
+
+		set $dper "-";
+		if ( $http_cookie ~* "dper=(\S+)(;.*|$)"){
+			set $dper $1;
+		}
+
+#foreach( $aspect in $config.server.aspects)
+#if($aspect.pointCut == 'BEFORE')
+#foreach( $directive in $aspect.directives)
+		$nginx.directive($config.name,$directive)
+#end
+#end
+#end
+
+#foreach( $location in $config.server.locations)
+#if( $location.httpsType == 1)
+		location $nginx.locationMatchOp($location.matchType) $nginx.rewriteLocationIfNeeded($location.matchType, $location.pattern) {
+#foreach( $directive in $location.directives)
+			$nginx.directive($config.name,$directive)
+#end
+		}
+#elseif( $location.httpsType == 2)
+		location $nginx.locationMatchOp($location.matchType) $nginx.rewriteLocationIfNeeded($location.matchType, $location.pattern) {
+			rewrite /* http://$host:$config.server.listen$request_uri permanent;
+		}
+#elseif( $location.httpsType == 3)
+		location $nginx.locationMatchOp($location.matchType) $nginx.rewriteLocationIfNeeded($location.matchType, $location.pattern) {
+#foreach( $directive in $location.directives)
+			$nginx.directive($config.name,$directive)
+#end
+		}
+#else
+		location $nginx.locationMatchOp($location.matchType) $nginx.rewriteLocationIfNeeded($location.matchType, $location.pattern) {
+#foreach( $directive in $location.directives)
+			$nginx.directive($config.name,$directive)
+#end
+		}
+#end
+#end
+
+		error_page                    500 502 503 504  /50x.html;
+		location = /50x.html {
+			root                        html;
+		}
+
+		if ( !-f $request_filename ) {
+#if( $config.server.defaultHttpsType == 1)
+			proxy_pass                http://$dp_upstream;
+#elseif( $config.server.defaultHttpsType == 2)
+			rewrite /* http://$host:$config.server.listen$request_uri permanent;
+#elseif( $config.server.defaultHttpsType == 3)
+			proxy_pass                http://$dp_upstream;
+#else
+			proxy_pass                http://$dp_upstream;
+#end
+			break;
+		}
+
+#foreach( $aspect in $config.server.aspects)
+#if($aspect.pointCut == 'AFTER')
+#foreach( $directive in $aspect.directives)
+		$nginx.directive($config.name,$directive)
+#end
+#end
+#end
+
+	}
+}
+
+
+server {
+	listen       $config.server.listen;
+	server_name  $config.server.serverName;
+$nginx.properties($config.server.properties)
+
+	location /{
+		dp_domain $nginx.poolName($config.name,$config.server.defaultPool);
+
+		set $hcv "-";
+		if ( $http_cookie ~* "_hc.v=(\S+)(;.*|$)"){
+			set $hcv $1;
+		}
+
+		set $dper "-";
+		if ( $http_cookie ~* "dper=(\S+)(;.*|$)"){
+			set $dper $1;
+		}
+
+#foreach( $aspect in $config.server.aspects)
+#if($aspect.pointCut == 'BEFORE')
+#foreach( $directive in $aspect.directives)
+		$nginx.directive($config.name,$directive)
+#end
+#end
+#end
+
+#foreach( $location in $config.server.locations)
+#if( $location.httpsType == 1)
+		location $nginx.locationMatchOp($location.matchType) $nginx.rewriteLocationIfNeeded($location.matchType, $location.pattern) {
+#foreach( $directive in $location.directives)
+			$nginx.directive($config.name,$directive)
+#end
+		}
+#elseif( $location.httpsType == 2)
+		location $nginx.locationMatchOp($location.matchType) $nginx.rewriteLocationIfNeeded($location.matchType, $location.pattern) {
+#foreach( $directive in $location.directives)
+			$nginx.directive($config.name,$directive)
+#end
+		}
+#elseif( $location.httpsType == 3)
+		location $nginx.locationMatchOp($location.matchType) $nginx.rewriteLocationIfNeeded($location.matchType, $location.pattern) {
+			rewrite /* https://$host:$config.server.httpsPort$request_uri permanent;
+		}
+#else
+		location $nginx.locationMatchOp($location.matchType) $nginx.rewriteLocationIfNeeded($location.matchType, $location.pattern) {
+#foreach( $directive in $location.directives)
+			$nginx.directive($config.name,$directive)
+#end
+		}
+#end
+#end
+
+		error_page                    500 502 503 504  /50x.html;
+		location = /50x.html {
+			root                        html;
+		}
+
+		if ( !-f $request_filename ) {
+#if( $config.server.defaultHttpsType == 1)
+			proxy_pass                http://$dp_upstream;
+#elseif( $config.server.defaultHttpsType == 2)
+			proxy_pass                http://$dp_upstream;
+#elseif( $config.server.defaultHttpsType == 3)
+			rewrite /* https://$host:$config.server.httpsPort$request_uri permanent;
+#else
+			proxy_pass                http://$dp_upstream;
+#end
+			break;
+		}
+
+#foreach( $aspect in $config.server.aspects)
+#if($aspect.pointCut == 'AFTER')
+#foreach( $directive in $aspect.directives)
+		$nginx.directive($config.name,$directive)
+#end
+#end
+#end
+
+	}
+}
+#end

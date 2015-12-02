@@ -1,0 +1,17 @@
+<div class="main-container-inner" ng-app="MyApp"
+     ng-controller="StatusTrendController" id="statusTrendDomain"
+     ng-init="currentPool='${poolName}';startTime='${startTime}';endTime='${endTime}'">
+    #parse("monitor/sidebar.htm")
+    <div class="main-content">
+        <div class="page-content">
+            #parse("monitor/status/breadcrumb.htm")
+            <div id="data-pick-zone">
+                开始时间：<input type="text" ng-model="startTime"></input>&nbsp;&nbsp;
+                结束时间：<input type="text" ng-model="endTime"></input>
+                <a href="javascript:void(0);" ng-click="generateChart();" class="btn btn-primary btn-sm">查询</a>
+            </div>
+            <div class="page-content" id="container5XX"></div>
+            <div class="page-content" id="container4XX"></div>
+        </div>
+    </div>
+</div>

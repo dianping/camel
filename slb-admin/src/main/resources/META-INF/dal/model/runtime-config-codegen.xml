@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model>
+    <entity name="runtime-config" root="true">
+        <element name="tengine-config-git-url" value-type="String"/>
+        <element name="model-git-url" value-type="String"/>
+        <element name="model-store-base-dir" value-type="String"/>
+        <element name="tengine-config-base-dir" value-type="String"/>
+        <element name="tengine-config-file-name" value-type="String"/>
+        <element name="deploy-log-url-pattern" value-type="String"/>
+        <element name="deploy-url-reload-pattern" value-type="String"/>
+        <element name="deploy-url-dynamic-refresh-pattern" value-type="String"/>
+        <element name="deploy-status-url-pattern" value-type="String"/>
+        <element name="agent-tengine-config-version-url-pattern" value-type="String"/>
+        <element name="agent-vs-list-url-pattern" value-type="String"/>
+        <element name="agent-remove-vs-url-pattern" value-type="String"/>
+        <element name="agent-reload-url-pattern" value-type="String"/>
+        <element name="nginx-check-config-folder" value-type="String"/>
+        <element name="nginx-dynamic-add-upstream-url-pattern" value-type="String"/>
+        <element name="nginx-dynamic-delete-upstream-url-pattern" value-type="String"/>
+        <element name="nginx-dynamic-update-upstream-url-pattern" value-type="String"/>
+        <element name="deploy-getlog-retrycount" value-type="int"/>
+        <element name="deploy-connect-timeout" value-type="int"/>
+        <element name="deploy-retry-interval" value-type="int"/>
+        <element name="git-servlet-base-dir" value-type="String"/>
+        <element name="f5-host" value-type="String"/>
+        <element name="f5-user" value-type="String"/>
+        <element name="f5-password" value-type="String"/>
+        <element name="need-call-f5" value-type="boolean"/>
+    </entity>
+</model>
+

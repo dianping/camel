@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model model-package="com.dianping.phoenix.lb.model" enable-base-visitor="true" enable-merger="true"
+       enable-sax-parser="true">
+    <entity name="slb-model-tree" root="true" implements="java.io.Serializable">
+        <attribute name="tag" value-type="long" primitive="true"/>
+        <entity-ref name="strategy" type="map" names="strategies" xml-indent="true" method-find-or-create="true"/>
+        <entity-ref name="virtualServer" type="map" names="virtualServers" method-find-or-create="true"/>
+        <entity-ref name="slb-pool" type="map" names="slb-pools" xml-indent="true" method-find-or-create="true"/>
+        <entity-ref name="pool" type="map" names="pools" xml-indent="true" method-find-or-create="true"/>
+        <entity-ref name="monitor-rule" type="map" names="monitor-rules" xml-indent="true"
+                    method-find-or-create="true"/>
+        <entity-ref name="user" type="map" names="users" xml-indent="true" method-find-or-create="true"/>
+        <entity-ref name="status-code" type="map" names="status-codes" xml-indent="true" method-find-or-create="true"/>
+        <entity-ref name="cmdb-info" type="map" names="cmdb-infos" xml-indent="true" method-find-or-create="true"/>
+    </entity>
+    <entity name="slb-pool" implements="com.dianping.phoenix.lb.api.Versionable, java.io.Serializable">
+        <attribute name="version" value-type="int" primitive="true" default-value="1"/>
+        <attribute name="name" value-type="String" key="true"/>
+        <entity-ref name="instance" type="list" names="instances"/>
+    </entity>
+    <entity name="strategy" dynamic-attributes="true"
+            implements="com.dianping.phoenix.lb.api.Versionable, java.io.Serializable">
+        <attribute name="version" value-type="int" primitive="true" default-value="1"/>
+        <attribute name="name" value-type="String" key="true"/>
+        <attribute name="target" value-type="String" enabled="false"/>
+        <attribute name="method" value-type="String" enabled="false"/>
+        <attribute name="creation-date" value-type="Date" format="yyyy-MM-dd HH:mm:ss"/>
+        <attribute name="last-modified-date" value-type="Date" format="yyyy-MM-dd HH:mm:ss"/>
+    </entity>
+    <entity name="virtualServer" dynamic-attributes="true"
+            implements="com.dianping.phoenix.lb.api.Versionable, java.io.Serializable">
+        <attribute name="name" value-type="String" key="true"/>
+        <attribute name="state" value-type="com.dianping.phoenix.lb.model.State"
+                   default-value="com.dianping.phoenix.lb.model.State.ENABLED"
+                   enum="true"/>
+        <attribute name="default-pool-name" value-type="String"/>
+        <attribute name="domain" value-type="String"/>
+        <attribute name="port" value-type="int" default-value="80"/>
+        <attribute name="access_log" value-type="String" enabled="false"/>
+        <attribute name="creation-date" value-type="Date" format="yyyy-MM-dd HH:mm:ss"/>
+        <attribute name="last-modified-date" value-type="Date" format="yyyy-MM-dd HH:mm:ss"/>
+        <attribute name="version" value-type="int" primitive="true" default-value="1"/>
+        <attribute name="slb-pool" value-type="String"/>
+        <entity-ref name="location" type="list" names="locations" xml-indent="true"/>
+        <entity-ref name="aspect" type="list" names="aspects" xml-indent="true"/>
+        <attribute name="group" value-type="String" default-value="default"/>
+        <attribute name="httpsOpen" value-type="boolean" default-value="false"/>
+        <attribute name="defaultHttpsType" value-type="int" default-value="1"/>
+        <attribute name="httpsPort" value-type="int" default-value="443"/>
+        <attribute name="ssl-certificate" value-type="String" default-value=""/>
+        <attribute name="ssl-certificate-key" value-type="String" default-value=""/>
+    </entity>
+    <entity name="pool" implements="java.io.Serializable, com.dianping.phoenix.lb.api.Versionable">
+        <attribute name="version" value-type="int" primitive="true" default-value="1"/>
+        <attribute name="name" value-type="String" key="true"/>
+        <attribute name="loadbalance-strategy-name" value-type="String" default-value="round-robin"/>
+        <attribute name="degradeRate" value-type="int"/>
+        <attribute name="degradeForceState" value-type="int"/>
+        <attribute name="min-available-member-percentage" value-type="int" primitive="true" default-value="50"/>
+        <entity-ref name="member" type="list" names="members"/>
+        <attribute name="keepalive" value-type="int" primitive="true" default-value="20"/>
+        <attribute name="keepalive_timeout" value-type="int" primitive="true" default-value="60"/>
+        <attribute name="creation-date" value-type="Date" format="yyyy-MM-dd HH:mm:ss"/>
+        <attribute name="last-modified-date" value-type="Date" format="yyyy-MM-dd HH:mm:ss"/>
+    </entity>
+    <entity name="upstreamFilter" implements="java.io.Serializable">
+        <attribute name="authFilterOpen" value-type="boolean" default-value="false"/>
+        <attribute name="authFilterPassPattern" value-type="String" default-value=""/>
+    </entity>
+    <entity name="member" implements="java.io.Serializable">
+        <attribute name="name" value-type="String" key="true"/>
+        <attribute name="ip" value-type="String"/>
+        <attribute name="port" value-type="int"/>
+        <attribute name="weight" value-type="int"/>
+        <attribute name="max-fails" value-type="int"/>
+        <attribute name="fail-timeout"/>
+        <attribute name="state" value-type="com.dianping.phoenix.lb.model.State"
+                   default-value="com.dianping.phoenix.lb.model.State.ENABLED"
+                   enum="true"/>
+    </entity>
+    <entity name="check" implements="java.io.Serializable">
+        <attribute name="interval" value-type="long" default-value="1000"/>
+        <attribute name="rise" value-type="int" default-value="2"/>
+        <attribute name="fall" value-type="int" default-value="3"/>
+        <attribute name="timeout" value-type="int" primitive="true" default-value="3000"/>
+        <attribute name="default_down" value-type="boolean" default-value="false"/>
+        <attribute name="type" value-type="com.dianping.phoenix.lb.model.CheckType"
+                   default-value="com.dianping.phoenix.lb.model.CheckType.TCP" enum="true"/>
+        <attribute name="port" value-type="int"/>
+        <attribute name="check_keepalive_requests" value-type="int" default-value="100"/>
+        <attribute name="check_http_send" value-type="String" default-value=""/>
+        <attribute name="check_http_expect_alive" value-type="String" default-value="http_2xx"/>
+        <attribute name="check_http_expect_pattern" value-type="String" default-value=""/>
+        <!-- <element name="check_http_expect_alive" type="list" value-type="String"/> -->
+        <attribute name="check_shm_size" value-type="String" default-value="1M"/>
+        <attribute name="check_status" value-type="com.dianping.phoenix.lb.model.CheckStatus"
+                   default-value="com.dianping.phoenix.lb.model.CheckStatus.JSON" enum="true"/>
+    </entity>
+    <entity name="instance" implements="java.io.Serializable">
+        <attribute name="ip" value-type="String"/>
+    </entity>
+    <entity name="location" implements="java.io.Serializable">
+        <attribute name="match-type" value-type="String"/>
+        <attribute name="pattern" value-type="String"/>
+        <attribute name="case-sensitive" value-type="boolean"/>
+        <attribute name="httpsType" value-type="int" default-value="1"/>
+        <entity-ref name="directive" type="list" names="directives"/>
+    </entity>
+    <entity name="variable" implements="com.dianping.phoenix.lb.api.Versionable, java.io.Serializable">
+        <attribute name="version" value-type="int" primitive="true" default-value="1"/>
+        <attribute name="key" value-type="String"/>
+        <attribute name="value" value-type="String"/>
+    </entity>
+    <entity name="aspect" implements="java.io.Serializable, com.dianping.phoenix.lb.api.Versionable">
+        <attribute name="version" value-type="int" primitive="true" default-value="1"/>
+        <attribute name="name" value-type="String" default-value=""/>
+        <attribute name="ref" value-type="String" default-value=""/>
+        <attribute name="point-cut" value-type="com.dianping.phoenix.lb.model.PointCut" enum="true"
+                   default-value="com.dianping.phoenix.lb.model.PointCut.BEFORE"/>
+        <entity-ref name="directive" type="list" names="directives"/>
+    </entity>
+    <entity name="directive" dynamic-attributes="true" implements="java.io.Serializable">
+        <attribute name="type" value-type="String"/>
+        <attribute name="matches" value-type="String" enabled="false"/>
+        <attribute name="target-pattern" value-type="String" enabled="false"/>
+        <attribute name="flag" value-type="boolean" enabled="false"/>
+        <attribute name="response-code" value-type="int" enabled="false"/>
+        <attribute name="path" value-type="String" enabled="false"/>
+        <attribute name="format" value-type="String" enabled="false"/>
+        <attribute name="pool-name" value-type="String" enabled="false"/>
+        <attribute name="root-doc" value-type="String" enabled="false"/>
+        <attribute name="expires" value-type="String" enabled="false"/>
+    </entity>
+    <entity name="monitor-rule" implements="java.io.Serializable">
+        <attribute name="id" value-type="String" key="true"/>
+        <attribute name="pool" value-type="String"/>
+        <attribute name="filter-pool" value-type="String"/>
+        <attribute name="status-code" value-type="String"/>
+        <attribute name="value" value-type="int"/>
+        <attribute name="minute" value-type="int"/>
+        <attribute name="mail-receivers" value-type="String"/>
+        <attribute name="sms-receivers" value-type="String"/>
+    </entity>
+    <entity name="user" implements="java.io.Serializable">
+        <attribute name="account" value-type="String" key="true"/>
+        <attribute name="name" value-type="String"/>
+        <attribute name="isAdmin" value-type="boolean" default-value="false"/>
+    </entity>
+    <entity name="status-code">
+        <attribute name="id" value-type="String" key="true"/>
+        <attribute name="value" value-type="String"/>
+    </entity>
+    <entity name="cmdb-info">
+        <attribute name="id" value-type="String" key="true"/>
+        <element name="pdMails" type="list" value-type="String"/>
+        <element name="opMails" type="list" value-type="String"/>
+        <element name="pdPhones" type="list" value-type="String"/>
+        <element name="opPhones" type="list" value-type="String"/>
+    </entity>
+</model>

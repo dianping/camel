@@ -1,0 +1,13 @@
+#if($check && $stringUtils.isNotBlank($check.type.name))
+	check interval=$check.interval fall=$check.fall rise=$check.rise timeout=$check.timeout default_down=$check.defaultDown type=$check.type.name;
+##    check_keepalive_requests $check.checkKeepaliveRequests;
+#if($check.type.name == 'http')
+	check_http_send 'GET $check.checkHttpSend HTTP/1.0\r\n\r\n';
+	check_http_expect_alive $check.checkHttpExpectAlive;
+#if($stringUtils.isNotBlank($check.checkHttpExpectPattern))
+	check_http_expect_pattern '$check.checkHttpExpectPattern';
+#end
+##    check_shm_size $check.checkShmSize;
+##    check_status $check.checkStatus.name;
+#end
+#end

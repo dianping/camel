@@ -1,0 +1,117 @@
+@media only screen and (max-width: @screen-xs) {
+	.hidden-480{
+		 display:none !important;
+	}
+}
+@media only screen and (max-width: @screen-tiny) {
+	.hidden-320{
+		 display:none !important;
+	}
+}
+
+@media only screen and (max-width: @screen-xs) {
+	[class*="vspace-xs"] {
+		display:block;
+	}
+}
+@media only screen and (max-width: @screen-xs-max) {
+	[class*="vspace-sm"] {
+		 display:block;
+	}
+}
+@media only screen and (max-width: @screen-sm-max) {
+	[class*="vspace-md"] {
+		 display:block;
+	}
+}
+@media only screen and (max-width: @screen-md-max) {
+	[class*="vspace-lg"] {
+		 display:block;
+	}
+}
+
+
+@media only screen and (max-width: @screen-sm-max) {
+ .main-content {
+	margin-left:0 !important;
+ }
+}
+// page-content less padding
+@media only screen and (max-width: @screen-xs-max) {
+ .page-content {
+	padding-left: @grid-gutter-width / 2;
+	padding-right: @grid-gutter-width / 2;
+ }
+}
+
+
+@media (max-width: @screen-sm-max) {
+	body.breadcrumbs-fixed {
+		padding-top:45px;
+	}
+	.navbar-fixed-top {
+		margin-bottom: 0;
+	}
+	.sidebar.fixed , .sidebar.sidebar-fixed {
+		position:absolute;
+	}
+}
+@media (max-width: @screen-topbar-down) {
+	body.navbar-fixed {
+		padding-top: 90px;
+	}
+}
+
+
+
+// error pages
+@media only screen and (max-width: @screen-xs-max) {
+ .error-container {
+	margin:12px;
+ }
+}
+@media only screen and (max-width: @screen-xs) {
+ .error-container {
+	margin:6px;
+ }
+}
+
+
+
+
+/* custom grid */
+@media only screen and (max-width: 360px) {
+	.grid2 , .grid3 , .grid4{
+		 float:none;
+		 display:block;
+		 width:96%;
+		 border-left:none;
+		 position:relative;
+		 margin-bottom:11px;
+		 border-bottom:1px solid #E3E3E3;
+		 padding-bottom:4px;
+	}
+	.grid2 > [class*="pull-"], .grid3 > [class*="pull-"], .grid4 > [class*="pull-"]{
+		float:none !important;
+		display:inline-block;
+		position:absolute;
+		right:11px; top:0;
+		margin-top:0;
+	}
+	.grid2:last-child , .grid3:last-child , .grid4:last-child {
+		border-bottom:none;
+	}
+}
+
+
+
+
+@media only screen and (max-width: @screen-xs) {
+ .ace-settings-container , body.breadcrumbs-fixed .ace-settings-container {
+	top: 65px;
+ }
+}
+
+
+
+

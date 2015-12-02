@@ -1,0 +1,42 @@
+<div class="sidebar" id="sidebar">
+    <script type="text/javascript">
+        try {
+            ace.settings.check('sidebar', 'fixed')
+        } catch (e) {
+        }
+    </script>
+    <ul class="nav nav-list">
+        <li class="open"><a href="#" class="dropdown-toggle"> <i class="icon-desktop"></i> <span class="menu-text">
+          公共规则 </span> <b class="arrow icon-angle-down"></b>
+        </a>
+            <ul class="submenu" style="display: block;">
+                <li class="#if($subMenu == 'aspect') active #end"><a href="${contextPath}/console/aspect"><i
+                        class="icon-globe"></i> 公共规则管理 </a></li>
+            </ul>
+        </li>
+
+        <li class="open"><a href="#" class="dropdown-toggle"> <i class="icon-desktop"></i> <span class="menu-text">
+          公共变量 </span> <b class="arrow icon-angle-down"></b>
+        </a>
+            <ul class="submenu" style="display: block;">
+                <li class="#if($subMenu == 'variable') active #end"><a href="${contextPath}/console/variable"><i
+                        class="icon-globe"></i> 公共变量管理 </a></li>
+            </ul>
+        </li>
+
+
+    </ul>
+    <!-- /.nav-list -->
+
+    <div class="sidebar-collapse" id="sidebar-collapse">
+        <i class="icon-double-angle-left" data-icon1="icon-double-angle-left" data-icon2="icon-double-angle-right"></i>
+    </div>
+
+    <script type="text/javascript">
+        try {
+            ace.settings.check('sidebar', 'collapsed')
+        } catch (e) {
+        }
+    </script>
+</div>
+

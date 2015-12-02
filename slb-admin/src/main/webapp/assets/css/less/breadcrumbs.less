@@ -1,0 +1,144 @@
+//some breadcrumbs variables
+@breadcrumb-bg:#F5F5F5;
+@breadcrumb-border:#E5E5E5;
+@breadcrumb-text-color:#555;
+@breadcrumb-link-color:#4C8FBD;
+
+@breadcrumb-separator:"\f105";//font awesome icon
+
+
+
+/* breadcrumbs and searchbox */
+.breadcrumbs {
+ position:relative;
+
+ border-bottom:1px solid @breadcrumb-border;
+ background-color:@breadcrumb-bg;
+ 
+ min-height:@breadcrumb-height;
+ line-height:(@breadcrumb-height - 1);
+
+ padding:0 12px 0 0;
+
+ display:block;
+ 
+ &.fixed , &.breadcrumbs-fixed{
+   position:fixed;
+   right:0;
+   left:(@sidebar-width);
+   top:@navbar-mh;
+   z-index:@zindex-navbar-fixed - 2;
+ }
+}
+
+
+.breadcrumb {
+ background-color: transparent;
+ display: inline-block;
+ line-height: 24px;
+
+ margin: 0 22px 0 12px;
+ padding: 0;
+
+ font-size:13px;
+ color:#333;
+ 
+ border-radius:0;
+  > li {
+    & , &.active {
+	  color:@breadcrumb-text-color;
+	}
+	
+	> a {
+	  display:inline-block;
+	  padding:0 4px;
+	  color:@breadcrumb-link-color;
+    }
+	
+	+ li:before {
+		font-family:FontAwesome;
+		font-size:14px;
+		content:@breadcrumb-separator;
+		color:@breadcrumb-arrow-color;
+		
+		margin-right: 2px;
+		padding: 0 5px 0 2px;
+		position:relative;
+		top: 1px;
+	}
+  }
+  
+
+  .home-icon {
+	 margin-left:4px; margin-right:2px;
+	 font-size:20px;
+	 position:relative; top:2px;
+  }
+
+}
+
+
+@media only screen and (max-width: @screen-sm-max) {
+ .breadcrumb {
+	margin-left:90px;
+ }
+ .breadcrumbs.fixed , .breadcrumbs.breadcrumbs-fixed{
+	position: relative !important;
+	left: auto !important; right: auto !important;
+	top: auto !important;
+	z-index:auto !important;
+ }
+ body.breadcrumbs-fixed .ace-settings-container {
+	top:50px;
+ }
+}
+
+
+@media only screen and (max-width: @screen-xs) {
+ .breadcrumb > li > a {
+	padding:0 1px;
+ }
+}
+
+@media only screen and (max-width: @screen-tiny) {
+.breadcrumb {
+	margin-left:36px;
+ }
+}
+
+
+
+.container.main-container {
+ .breadcrumbs.breadcrumbs-fixed {
+	left: auto !important;
+	right: auto !important;
+ }
+ 
+ @media (min-width: @screen-tablet) {
+	.breadcrumbs.breadcrumbs-fixed {
+		width: @container-tablet - @sidebar-width;
+	}
+	.menu-min + .main-content .breadcrumbs.breadcrumbs-fixed {
+		width: @container-tablet - @sidebar-min-width;
+	}
+ }
+ @media (min-width: @screen-desktop) {
+	.breadcrumbs.breadcrumbs-fixed {
+		width: @container-desktop - @sidebar-width;
+	}
+	.menu-min + .main-content .breadcrumbs.breadcrumbs-fixed {
+		width: @container-desktop - @sidebar-min-width;
+	}
+ }
+ @media (min-width: @screen-lg-desktop) {
+	.breadcrumbs.breadcrumbs-fixed {
+		width: @container-lg-desktop - @sidebar-width;
+	}
+	.menu-min + .main-content .breadcrumbs.breadcrumbs-fixed {
+		width: @container-lg-desktop - @sidebar-min-width;
+	}
+ }
+
+}
+
+

@@ -1,0 +1,9 @@
+<nginx-log>
+    <server-address>127.0.0.1</server-address>
+    <time>2015-03-23 19:20:03+08:00</time>
+    <request-method>GET</request-method>
+    <status>200</status>
+    <url>http://m.api.51ping.com/operating/guesslike.bin</url>
+    <pool>m.api.51ping.com.mobile-api-web</pool>
+    <upstream-server>192.168.211.162:80</upstream-server>
+</nginx-log>

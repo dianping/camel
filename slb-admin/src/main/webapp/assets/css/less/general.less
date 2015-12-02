@@ -1,0 +1,118 @@
+//some page-content variables
+@content-bg:#FFF;
+@content-header-border:#E2E2E2;
+@content-header-color:#2679B5;
+@content-header-size:24px;
+@content-header-small-color:#8089A0;
+@content-header-small-size:14px;
+
+
+
+html {
+  min-height:100%;
+  position:relative;
+}
+
+body {
+  padding-bottom: 0;
+  background-color:@body-bg;
+  min-height:100%;
+
+  font-family: 'Open Sans';
+  font-size:13px;
+  color:@text-color;
+  
+  line-height:1.5;
+  
+
+// &:before{
+//	 content:"";
+//	 display:none;
+//	 position:fixed;
+//	 top:0; bottom:0; left:0; right:0; z-index:-1;
+//	 background-color:#FFF;
+// }
+  &.navbar-fixed {
+	padding-top:@navbar-mh;
+  }
+  &.breadcrumbs-fixed {
+	padding-top:@navbar-mh + @breadcrumb-height;
+  }
+}
+
+
+
+/* ace default theme layout sections */
+.main-container {
+	position: static;
+	padding:0;
+}
+.main-container:after {
+    background-color: #FFF;
+    bottom: 0;
+    content: "";
+    display: block;
+    max-width: inherit;
+    //position: absolute;
+	position:fixed;
+    top: 0;
+    width: 100%;
+    z-index: -2;
+}
+@media (min-width: @screen-tablet) {
+ .container.main-container:after {
+	.box-shadow(~"0 0 0 1px rgba(0,0,0,0.1)");
+ }
+}
+
+.main-container > .main-container-inner{
+	position: relative;
+}
+.container.main-container {
+ .sidebar.sidebar-fixed {
+	& , &:before {
+		left: auto;
+	}
+ }
+}
+
+
+
+
+.main-content {
+ margin-left:@sidebar-width;
+ margin-right:0; margin-top:0;
+ min-height:100%;
+ padding:0;
+}
+
+.page-content {
+ background:@content-bg;
+ margin:0;
+ padding:8px 20px 24px;
+}//.page-content
+
+.page-header {
+	margin:0 0 12px;
+	border-bottom:1px dotted @content-header-border;
+	
+	padding-bottom: 16px;
+    padding-top: 7px;
+
+	h1 {
+	  padding:0;
+	  margin:0 8px;
+	  font-size:@content-header-size;
+	  font-weight:lighter;
+	  color:@content-header-color;
+
+	  small {
+		margin:0 6px;
+		font-size:@content-header-small-size;
+		font-weight:normal;
+		color:@content-header-small-color;
+	  }//small
+	}//h1
+}//.page-header
+
+

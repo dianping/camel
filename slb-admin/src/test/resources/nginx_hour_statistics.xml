@@ -1,0 +1,110 @@
+<nginx-hour-statistics hour="2015-03-25 10:00">
+    <pool id="mobile-api-web">
+        <server ip="192.168.211.162">
+            <domain id="m.api.51ping.com">
+                <period minute="0">
+                    <status code="400" count="10"/>
+                    <status code="401" count="4"/>
+                    <status code="500" count="3"/>
+                </period>
+                <period minute="1">
+                    <status code="400" count="3"/>
+                    <status code="401" count="3"/>
+                    <status code="500" count="3"/>
+                </period>
+            </domain>
+            <domain id="m.api.51ping.com">
+                <period minute="0">
+                    <status code="400" count="10"/>
+                    <status code="401" count="4"/>
+                    <status code="500" count="3"/>
+                </period>
+                <period minute="1">
+                    <status code="400" count="3"/>
+                    <status code="401" count="3"/>
+                    <status code="500" count="3"/>
+                </period>
+            </domain>
+        </server>
+        <server ip="192.168.211.163">
+            <domain id="m.api.51ping.com">
+                <period minute="0">
+                    <status code="400" count="10"/>
+                    <status code="401" count="4"/>
+                    <status code="500" count="3"/>
+                </period>
+                <period minute="1">
+                    <status code="400" count="3"/>
+                    <status code="401" count="3"/>
+                    <status code="500" count="3"/>
+                </period>
+            </domain>
+            <domain id="m.api.51ping.com">
+                <period minute="0">
+                    <status code="400" count="10"/>
+                    <status code="401" count="4"/>
+                    <status code="500" count="3"/>
+                </period>
+                <period minute="1">
+                    <status code="400" count="3"/>
+                    <status code="401" count="3"/>
+                    <status code="500" count="3"/>
+                </period>
+            </domain>
+        </server>
+    </pool>
+    <pool id="m.api.51ping.com.mobile-api-web">
+        <server ip="192.168.211.162">
+            <domain id="m.api.51ping.com">
+                <period minute="0">
+                    <status code="400" count="10"/>
+                    <status code="401" count="4"/>
+                    <status code="500" count="3"/>
+                </period>
+                <period minute="1">
+                    <status code="400" count="3"/>
+                    <status code="401" count="3"/>
+                    <status code="500" count="3"/>
+                </period>
+            </domain>
+            <domain id="m.api.51ping.com">
+                <period minute="0">
+                    <status code="400" count="10"/>
+                    <status code="401" count="4"/>
+                    <status code="500" count="3"/>
+                </period>
+                <period minute="1">
+                    <status code="400" count="3"/>
+                    <status code="401" count="3"/>
+                    <status code="500" count="3"/>
+                </period>
+            </domain>
+        </server>
+        <server ip="192.168.211.163">
+            <domain id="m.api.51ping.com">
+                <period minute="0">
+                    <status code="400" count="10"/>
+                    <status code="401" count="4"/>
+                    <status code="500" count="3"/>
+                </period>
+                <period minute="1">
+                    <status code="400" count="3"/>
+                    <status code="401" count="3"/>
+                    <status code="500" count="3"/>
+                </period>
+            </domain>
+            <domain id="m.api.51ping.com">
+                <period minute="0">
+                    <status code="400" count="10"/>
+                    <status code="401" count="4"/>
+                    <status code="500" count="3"/>
+                </period>
+                <period minute="1">
+                    <status code="400" count="3"/>
+                    <status code="401" count="3"/>
+                    <status code="500" count="3"/>
+                </period>
+            </domain>
+        </server>
+    </pool>
+</nginx-hour-statistics>

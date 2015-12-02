@@ -1,0 +1,38 @@
+<div class="sidebar" id="sidebar">
+    <script type="text/javascript">
+        try {
+            ace.settings.check('sidebar', 'fixed')
+        } catch (e) {
+        }
+    </script>
+    <ul class="nav nav-list">
+        <li class="open"><a href="#" class="dropdown-toggle"> <i class="icon-desktop"></i> <span class="menu-text">
+          默认分组 </span> <b class="arrow icon-angle-down"></b>
+        </a>
+            <ul class="submenu" style="display: block;">
+                <li class="#if($menu == 'deployList')active #end"><a href="${contextPath}/console/deploy"><i
+                        class="icon-globe"></i>
+                    发布列表 </a></li>
+                <li class="#if($menu == 'batchTag')active #end"><a href="${contextPath}/console/deploy/batchTag"><i
+                        class="icon-globe"></i>
+                    批量创建发布版本 </a></li>
+                <li class="#if($menu == 'apideployList')active #end"><a href="${contextPath}/console/apideploy"><i
+                        class="icon-globe"></i>
+                    api发布记录 </a></li>
+            </ul>
+        </li>
+    </ul>
+    <!-- /.nav-list -->
+
+    <div class="sidebar-collapse" id="sidebar-collapse">
+        <i class="icon-double-angle-left" data-icon1="icon-double-angle-left" data-icon2="icon-double-angle-right"></i>
+    </div>
+
+    <script type="text/javascript">
+        try {
+            ace.settings.check('sidebar', 'collapsed')
+        } catch (e) {
+        }
+    </script>
+</div>
+

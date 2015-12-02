@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model model-package="com.dianping.phoenix.slb.nginx.statistics.hour" enable-sax-parser="true" enable-sax-builder="true"
+       enable-json-builder="true" enable-json-parser="true">
+    <entity name="nginx-hour-statistics" root="true">
+        <attribute name="hour" value-type="Date" format="yyyy-MM-dd HH:mm"/>
+        <entity-ref name="pool" type="map" names="pools" method-find-or-create="true"/>
+    </entity>
+    <entity name="pool">
+        <attribute name="id" value-type="String" key="true"/>
+        <entity-ref name="server" type="map" names="servers" method-find-or-create="true"/>
+    </entity>
+    <entity name="server">
+        <attribute name="ip" value-type="String" key="true"/>
+        <entity-ref name="domain" type="map" names="domains" method-find-or-create="true"/>
+    </entity>
+    <entity name="domain">
+        <attribute name="id" value-type="String" key="true"/>
+        <entity-ref name="period" type="map" names="periods" method-find-or-create="true"/>
+    </entity>
+    <entity name="period">
+        <attribute name="minute" value-type="int" key="true"/>
+        <entity-ref name="status" type="map" names="statuses" method-find-or-create="true"/>
+    </entity>
+    <entity name="status">
+        <attribute name="code" value-type="int" key="true"/>
+        <attribute name="count" value-type="int"/>
+    </entity>
+</model>
+

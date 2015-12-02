@@ -1,0 +1,49 @@
+<div>
+    <ul style="margin-top: 20px;" class="pagination">
+        #if(!$paginator.isDisabledPage(1))
+        <li><a href="${contextPath}/console/apideploy">首页</a></li>
+        #else
+        <li class="disabled"><a href="javascript:;">首页</a></li>
+        #end
+
+        #if($paginator.isDisabledPage($paginator.getPreviousPage()))
+        <li class="disabled"><a href="javascript:;">上一页</a></li>
+        #else
+        <li><a href="${contextPath}/console/apideploy/list/$paginator.getPreviousPage()">上一页</a></li>
+        #end
+
+        #set($sliders = $paginator.getSlider())
+
+        #if($sliders.size() > 0 && $sliders.get(0) > 1)
+        <li><a href="${contextPath}/console/apideploy/list/1">1</a></li>
+        <li class="disabled"><a href="javascript:;">...</a></li>
+        #end
+
+        #foreach($slider in $sliders)
+        #set($containEndPage = false)
+        #if(!$containEndPage && $slider == $paginator.getLastPage())
+        #set($containEndPage = true)
+        #end
+        #if($paginator.isDisabledPage($slider))
+        <li class="active"><a href="javascript:;">$slider</a></li>
+        #else
+        <li><a href="${contextPath}/console/apideploy/list/$slider">$slider</a></li>
+        #end
+        #end
+        #if(!$containEndPage)
+        <li class="disabled"><a href="javascript:;">...</a></li>
+        #end
+
+        #if($paginator.isDisabledPage($paginator.getNextPage()))
+        <li class="disabled"><a href="javascript:;">下一页</a></li>
+        #else
+        <li><a href="${contextPath}/console/apideploy/list/$paginator.getNextPage()">下一页</a></li>
+        #end
+
+        #if($paginator.isDisabledPage($paginator.getLastPage()))
+        <li class="disabled"><a href="javascript:;">末页</a></li>
+        #else
+        <li><a href="${contextPath}/console/apideploy/list/$paginator.getLastPage()">末页</a></li>
+        #end
+    </ul>
+</div>

@@ -1,0 +1,1 @@
+rewrite $directive.getDynamicAttribute("matches") $directive.getDynamicAttribute("target-pattern") $!directive.getDynamicAttribute("flag");
