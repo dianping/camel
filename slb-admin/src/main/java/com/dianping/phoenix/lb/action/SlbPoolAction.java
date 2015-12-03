@@ -60,7 +60,7 @@ public class SlbPoolAction extends MenuAction {
 	public String index() {
 		slbPools = slbPoolService.listSlbPools();
 		if (slbPools.size() == 0) {
-			return "noneVs";
+			return "noneSlbPool";
 		}
 		slbPoolName = slbPools.get(0).getName();//重定向
 		return "redirect";
