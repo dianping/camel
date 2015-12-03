@@ -1,15 +1,28 @@
+<style>
+    body {
+        background: url(/static/img/restaurant_icons.png) repeat 0 0;
+    }
+</style>
 <div class="content">
     <div class="header">
     </div>
     <div class="container-fluid">
         <div class="row-fluid" style="min-height: 500px;">
-            <br><br>
-            <h2>使用软负载，请新建以下数据：</h2>
-            <h3>1. <a href="javascript:app.openAddPoolModal();"> 新增集群 </a> </h3>
-            <h3>2. <a href="javascript:app.openAddSlbPoolModal();"> 新增Nginx集群 </a> </h3>
-            <h3>3. <a href="javascript:app.openAddVirtualServerModal();"> 新增站点 </a> </h3>
-            <div class="clearfix"></div>
-            <br><br><br><br>
+            <div class="col-md-4 col-md-offset-4">
+                <br><br>
+
+                <h2>使用软负载，请新建以下数据：</h2>
+
+                <h3>1. <a href="/config/strategy/index"> 添加负载策略 </a></h3>
+
+                <h3>2. <a href="javascript:app.openAddPoolModal();"> 新增集群 </a></h3>
+
+                <h3>3. <a href="javascript:app.openAddSlbPoolModal();"> 新增Nginx集群 </a></h3>
+
+                <h3>4. <a href="javascript:app.openAddVirtualServerModal();"> 新增站点 </a></h3>
+
+                <div class="clearfix"></div>
+            </div>
         </div>
         #parse("common/simplefooter.htm")
     </div>
