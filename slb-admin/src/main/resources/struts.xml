@@ -135,7 +135,7 @@
             <result name="redirect" type="redirect">
                 <param name="location">/console/pool/${poolName}</param>
             </result>
-            <result name="none" type="velocity">
+            <result name="noneVs" type="velocity">
                 /pool/none.htm
             </result>
         </action>
