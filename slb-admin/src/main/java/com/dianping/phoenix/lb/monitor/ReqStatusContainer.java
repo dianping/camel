@@ -7,11 +7,11 @@ import com.dianping.phoenix.lb.model.entity.SlbPool;
 import com.dianping.phoenix.lb.utils.ElementAdded;
 import com.dianping.phoenix.lb.utils.ElementModified;
 import com.dianping.phoenix.lb.utils.ElementRemoved;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.unidal.lookup.util.StringUtils;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
@@ -120,7 +120,7 @@ public class ReqStatusContainer extends AbstractContainer implements Startable, 
 	/**
 	 * 删除针对pool的监控
 	 *
-	 * @param string
+	 * @param poolName
 	 */
 	private void removePool(String poolName) {
 
@@ -152,7 +152,6 @@ public class ReqStatusContainer extends AbstractContainer implements Startable, 
 	 * 全局数据，所有Dengine节点的qps值取平均
 	 *
 	 * @param duration 获取数据的时间长度
-	 * @param interval 采样间隔
 	 */
 	public List<DataWrapper> getTotalData(int duration, int viewCount, long viewEndTime) {
 
