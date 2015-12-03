@@ -10,12 +10,12 @@
 <configuration>
     <appender name="file"
               class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <File>/data/applogs/phoenix-slb-admin/phoenix-slb-admin.log
+        <File>/data/applogs/slb/slb-admin.log
         </File>
         <Append>true</Append>
         <rollingPolicy
                 class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>/data/applogs/phoenix-slb-admin/phoenix-slb-admin.log.%d{yyyy-MM-dd}
+            <fileNamePattern>/data/applogs/slb/slb-admin.log.%d{yyyy-MM-dd}
             </fileNamePattern>
             <maxHistory>15</maxHistory>
         </rollingPolicy>
@@ -26,12 +26,12 @@
     </appender>
     <appender name="fileCheck"
               class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <File>/data/applogs/phoenix-slb-admin/phoenix-slb-admin-check.log
+        <File>/data/applogs/slb/slb-admin-check.log
         </File>
         <Append>true</Append>
         <rollingPolicy
                 class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>/data/applogs/phoenix-slb-admin/phoenix-slb-admin-check.log.%d{yyyy-MM-dd}
+            <fileNamePattern>/data/applogs/slb/slb-admin-check.log.%d{yyyy-MM-dd}
             </fileNamePattern>
             <maxHistory>15</maxHistory>
         </rollingPolicy>
@@ -42,12 +42,12 @@
     </appender>
     <appender name="recorder"
               class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <File>/data/applogs/phoenix-slb-admin/phoenix-slb-admin-record.log
+        <File>/data/applogs/slb/slb-admin-record.log
         </File>
         <Append>true</Append>
         <rollingPolicy
                 class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>/data/applogs/phoenix-slb-admin/phoenix-slb-admin-record.log.%d{yyyy-MM-dd}
+            <fileNamePattern>/data/applogs/slb/slb-admin-record.log.%d{yyyy-MM-dd}
             </fileNamePattern>
             <maxHistory>15</maxHistory>
         </rollingPolicy>

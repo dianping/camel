@@ -98,6 +98,10 @@
             <artifactId>spring-beans</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.apache.struts</groupId>
             <artifactId>struts2-spring-plugin</artifactId>
         </dependency>
@@ -217,8 +221,8 @@
                             <value>UTF-8</value>
                         </systemProperty>
                     </systemProperties>
-                    <stopKey/>
-                    <stopPort/>
+                    <stopKey>shutdown</stopKey>
+                    <stopPort>9966</stopPort>
                 </configuration>
             </plugin>
             <plugin>
