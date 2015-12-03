@@ -168,17 +168,6 @@
                 <version>3.0.6</version>
             </dependency>
             <dependency>
-                <groupId>org.unidal.framework</groupId>
-                <artifactId>dal-jdbc</artifactId>
-                <version>2.0.3</version>
-                <exclusions>
-                    <exclusion>
-                        <artifactId>google-collections</artifactId>
-                        <groupId>com.google.collections</groupId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
-            <dependency>
                 <groupId>cglib</groupId>
                 <artifactId>cglib</artifactId>
                 <version>2.2.2</version>
@@ -191,33 +180,5 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-
-    <repositories>
-        <repository>
-            <id>project-repo</id>
-            <name>project-repo</name>
-            <url>file://${project.basedir}/repo</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
-
-    <pluginRepositories>
-        <pluginRepository>
-            <id>project-plugin-repo</id>
-            <name>project-plugin-repo</name>
-            <url>file://${project.basedir}/repo</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </pluginRepository>
-    </pluginRepositories>
 
 </project>
