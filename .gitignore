@@ -14,6 +14,22 @@ projectFilesBackup
 target
 bin/
 
+# nginx
+Makefile
+objs/
+*.o
+*.a
+*.so
+openssl-1.0.1h/
+bin
+Debug/
+cscope.out
+gdb.sh
+gdb_dynamic.sh
+tags
+timer_gdb.sh
+
+
 # others
 TestNoSubmit.java
 lib
