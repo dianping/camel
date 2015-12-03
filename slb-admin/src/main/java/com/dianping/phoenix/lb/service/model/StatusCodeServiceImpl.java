@@ -25,10 +25,14 @@ public class StatusCodeServiceImpl extends ConcurrentControlServiceTemplate impl
 
 	@PostConstruct
 	public void addDefaultStatusCode() throws BizException {
-		listStatusCodes();
-		addIfNull(new StatusCode("5XX").setValue("5XX"));
-		addIfNull(new StatusCode("4XX").setValue("4XX"));
-		addIfNull(new StatusCode("502").setValue("502"));
+		try {
+			listStatusCodes();
+			addIfNull(new StatusCode("5XX").setValue("5XX"));
+			addIfNull(new StatusCode("4XX").setValue("4XX"));
+			addIfNull(new StatusCode("502").setValue("502"));
+		}catch(Exception ex){
+			// ignore it.
+		}
 	}
 
 	@Override
