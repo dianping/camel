@@ -15,7 +15,6 @@ target
 bin/
 
 # nginx
-Makefile
 objs/
 *.o
 *.a
