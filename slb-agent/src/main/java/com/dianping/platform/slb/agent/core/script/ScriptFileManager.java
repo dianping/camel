@@ -20,6 +20,10 @@ public class ScriptFileManager {
 
 	private static final String TENGINE_RELOAD = "tengine_reload.sh";
 
+	private static final String SCRIPT_LIST_VS = "ls -l /usr/local/nginx/conf/phoenix-slb/";
+
+	private static final String SCRIPT_DEL_VS = "rm -rf /usr/local/nginx/conf/phoenix-slb/%s/";
+
 	private File getScriptFile(String fileName) {
 		URL url = this.getClass().getClassLoader().getResource(SCRIPT_FOLDER + fileName);
 
@@ -29,8 +33,16 @@ public class ScriptFileManager {
 		return new File(url.getPath());
 	}
 
-	public String getTengineReloadShell() {
+	public String getTengineReloadPath() {
 		return getScriptFile(TENGINE_RELOAD).getAbsolutePath();
+	}
+
+	public String getListVsScript() {
+		return SCRIPT_LIST_VS;
+	}
+
+	public String getDelVsScript(String vs) {
+		return String.format(SCRIPT_DEL_VS, vs);
 	}
 
 }
