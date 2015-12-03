@@ -23,7 +23,7 @@ public class StatusCodeServiceImpl extends ConcurrentControlServiceTemplate impl
 
 	private Set<StatusCode> m_statusCodes = new HashSet<StatusCode>();
 
-	@PostConstruct
+	//@PostConstruct
 	public void addDefaultStatusCode() throws BizException {
 		try {
 			listStatusCodes();

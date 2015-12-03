@@ -36,18 +36,12 @@
 
         <interceptors>
             <interceptor name="recorder" class="com.dianping.phoenix.lb.action.interceptor.RecordInterceptor"/>
-            <interceptor name="autuChecker" class="com.dianping.phoenix.lb.action.interceptor.AuthInterceptor"/>
-            <interceptor-stack name="recordAndAuthStack">
-                <interceptor-ref name="autuChecker"/>
-                <interceptor-ref name="defaultStack"/>
-                <interceptor-ref name="recorder"/>
-            </interceptor-stack>
             <interceptor-stack name="recordStack">
                 <interceptor-ref name="defaultStack"/>
                 <interceptor-ref name="recorder"/>
             </interceptor-stack>
         </interceptors>
-        <default-interceptor-ref name="recordAndAuthStack"/>
+        <default-interceptor-ref name="recordStack"/>
 
         <action name="" class="virtualServerAction" method="index">
             <result name="redirect" type="redirect">
@@ -507,14 +501,12 @@
         </action>
 
         <action name="api/monitor/status" class="apiAction" method="status">
-            <interceptor-ref name="recordStack"/>
             <result name="success" type="json">
                 <param name="root">dataMap</param>
                 <param name="encoding">UTF-8</param>
             </result>
         </action>
         <action name="api/pool/add" class="apiAction" method="addPool">
-            <interceptor-ref name="recordStack"/>
             <result name="success" type="json">
                 <param name="root">dataMap</param>
                 <param name="encoding">UTF-8</param>
@@ -522,14 +514,12 @@
         </action>
         <action name="api/pool/changePoolName" class="apiAction"
                 method="changePoolName">
-            <interceptor-ref name="recordStack"/>
             <result name="success" type="velocity">
                 /api/poolChangedResult.htm
             </result>
         </action>
         <action name="api/pool/{poolName}/updateMember" class="apiAction"
                 method="updateMember">
-            <interceptor-ref name="recordStack"/>
             <result name="success" type="json">
                 <param name="root">dataMap</param>
                 <param name="encoding">UTF-8</param>
@@ -537,7 +527,6 @@
         </action>
         <action name="api/pool/{poolName}/addMember" class="apiAction"
                 method="addMember">
-            <interceptor-ref name="recordStack"/>
             <result name="success" type="json">
                 <param name="root">dataMap</param>
                 <param name="encoding">UTF-8</param>
@@ -545,7 +534,6 @@
         </action>
         <action name="api/pool/{poolName}/delMember" class="apiAction"
                 method="delMember">
-            <interceptor-ref name="recordStack"/>
             <result name="success" type="json">
                 <param name="root">dataMap</param>
                 <param name="encoding">UTF-8</param>
@@ -553,7 +541,6 @@
         </action>
         <action name="api/pool/{poolName}/deploy" class="apiAction"
                 method="deploy">
-            <interceptor-ref name="recordStack"/>
             <result name="success" type="json">
                 <param name="root">dataMap</param>
                 <param name="encoding">UTF-8</param>
@@ -561,7 +548,6 @@
         </action>
         <action name="api/pool/{poolName}/delete" class="apiAction"
                 method="delPool">
-            <interceptor-ref name="recordStack"/>
             <result name="success" type="json">
                 <param name="root">dataMap</param>
                 <param name="encoding">UTF-8</param>
@@ -569,7 +555,6 @@
         </action>
         <action name="api/pool/{poolName}/get" class="apiAction"
                 method="getPool">
-            <interceptor-ref name="recordStack"/>
             <result name="success" type="json">
                 <param name="root">dataMap</param>
                 <param name="encoding">UTF-8</param>
@@ -577,7 +562,6 @@
         </action>
         <action name="api/pools/name/list" class="apiAction"
                 method="listPoolNames">
-            <interceptor-ref name="recordStack"/>
             <result name="success" type="json">
                 <param name="root">poolNames</param>
                 <param name="encoding">UTF-8</param>
@@ -591,7 +575,6 @@
             </result>
         </action>
         <action name="api/vs/add" class="apiAction" method="addVs">
-            <interceptor-ref name="recordStack"/>
             <result name="success" type="json">
                 <param name="root">dataMap</param>
                 <param name="encoding">UTF-8</param>
@@ -599,35 +582,30 @@
         </action>
 
         <action name="api/vs/{vsName}/del" class="apiAction" method="delVs">
-            <interceptor-ref name="recordStack"/>
             <result name="success" type="json">
                 <param name="root">dataMap</param>
                 <param name="encoding">UTF-8</param>
             </result>
         </action>
         <action name="api/vs/{vsName}/deploy" class="apiAction" method="deployVs">
-            <interceptor-ref name="recordStack"/>
             <result name="success" type="json">
                 <param name="root">dataMap</param>
                 <param name="encoding">UTF-8</param>
             </result>
         </action>
         <action name="api/upstreamStatus" class="apiAction" method="upstreamStatus">
-            <interceptor-ref name="recordStack"/>
             <result name="success" type="json">
                 <param name="root">upstreamStatus</param>
                 <param name="encoding">UTF-8</param>
             </result>
         </action>
         <action name="api/pool/forcestate/{poolName}/{forceState}" class="apiAction" method="forceUpstreamState">
-            <interceptor-ref name="recordStack"/>
             <result name="success" type="json">
                 <param name="root">dataMap</param>
                 <param name="encoding">UTF-8</param>
             </result>
         </action>
         <action name="api/servers/get" class="apiAction" method="listServers">
-            <interceptor-ref name="recordStack"/>
             <result name="success" type="json">
                 <param name="root">servers</param>
                 <param name="encoding">UTF-8</param>
@@ -635,7 +613,6 @@
         </action>
         <action name="api/nginx/log/addLog" class="apiAction"
                 method="receiveNginxLogs">
-            <interceptor-ref name="recordStack"/>
             <result name="success" type="json">
                 <param name="root">dataMap</param>
                 <param name="encoding">UTF-8</param>
@@ -643,7 +620,6 @@
         </action>
         <action name="api/vs_path/{poolName}" class="apiAction"
                 method="listVsAndPath">
-            <interceptor-ref name="recordStack"/>
             <result name="success" type="json">
                 <param name="root">dataMap</param>
                 <param name="encoding">UTF-8</param>
@@ -652,47 +628,40 @@
 
 
         <action name="monitor/qps/pool/{poolName}/get" class="slbPoolMonitorAction" method="getPoolQpsData">
-            <interceptor-ref name="defaultStack"/>
             <result name="success" type="json">
                 <param name="root">result</param>
                 <param name="encoding">UTF-8</param>
             </result>
         </action>
         <action name="monitor/qps/pool/{poolName}" class="slbPoolMonitorAction" method="qpsShow">
-            <interceptor-ref name="defaultStack"/>
             <result name="success" type="velocity">
                 /monitor/monitor.htm
             </result>
         </action>
 
         <action name="monitor/status/dashboard" class="statusMonitorAction" method="showDashboard">
-            <interceptor-ref name="defaultStack"/>
             <result name="success" type="velocity">
                 /monitor/statuscode_dashboard/dashboard.htm
             </result>
         </action>
         <action name="monitor/status/rule" class="statusMonitorAction" method="showMonitorRules">
-            <interceptor-ref name="defaultStack"/>
             <result name="success" type="velocity">
                 /monitor/rule/rule.htm
             </result>
         </action>
         <action name="monitor/status/rule/get" class="statusMonitorAction" method="getMonitorRules">
-            <interceptor-ref name="defaultStack"/>
             <result name="success" type="json">
                 <param name="root">dataMap</param>
                 <param name="encoding">UTF-8</param>
             </result>
         </action>
         <action name="monitor/status/rule/save" class="statusMonitorAction" method="saveMonitorRule">
-            <interceptor-ref name="defaultStack"/>
             <result name="success" type="json">
                 <param name="root">dataMap</param>
                 <param name="encoding">UTF-8</param>
             </result>
         </action>
         <action name="monitor/status/rule/remove/{ruleId}" class="statusMonitorAction" method="removeMonitorRule">
-            <interceptor-ref name="defaultStack"/>
             <result name="success" type="json">
                 <param name="root">dataMap</param>
                 <param name="encoding">UTF-8</param>
@@ -892,7 +861,6 @@
         <!-- api v2 -->
         <action name="api/v2/pool/{poolName}/updateMember" class="apiActionV2"
                 method="updateMember">
-            <interceptor-ref name="recordStack"/>
             <result name="success" type="json">
                 <param name="root">dataMap</param>
                 <param name="encoding">UTF-8</param>
@@ -900,7 +868,6 @@
         </action>
         <action name="api/v2/pool/{poolName}/addMember" class="apiActionV2"
                 method="addMember">
-            <interceptor-ref name="recordStack"/>
             <result name="success" type="json">
                 <param name="root">dataMap</param>
                 <param name="encoding">UTF-8</param>
@@ -908,7 +875,6 @@
         </action>
         <action name="api/v2/pool/{poolName}/delMember" class="apiActionV2"
                 method="delMember">
-            <interceptor-ref name="recordStack"/>
             <result name="success" type="json">
                 <param name="root">dataMap</param>
                 <param name="encoding">UTF-8</param>
@@ -916,7 +882,6 @@
         </action>
         <action name="api/v2/pool/{poolName}/updateMemberAndDeploy" class="apiActionV2"
                 method="updateMemberAndDeploy">
-            <interceptor-ref name="recordStack"/>
             <result name="success" type="json">
                 <param name="root">dataMap</param>
                 <param name="encoding">UTF-8</param>
@@ -924,7 +889,6 @@
         </action>
         <action name="api/v2/pool/{poolName}/addMemberAndDeploy" class="apiActionV2"
                 method="addMemberAndDeploy">
-            <interceptor-ref name="recordStack"/>
             <result name="success" type="json">
                 <param name="root">dataMap</param>
                 <param name="encoding">UTF-8</param>
@@ -932,7 +896,6 @@
         </action>
         <action name="api/v2/pool/{poolName}/delMemberAndDeploy" class="apiActionV2"
                 method="delMemberAndDeploy">
-            <interceptor-ref name="recordStack"/>
             <result name="success" type="json">
                 <param name="root">dataMap</param>
                 <param name="encoding">UTF-8</param>
