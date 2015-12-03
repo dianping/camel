@@ -25,35 +25,35 @@
     <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
           destroy-method="close">
         <property name="driverClass">
-            <value>${slb-admin.jdbc.driverClassName}</value>
+            <value>${jdbc.driverClassName}</value>
         </property>
         <property name="jdbcUrl">
-            <value>${slb-admin.jdbc.url}</value>
+            <value>${jdbc.url}</value>
         </property>
         <property name="user">
-            <value>${slb-admin.jdbc.username}</value>
+            <value>${jdbc.username}</value>
         </property>
         <property name="password">
-            <value>${slb-admin.jdbc.password}</value>
+            <value>${jdbc.password}</value>
         </property>
         <property name="maxPoolSize">
-            <value>${slb-admin.jdbc.maxPoolSize}</value>
+            <value>${jdbc.maxPoolSize}</value>
         </property>
         <property name="minPoolSize">
-            <value>${slb-admin.jdbc.minPoolSize}</value>
+            <value>${jdbc.minPoolSize}</value>
         </property>
         <property name="initialPoolSize">
-            <value>${slb-admin.jdbc.initialPoolSize}</value>
+            <value>${jdbc.initialPoolSize}</value>
         </property>
         <property name="idleConnectionTestPeriod">
-            <value>${slb-admin.jdbc.idleConnectionTestPeriod}
+            <value>${jdbc.idleConnectionTestPeriod}
             </value>
         </property>
         <property name="maxIdleTime">
-            <value>${slb-admin.jdbc.maxIdleTime}</value>
+            <value>${jdbc.maxIdleTime}</value>
         </property>
         <property name="checkoutTimeout">
-            <value>${slb-admin.jdbc.checkoutTimeout}</value>
+            <value>${jdbc.checkoutTimeout}</value>
         </property>
     </bean>
 

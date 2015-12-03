@@ -7,7 +7,7 @@
     		http://www.springframework.org/schema/data/mongo
           	http://www.springframework.org/schema/data/mongo/spring-mongo-1.0.xsd">
 
-    <mongo:mongo id="mongo" replica-set="${slb-admin.mongodb.url}">
+    <mongo:mongo id="mongo" replica-set="${mongodb.url}">
         <mongo:options connections-per-host="${connections-per-host}"
                        threads-allowed-to-block-for-connection-multiplier="5"
                        connect-timeout="1000"
@@ -15,19 +15,19 @@
                        auto-connect-retry="true"
                        socket-keep-alive="true"
                        socket-timeout="1500"
-                       slave-ok="${slb-admin.slave-ok}"
+                       slave-ok="${slave-ok}"
                        write-number="1"
                        write-timeout="0"
                        write-fsync="true"/>
     </mongo:mongo>
 
-    <mongo:db-factory id="dbConfig" dbname="${slb-admin.mongodb.dbname_config}" mongo-ref="mongo"/>
+    <mongo:db-factory id="dbConfig" dbname="${mongodb.dbname_config}" mongo-ref="mongo"/>
 
-    <mongo:db-factory id="dbNginxLog" dbname="${slb-admin.mongodb.dbname_nginx_log}" mongo-ref="mongo"/>
+    <mongo:db-factory id="dbNginxLog" dbname="${mongodb.dbname_nginx_log}" mongo-ref="mongo"/>
 
     <mongo:db-factory id="dbRecord" dbname="record" mongo-ref="mongo"/>
 
-    <mongo:db-factory id="dbRuntime" dbname="${slb-admin.mongodb.dbname_runtime}" mongo-ref="mongo"/>
+    <mongo:db-factory id="dbRuntime" dbname="${mongodb.dbname_runtime}" mongo-ref="mongo"/>
 
     <bean id="mongoTemplateConfig" class="org.springframework.data.mongodb.core.MongoTemplate">
         <constructor-arg name="mongoDbFactory" ref="dbConfig"/>
