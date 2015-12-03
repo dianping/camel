@@ -1,0 +1,18 @@
+Changes with upstream_hash 0.3.2                                 03 Jun 2010
+
+    *) Support for servers marked as down. Thanks to Jack Lindamood of Facebook.
+
+
+Changes with upstream_hash 0.3.1                                 19 Oct 2009
+
+    *) Update nginx.patch to work with more recent versions of nginx
+
+
+Changes with upstream_hash 0.3                                   06 Aug 2008
+
+    *) Bugfix: infinite loop when retrying after a 404 and the "not_found"
+       flag of *_next_upstream was set.
+
+    *) Change: no more "hash_method" directive. Hash method is always CRC-32.
+
+    *) Change: failover strategy is compatible with PECL Memcache

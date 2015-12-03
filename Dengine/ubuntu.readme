@@ -1,0 +1,6 @@
+ubuntu :
+	sudo apt-get install libpcre3 libpcre3-dev
+	#for lua
+	sudo apt-get install libreadline-dev
+	apt-get install libncurses5-dev
+	apt-get install zlib1g-dev

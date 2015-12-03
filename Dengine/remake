@@ -1,0 +1,5 @@
+#./configure --with-debug --with-http_upstream_check_module --add-module=upstream-health-check-filter/ --add-module=/Users/marsqing/Projects/tengine/ngx_dynamic_proxy_pass_module --with-luajit-inc=/usr/local/include/luajit-2.0 --with-luajit-lib=/usr/local/lib/ --with-http_lua_module --add-module=ngx_http_dyups_module
+#./configure --with-cc-opt=-O0 --with-debug --with-http_upstream_check_module --add-module=ngx_dynamic_proxy_pass_module --with-luajit-inc=/usr/local/include/luajit-2.0 --with-luajit-lib=/usr/local/lib/ --with-http_lua_module --add-module=ngx_http_dyups_module
+./configure --with-debug --with-http_upstream_check_module --add-module=ngx_dynamic_proxy_pass_module --with-luajit-inc=/usr/local/include/luajit-2.0 --with-luajit-lib=/usr/local/lib/ --with-http_lua_module --add-module=ngx_http_dyups_module --with-opt-cc=-O0
+make
+sudo make install

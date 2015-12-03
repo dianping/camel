@@ -1,0 +1,38 @@
+#!/bin/bash
+
+function judge {
+    echo
+    if [ $1 -eq "0" ]
+    then
+        echo $2, "success"
+    else
+        echo $2, "fail";
+        exit 1
+    fi
+}
+
+killall -9 nginx
+
+/usr/local/nginx/sbin/nginx -c /usr/local/nginx/conf/nginx_lb_test.conf
+#check nginx started
+RESULT=`ps -ef | grep 'nginx[:]' | wc | awk '{print $1}'`
+if [ $RESULT -ne 2 ]; then echo "nginx start fail";  exit 1; fi
+
+
+sleep 2
+
+rm /tmp/testlb
+curl --cookie uid=1 http://127.0.0.1 >> /tmp/testlb 2>/dev/null
+curl --cookie uid=2 http://127.0.0.1 >> /tmp/testlb 2>/dev/null
+curl --cookie uid=3 http://127.0.0.1 >> /tmp/testlb 2>/dev/null
+curl --cookie uid=4 http://127.0.0.1 >> /tmp/testlb 2>/dev/null
+
+cat /tmp/testlb
+RESULT=`awk 'BEGIN{num=0;}{if($2 == 6061) num++}END{if(num==2) print "0"; else print "1"}' /tmp/testlb`
+judge $RESULT 'ngx_dynamic_proxy_pass_module'
+
+##################headers-more-nginx-module##################
+curl -i http://127.0.0.1:6666 > /tmp/testlb  2>/dev/null
+COUNT=` grep -c 'More: headers-more-nginx-module' /tmp/testlb`
+RESULT=`test $COUNT -eq 1 && echo 0 || echo 1`
+judge $RESULT 'headers-more-nginx-module'
