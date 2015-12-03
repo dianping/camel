@@ -16,14 +16,16 @@ import java.lang.reflect.Method;
  * slb - soft load balance
  * <p/>
  * Created by leon.li(Li Yang)
+ *
+ * use it to track db status
  */
-@Aspect
-@Component
+// @Aspect
+// @Component
 public class DbAspect {
 
 	private final Logger m_logger = LoggerFactory.getLogger(getClass());
 
-	@Around("execution(* com.dianping.phoenix.lb.dao.mongo.MongoModelStoreImpl.*(..))")
+	// @Around("execution(* com.dianping.phoenix.lb.dao.mongo.MongoModelStoreImpl.*(..))")
 	public Object logAround(ProceedingJoinPoint joinPoint) throws Throwable {
 		Object[] args = joinPoint.getArgs();
 		Object result = null;

@@ -47,7 +47,7 @@
             <result name="redirect" type="redirect">
                 <param name="location">/console/vs/${virtualServerName}</param>
             </result>
-            <result name="none" type="velocity">/vs/none.htm</result>
+            <result name="noneVs" type="velocity">/vs/none.htm</result>
         </action>
         <action name="console/vs/list" class="virtualServerAction"
                 method="list">
