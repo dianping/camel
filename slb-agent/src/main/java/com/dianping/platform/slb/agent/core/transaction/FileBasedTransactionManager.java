@@ -1,6 +1,7 @@
 package com.dianping.platform.slb.agent.core.transaction;
 
 import org.apache.commons.io.FileUtils;
+import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,6 +12,7 @@ import java.io.IOException;
  * <p/>
  * Created by leon.li(Li Yang)
  */
+@Service
 public class FileBasedTransactionManager implements TransactionManager {
 
 	public static String TRANSACTION_BASE_DIR = "/data/appdatas/slb-agent/transaction/";

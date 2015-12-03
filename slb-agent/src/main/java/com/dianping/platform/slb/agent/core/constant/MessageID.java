@@ -8,7 +8,8 @@ package com.dianping.platform.slb.agent.core.constant;
  */
 public enum MessageID {
 
-	SCRIPT_EXCUTE_EXCEPTION("script_execute_exception"), FILE_NOT_EXIST("file_not_exist"), DEFAULT("default");
+	SCRIPT_EXCUTE_EXCEPTION("script_execute_exception"), FILE_NOT_EXIST("file_not_exist"), DEFAULT(
+			"default"), ARGUMENT_CHECK_FAIL("argument_check_fail");
 
 	private String m_messageId;
 
