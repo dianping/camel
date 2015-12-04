@@ -14,7 +14,7 @@ public interface Processor {
 
 	SubmitResult submitTransaction(Transaction transaction);
 
-	Transaction getCurrentTranasction();
+	boolean isTransactionCurrent(int id);
 
 	void cancel(int id);
 
