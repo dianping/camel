@@ -1,8 +1,8 @@
 package com.dianping.platform.slb.agent.core.transaction;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.Reader;
 
 /**
  * dianping.com @2015
@@ -12,11 +12,16 @@ import java.io.OutputStream;
  */
 public interface TransactionManager {
 
-	boolean startTransaction(Transaction transaction);
+	boolean startTransaction(Transaction transaction) throws IOException;
 
 	boolean endTransaction(Transaction transaction);
 
-	OutputStream getLogOut(Transaction transaction) throws FileNotFoundException, IOException;
+	Transaction loadTransaction(int transactionId) throws Exception;
 
+	void saveTransaction(Transaction transaction) throws IOException;
+
+	OutputStream getLogOut(Transaction transaction) throws IOException;
+
+	Reader getReader(Transaction transaction, int offset) throws IOException;
 
 }
