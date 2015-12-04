@@ -4,7 +4,9 @@ import org.apache.commons.io.FileUtils;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 
 /**
  * dianping.com @2015
@@ -17,7 +19,9 @@ public class FileBasedTransactionManager implements TransactionManager {
 
 	public static String TRANSACTION_BASE_DIR = "/data/appdatas/slb-agent/transaction/";
 
-	public static String LOCK = ".lock";
+	public static String LOCK = "tx.lock";
+
+	public static String LOG = "tx.log";
 
 	@Override
 	public boolean startTransaction(Transaction transaction) {
@@ -38,6 +42,16 @@ public class FileBasedTransactionManager implements TransactionManager {
 	@Override
 	public boolean endTransaction(Transaction transaction) {
 		return false;
+	}
+
+	@Override
+	public OutputStream getLogOut(Transaction transaction) throws IOException {
+		File log = new File(getBaseDir(transaction), LOG);
+
+		if (!log.exists()) {
+			log.createNewFile();
+		}
+		return new FileOutputStream(log, true);
 	}
 
 	private File getBaseDir(Transaction transaction) throws IOException {
