@@ -39,7 +39,7 @@ public abstract class AbstractStep implements Step {
 		return header;
 	}
 
-	public int doStep(Context ctx) {
+	public int doStep(Context ctx) throws Exception {
 		int stepCode = Step.CODE_ERROR;
 
 		try {
