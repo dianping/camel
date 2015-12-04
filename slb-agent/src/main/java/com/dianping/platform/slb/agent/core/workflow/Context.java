@@ -18,6 +18,8 @@ public class Context {
 
 	private boolean m_isKilled;
 
+	private String m_exitStatus;
+
 	public Task getTask() {
 		return m_task;
 	}
@@ -40,5 +42,13 @@ public class Context {
 
 	public void kill() {
 		m_isKilled = true;
+	}
+
+	public String getExitStatus() {
+		return m_exitStatus;
+	}
+
+	public void setExitStatus(String exitStatus) {
+		m_exitStatus = exitStatus;
 	}
 }

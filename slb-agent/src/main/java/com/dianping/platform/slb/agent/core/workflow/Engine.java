@@ -1,6 +1,5 @@
 package com.dianping.platform.slb.agent.core.workflow;
 
-import com.dianping.platform.slb.agent.core.task.LogFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
