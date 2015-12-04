@@ -1,4 +1,4 @@
-package com.dianping.platform.slb.agent.core.task;
+package com.dianping.platform.slb.agent.core.workflow;
 
 import org.springframework.stereotype.Service;
 
