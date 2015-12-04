@@ -138,7 +138,6 @@ public class ApiController {
 		try {
 			task.initArgument();
 			Transaction transaction = new Transaction(task, task.getDeployId(), EventTracker.DUMMY_TRACKER);
-
 			Processor.SubmitResult submitResult = m_nginxConfDeployProcessor.submitTransaction(transaction);
 
 			if (submitResult.isResult()) {

@@ -2,13 +2,19 @@ package com.dianping.platform.slb.agent.core.workflow.deploy;
 
 import com.dianping.platform.slb.agent.core.script.DefaultScriptExecutor;
 import com.dianping.platform.slb.agent.core.script.ScriptExecutor;
+import com.dianping.platform.slb.agent.core.script.ScriptFileManager;
 import com.dianping.platform.slb.agent.core.workflow.Context;
 
 public class DeployContext extends Context {
 
-	private ScriptExecutor scriptExecutor = new DefaultScriptExecutor();
+	private ScriptExecutor scriptExecutor;
 
-	private DeployStepProvider stepProvider = new DefaultDeployStepProvider();
+	private DeployStepProvider stepProvider;
+
+	public DeployContext(ScriptFileManager scriptFileManager) {
+		scriptExecutor = new DefaultScriptExecutor();
+		stepProvider = new DefaultDeployStepProvider(scriptFileManager);
+	}
 
 	public ScriptExecutor getScriptExecutor() {
 		return scriptExecutor;
