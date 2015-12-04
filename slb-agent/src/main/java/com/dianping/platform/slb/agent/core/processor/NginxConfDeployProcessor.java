@@ -2,7 +2,6 @@ package com.dianping.platform.slb.agent.core.processor;
 
 import com.dianping.platform.slb.agent.core.script.ScriptFileManager;
 import com.dianping.platform.slb.agent.core.transaction.Transaction;
-import com.dianping.platform.slb.agent.core.workflow.Context;
 import com.dianping.platform.slb.agent.core.workflow.Engine;
 import com.dianping.platform.slb.agent.core.workflow.LogFormatter;
 import com.dianping.platform.slb.agent.core.workflow.deploy.DeployContext;
@@ -79,7 +78,7 @@ public class NginxConfDeployProcessor extends AbstractProcessor {
 	protected Transaction.Status doTransaction(Transaction transaction) throws Exception {
 		m_currentTransaction.set(transaction);
 
-		DeployContext context = new DeployContext();
+		DeployContext context = new DeployContext(m_scriptFileManager);
 
 		context.setTask(transaction.getTask());
 		context.setOutput(m_transactionManager.getLogOut(transaction));

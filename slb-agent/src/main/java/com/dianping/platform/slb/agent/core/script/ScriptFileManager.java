@@ -20,6 +20,8 @@ public class ScriptFileManager {
 
 	private static final String TENGINE_RELOAD = "tengine_reload.sh";
 
+	private static final String TENGINE_SCRIPT = "tengine.sh";
+
 	private static final String SCRIPT_LIST_VS = "ls -l /usr/local/nginx/conf/phoenix-slb/";
 
 	private static final String SCRIPT_DEL_VS = "rm -rf /usr/local/nginx/conf/phoenix-slb/%s/";
@@ -35,6 +37,10 @@ public class ScriptFileManager {
 
 	public String getTengineReloadPath() {
 		return getScriptFile(TENGINE_RELOAD).getAbsolutePath();
+	}
+
+	public String getTengineScript() {
+		return getScriptFile(TENGINE_SCRIPT).getAbsolutePath();
 	}
 
 	public String getListVsScript() {
