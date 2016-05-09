@@ -2,13 +2,14 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.dianping.platform</groupId>
-    <artifactId>slb</artifactId>
+    <artifactId>camel</artifactId>
     <packaging>pom</packaging>
-    <version>0.1.0</version>
-    <name>slb</name>
+    <version>1.0.0</version>
+    <name>camel</name>
 
     <modules>
-        <module>slb-admin</module>
+        <module>camel-admin</module>
+        <module>camel-agent</module>
     </modules>
 
     <properties>
