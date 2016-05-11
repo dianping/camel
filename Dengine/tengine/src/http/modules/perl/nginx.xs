@@ -261,12 +261,13 @@ header_in(r, key)
             sep = ';';
             goto multi;
         }
-#if (NGX_HTTP_X_FORWARDED_FOR)
+
+    #if (NGX_HTTP_X_FORWARDED_FOR)
         if (hh->offset == offsetof(ngx_http_headers_in_t, x_forwarded_for)) {
             sep = ',';
             goto multi;
         }
-#endif
+    #endif
 
         if (hh->offset) {
 
@@ -897,7 +898,8 @@ variable(r, name, value = NULL)
 
     var.len = len;
     var.data = lowcase;
-#if (NGX_DEBUG)
+
+    #if (NGX_DEBUG)
 
     if (value) {
         ngx_log_debug2(NGX_LOG_DEBUG_HTTP, r->connection->log, 0,
@@ -906,7 +908,8 @@ variable(r, name, value = NULL)
         ngx_log_debug1(NGX_LOG_DEBUG_HTTP, r->connection->log, 0,
                        "perl variable: \"%V\"", &var);
     }
-#endif
+
+    #endif
 
     vv = ngx_http_get_variable(r, &var, hash);
     if (vv == NULL) {

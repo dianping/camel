@@ -1,3 +1,4 @@
+
 /*
  * Copyright (C) Igor Sysoev
  * Copyright (C) Nginx, Inc.
@@ -328,10 +329,6 @@ ngx_http_limit_req_handler(ngx_http_request_t *r)
                 ngx_http_limit_req_expire(r, ctx, 0);
                 node = ngx_slab_alloc_locked(ctx->shpool, n);
                 if (node == NULL) {
-                    ngx_log_error(NGX_LOG_ALERT, ngx_cycle->log, 0,
-                                  "could not allocate node%s",
-                                  ctx->shpool->log_ctx);
-
                     ngx_shmtx_unlock(&ctx->shpool->mutex);
                     return lrcf->status_code;
                 }
@@ -340,7 +337,7 @@ ngx_http_limit_req_handler(ngx_http_request_t *r)
             lr = (ngx_http_limit_req_node_t *) &node->color;
 
             node->key = hash;
-            lr->len = (u_short) total_len;
+            lr->len = (u_char) total_len;
 
             tp = ngx_timeofday();
             lr->last = (ngx_msec_t) (tp->sec * 1000 + tp->msec);
@@ -415,7 +412,7 @@ ngx_http_limit_req_handler(ngx_http_request_t *r)
         delay_time = (ngx_msec_t) delay_excess * 1000 / ctx->rate;
         ngx_log_error(lrcf->delay_log_level, r->connection->log, 0,
                       "delaying request,"
-                      "excess: %ui.%03ui, by zone \"%V\", delay \"%M\" ms",
+                      "excess: %ui.%03ui, by zone \"%V\", delay \"%M\" s",
                       delay_excess / 1000, delay_excess % 1000,
                       &limit_req[delay_postion].shm_zone->shm.name, delay_time);
 
@@ -757,8 +754,6 @@ ngx_http_limit_req_init_zone(ngx_shm_zone_t *shm_zone, void *data)
     ngx_sprintf(ctx->shpool->log_ctx, " in limit_req zone \"%V\"%Z",
                 &shm_zone->shm.name);
 
-    ctx->shpool->log_nomem = 0;
-
     return NGX_OK;
 }
 
@@ -1047,7 +1042,7 @@ ngx_http_limit_req(ngx_conf_t *cf, ngx_command_t *cmd, void *conf)
             continue;
         }
 
-        if (ngx_strcmp(value[i].data, "nodelay") == 0) {
+        if (ngx_strncmp(value[i].data, "nodelay", 7) == 0) {
             nodelay = 1;
             continue;
         }

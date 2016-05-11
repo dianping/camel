@@ -169,15 +169,13 @@ ngx_http_copy_filter(ngx_http_request_t *r, ngx_chain_t *in)
             offset = c->busy_sendfile->file_pos;
 
             if (file->aio) {
-                c->busy_count = (offset == file->aio->last_offset) ?
-                                c->busy_count + 1 : 0;
+                c->aio_sendfile = (offset != file->aio->last_offset);
                 file->aio->last_offset = offset;
 
-                if (c->busy_count > 2) {
+                if (c->aio_sendfile == 0) {
                     ngx_log_error(NGX_LOG_ALERT, c->log, 0,
                                   "sendfile(%V) returned busy again",
                                   &file->name);
-                    c->aio_sendfile = 0;
                 }
             }
 

@@ -25,8 +25,6 @@
 #define EPOLLERR       0x008
 #define EPOLLHUP       0x010
 
-#define EPOLLRDHUP     0x2000
-
 #define EPOLLET        0x80000000
 #define EPOLLONESHOT   0x40000000
 
@@ -398,13 +396,13 @@ ngx_epoll_add_event(ngx_event_t *ev, ngx_int_t event, ngx_uint_t flags)
     if (event == NGX_READ_EVENT) {
         e = c->write;
         prev = EPOLLOUT;
-#if (NGX_READ_EVENT != EPOLLIN|EPOLLRDHUP)
-        events = EPOLLIN|EPOLLRDHUP;
+#if (NGX_READ_EVENT != EPOLLIN)
+        events = EPOLLIN;
 #endif
 
     } else {
         e = c->read;
-        prev = EPOLLIN|EPOLLRDHUP;
+        prev = EPOLLIN;
 #if (NGX_WRITE_EVENT != EPOLLOUT)
         events = EPOLLOUT;
 #endif
@@ -468,7 +466,7 @@ ngx_epoll_del_event(ngx_event_t *ev, ngx_int_t event, ngx_uint_t flags)
 
     } else {
         e = c->read;
-        prev = EPOLLIN|EPOLLRDHUP;
+        prev = EPOLLIN;
     }
 
     if (e->active) {
@@ -503,7 +501,7 @@ ngx_epoll_add_connection(ngx_connection_t *c)
 {
     struct epoll_event  ee;
 
-    ee.events = EPOLLIN|EPOLLOUT|EPOLLET|EPOLLRDHUP;
+    ee.events = EPOLLIN|EPOLLOUT|EPOLLET;
     ee.data.ptr = (void *) ((uintptr_t) c | c->read->instance);
 
     ngx_log_debug2(NGX_LOG_DEBUG_EVENT, c->log, 0,
@@ -667,12 +665,6 @@ ngx_epoll_process_events(ngx_cycle_t *cycle, ngx_msec_t timer, ngx_uint_t flags)
         }
 
         if ((revents & EPOLLIN) && rev->active) {
-
-#if (NGX_HAVE_EPOLLRDHUP)
-            if (revents & EPOLLRDHUP) {
-                rev->pending_eof = 1;
-            }
-#endif
 
             if ((flags & NGX_POST_THREAD_EVENTS) && !rev->accept) {
                 rev->posted_ready = 1;

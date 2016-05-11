@@ -18,7 +18,7 @@ sub _carp {
     return warn @_, " at $file line $line\n";
 }
 
-our $VERSION = '0.98';
+our $VERSION = '0.92';
 $VERSION = eval $VERSION;    ## no critic (BuiltinFunctions::ProhibitStringyEval)
 
 use Test::Builder::Module;
@@ -34,11 +34,10 @@ our @EXPORT = qw(ok use_ok require_ok
   done_testing
   can_ok isa_ok new_ok
   diag note explain
-  subtest
   BAIL_OUT
 );
 
-#line 164
+#line 163
 
 sub plan {
     my $tb = Test::More->builder;
@@ -72,7 +71,7 @@ sub import_extra {
     return;
 }
 
-#line 217
+#line 216
 
 sub done_testing {
     my $tb = Test::More->builder;
@@ -88,7 +87,7 @@ sub ok ($;$) {
     return $tb->ok( $test, $name );
 }
 
-#line 372
+#line 367
 
 sub is ($$;$) {
     my $tb = Test::More->builder;
@@ -104,7 +103,7 @@ sub isnt ($$;$) {
 
 *isn't = \&isnt;
 
-#line 416
+#line 411
 
 sub like ($$;$) {
     my $tb = Test::More->builder;
@@ -112,7 +111,7 @@ sub like ($$;$) {
     return $tb->like(@_);
 }
 
-#line 431
+#line 426
 
 sub unlike ($$;$) {
     my $tb = Test::More->builder;
@@ -120,7 +119,7 @@ sub unlike ($$;$) {
     return $tb->unlike(@_);
 }
 
-#line 476
+#line 471
 
 sub cmp_ok($$$;$) {
     my $tb = Test::More->builder;
@@ -128,7 +127,7 @@ sub cmp_ok($$$;$) {
     return $tb->cmp_ok(@_);
 }
 
-#line 511
+#line 506
 
 sub can_ok ($@) {
     my( $proto, @methods ) = @_;
@@ -162,7 +161,7 @@ sub can_ok ($@) {
     return $ok;
 }
 
-#line 577
+#line 572
 
 sub isa_ok ($$;$) {
     my( $object, $class, $obj_name ) = @_;
@@ -189,7 +188,6 @@ sub isa_ok ($$;$) {
             }
             elsif( $error =~ /Can't call method "isa" without a package/ ) {
                 # It's something that can't even be a class
-                $obj_name = 'The thing' unless defined $obj_name;
                 $diag = "$obj_name isn't a class or reference";
             }
             else {
@@ -222,7 +220,7 @@ WHOA
     return $ok;
 }
 
-#line 656
+#line 650
 
 sub new_ok {
     my $tb = Test::More->builder;
@@ -247,16 +245,7 @@ sub new_ok {
     return $obj;
 }
 
-#line 741
-
-sub subtest {
-    my ($name, $subtests) = @_;
-
-    my $tb = Test::More->builder;
-    return $tb->subtest(@_);
-}
-
-#line 765
+#line 690
 
 sub pass (;$) {
     my $tb = Test::More->builder;
@@ -270,7 +259,7 @@ sub fail (;$) {
     return $tb->ok( 0, @_ );
 }
 
-#line 833
+#line 753
 
 sub use_ok ($;@) {
     my( $module, @imports ) = @_;
@@ -332,7 +321,7 @@ sub _eval {
     return( $eval_result, $eval_error );
 }
 
-#line 902
+#line 822
 
 sub require_ok ($) {
     my($module) = shift;
@@ -340,7 +329,7 @@ sub require_ok ($) {
 
     my $pack = caller;
 
-    # Try to determine if we've been given a module name or file.
+    # Try to deterine if we've been given a module name or file.
     # Module names must be barewords, files not.
     $module = qq['$module'] unless _is_module_name($module);
 
@@ -376,7 +365,7 @@ sub _is_module_name {
     return $module =~ /^[a-zA-Z]\w*$/ ? 1 : 0;
 }
 
-#line 979
+#line 899
 
 our( @Data_Stack, %Refs_Seen );
 my $DNE = bless [], 'Does::Not::Exist';
@@ -476,14 +465,14 @@ sub _type {
 
     return '' if !ref $thing;
 
-    for my $type (qw(Regexp ARRAY HASH REF SCALAR GLOB CODE)) {
+    for my $type (qw(ARRAY HASH REF SCALAR GLOB CODE Regexp)) {
         return $type if UNIVERSAL::isa( $thing, $type );
     }
 
     return '';
 }
 
-#line 1139
+#line 1059
 
 sub diag {
     return Test::More->builder->diag(@_);
@@ -493,13 +482,13 @@ sub note {
     return Test::More->builder->note(@_);
 }
 
-#line 1165
+#line 1085
 
 sub explain {
     return Test::More->builder->explain(@_);
 }
 
-#line 1231
+#line 1151
 
 ## no critic (Subroutines::RequireFinalReturn)
 sub skip {
@@ -527,7 +516,7 @@ sub skip {
     last SKIP;
 }
 
-#line 1315
+#line 1238
 
 sub todo_skip {
     my( $why, $how_many ) = @_;
@@ -548,7 +537,7 @@ sub todo_skip {
     last TODO;
 }
 
-#line 1370
+#line 1293
 
 sub BAIL_OUT {
     my $reason = shift;
@@ -557,7 +546,7 @@ sub BAIL_OUT {
     $tb->BAIL_OUT($reason);
 }
 
-#line 1409
+#line 1332
 
 #'#
 sub eq_array {
@@ -581,8 +570,6 @@ sub _eq_array {
         my $e1 = $_ > $#$a1 ? $DNE : $a1->[$_];
         my $e2 = $_ > $#$a2 ? $DNE : $a2->[$_];
 
-        next if _equal_nonrefs($e1, $e2);
-
         push @Data_Stack, { type => 'ARRAY', idx => $_, vals => [ $e1, $e2 ] };
         $ok = _deep_check( $e1, $e2 );
         pop @Data_Stack if $ok;
@@ -591,21 +578,6 @@ sub _eq_array {
     }
 
     return $ok;
-}
-
-sub _equal_nonrefs {
-    my( $e1, $e2 ) = @_;
-
-    return if ref $e1 or ref $e2;
-
-    if ( defined $e1 ) {
-        return 1 if defined $e2 and $e1 eq $e2;
-    }
-    else {
-        return 1 if !defined $e2;
-    }
-
-    return;
 }
 
 sub _deep_check {
@@ -620,6 +592,9 @@ sub _deep_check {
     local %Refs_Seen = %Refs_Seen;
 
     {
+        # Quiet uninitialized value warnings when comparing undefs.
+        no warnings 'uninitialized';
+
         $tb->_unoverload_str( \$e1, \$e2 );
 
         # Either they're both references or both not.
@@ -630,7 +605,7 @@ sub _deep_check {
             $ok = 0;
         }
         elsif( !defined $e1 and !defined $e2 ) {
-            # Shortcut if they're both undefined.
+            # Shortcut if they're both defined.
             $ok = 1;
         }
         elsif( _dne($e1) xor _dne($e2) ) {
@@ -697,7 +672,7 @@ WHOA
     }
 }
 
-#line 1556
+#line 1465
 
 sub eq_hash {
     local @Data_Stack = ();
@@ -720,8 +695,6 @@ sub _eq_hash {
         my $e1 = exists $a1->{$k} ? $a1->{$k} : $DNE;
         my $e2 = exists $a2->{$k} ? $a2->{$k} : $DNE;
 
-        next if _equal_nonrefs($e1, $e2);
-
         push @Data_Stack, { type => 'HASH', idx => $k, vals => [ $e1, $e2 ] };
         $ok = _deep_check( $e1, $e2 );
         pop @Data_Stack if $ok;
@@ -732,7 +705,7 @@ sub _eq_hash {
     return $ok;
 }
 
-#line 1615
+#line 1522
 
 sub eq_set {
     my( $a1, $a2 ) = @_;
@@ -757,6 +730,6 @@ sub eq_set {
     );
 }
 
-#line 1817
+#line 1735
 
 1;

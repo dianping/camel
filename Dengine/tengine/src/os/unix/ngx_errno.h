@@ -34,8 +34,6 @@ typedef int               ngx_err_t;
 #define NGX_ENOSPC        ENOSPC
 #define NGX_EPIPE         EPIPE
 #define NGX_EINPROGRESS   EINPROGRESS
-#define NGX_ENOPROTOOPT   ENOPROTOOPT
-#define NGX_EOPNOTSUPP    EOPNOTSUPP
 #define NGX_EADDRINUSE    EADDRINUSE
 #define NGX_ECONNABORTED  ECONNABORTED
 #define NGX_ECONNRESET    ECONNRESET
@@ -52,7 +50,6 @@ typedef int               ngx_err_t;
 #define NGX_EILSEQ        EILSEQ
 #define NGX_ENOMOREFILES  0
 #define NGX_ELOOP         ELOOP
-#define NGX_EBADF         EBADF
 
 #if (NGX_HAVE_OPENAT)
 #define NGX_EMLINK        EMLINK

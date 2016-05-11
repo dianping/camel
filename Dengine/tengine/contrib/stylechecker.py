@@ -67,25 +67,5 @@ def walk_dir(dir):
     for d in dirs:
         walk_dir(d)
 
-def usage():
-    print """
-Usage: stylechecker.py file or dir
 
-    python stylechecker.py /path/to/the/c/code
-        or
-    python stylechecker.py /file/of/c/code """
-
-    sys.exit(1)
-
-### main
-if len(sys.argv) == 2:
-    PATH = sys.argv[1]
-
-    if os.path.isfile(PATH):
-        check_file(PATH)
-    elif os.path.isdir(PATH):
-        walk_dir(PATH)
-    else:
-        print RED + "Check the %s is file or dir" % PATH + ENDC
-else:
-    usage()
+walk_dir(sys.argv[1])

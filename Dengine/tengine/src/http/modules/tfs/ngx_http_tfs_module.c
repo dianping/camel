@@ -1,6 +1,6 @@
 
 /*
- * Copyright (C) 2010-2015 Alibaba Group Holding Limited
+ * Copyright (C) 2010-2014 Alibaba Group Holding Limited
  */
 
 
@@ -675,11 +675,24 @@ ngx_http_tfs_log(ngx_conf_t *cf, ngx_command_t *cmd, void *conf)
 {
     ngx_http_tfs_srv_conf_t  *tscf = conf;
 
+    ngx_str_t  *value;
+
     if (tscf->log != NULL) {
         return "is duplicate";
     }
 
-    return ngx_log_set_log(cf, &tscf->log);
+    value = cf->args->elts;
+
+    tscf->log = ngx_log_create(cf->cycle, &value[1]);
+    if (tscf->log == NULL) {
+        return NGX_CONF_ERROR;
+    }
+
+    if (cf->args->nelts == 2) {
+        tscf->log->log_level = NGX_LOG_INFO;
+    }
+
+    return ngx_log_set_levels(cf, tscf->log);
 }
 
 

@@ -142,7 +142,6 @@ ngx_master_process_cycle(ngx_cycle_t *cycle)
 
     ngx_start_worker_processes(cycle, ccf->worker_processes,
                                NGX_PROCESS_RESPAWN);
-
     ngx_start_cache_manager_processes(cycle, 0);
 
 #if (NGX_PROCS)
@@ -386,23 +385,7 @@ ngx_start_worker_processes(ngx_cycle_t *cycle, ngx_int_t n, ngx_int_t type)
 
     ngx_log_error(NGX_LOG_NOTICE, cycle->log, 0, "start worker processes");
 
-    ngx_memzero(&ch, sizeof(ngx_channel_t));
-
     ch.command = NGX_CMD_OPEN_CHANNEL;
-
-#if (NGX_HAVE_REUSEPORT)
-
-    ngx_uint_t           listen_nelt;
-    ngx_event_conf_t    *ecf;
-
-    ecf = ngx_event_get_conf(cycle->conf_ctx, ngx_event_core_module);
-    if (ecf->reuse_port) {
-        listen_nelt = cycle->listening.nelts;
-        ngx_close_listening_sockets(cycle);
-        cycle->listening.nelts = listen_nelt;
-    }
-
-#endif
 
     for (i = 0; i < n; i++) {
 
@@ -447,8 +430,6 @@ ngx_start_cache_manager_processes(ngx_cycle_t *cycle, ngx_uint_t respawn)
     ngx_spawn_process(cycle, ngx_cache_manager_process_cycle,
                       &ngx_cache_manager_ctx, "cache manager process",
                       respawn ? NGX_PROCESS_JUST_RESPAWN : NGX_PROCESS_RESPAWN);
-
-    ngx_memzero(&ch, sizeof(ngx_channel_t));
 
     ch.command = NGX_CMD_OPEN_CHANNEL;
     ch.pid = ngx_processes[ngx_process_slot].pid;
@@ -508,8 +489,6 @@ ngx_signal_worker_processes(ngx_cycle_t *cycle, int signo)
     ngx_int_t      i;
     ngx_err_t      err;
     ngx_channel_t  ch;
-
-    ngx_memzero(&ch, sizeof(ngx_channel_t));
 
 #if (NGX_BROKEN_SCM_RIGHTS)
 
@@ -581,7 +560,7 @@ ngx_signal_worker_processes(ngx_cycle_t *cycle, int signo)
         }
 
         ngx_log_debug2(NGX_LOG_DEBUG_CORE, cycle->log, 0,
-                       "kill (%P, %d)", ngx_processes[i].pid, signo);
+                       "kill (%P, %d)" , ngx_processes[i].pid, signo);
 
         if (kill(ngx_processes[i].pid, signo) == -1) {
             err = ngx_errno;
@@ -612,30 +591,10 @@ ngx_reap_children(ngx_cycle_t *cycle)
     ngx_channel_t     ch;
     ngx_core_conf_t  *ccf;
 
-    ngx_memzero(&ch, sizeof(ngx_channel_t));
-
     ch.command = NGX_CMD_CLOSE_CHANNEL;
     ch.fd = -1;
 
     live = 0;
-
-#if (NGX_HAVE_REUSEPORT)
-
-    ngx_event_conf_t    *ecf;
-
-    ecf = ngx_event_get_conf(cycle->conf_ctx, ngx_event_core_module);
-
-    if (!ngx_terminate
-        && !ngx_quit
-        && ecf->reuse_port)
-    {
-        if (ngx_open_listening_sockets(cycle) != NGX_OK) {
-            return live;
-        }
-    }
-
-#endif
-
     for (i = 0; i < ngx_last_process; i++) {
 
         ngx_log_debug7(NGX_LOG_DEBUG_EVENT, cycle->log, 0,
@@ -687,7 +646,6 @@ ngx_reap_children(ngx_cycle_t *cycle)
                 && !ngx_terminate
                 && !ngx_quit)
             {
-
                 if (ngx_spawn_process(cycle, ngx_processes[i].proc,
                                       ngx_processes[i].data,
                                       ngx_processes[i].name, i)
@@ -698,6 +656,7 @@ ngx_reap_children(ngx_cycle_t *cycle)
                                   ngx_processes[i].name);
                     continue;
                 }
+
 
                 ch.command = NGX_CMD_OPEN_CHANNEL;
                 ch.pid = ngx_processes[ngx_process_slot].pid;
@@ -749,21 +708,6 @@ ngx_reap_children(ngx_cycle_t *cycle)
         }
     }
 
-#if (NGX_HAVE_REUSEPORT)
-
-    ngx_uint_t           listen_nelt;
-
-    if (!ngx_terminate
-        && !ngx_quit
-        && ecf->reuse_port)
-    {
-        listen_nelt = cycle->listening.nelts;
-        ngx_close_listening_sockets(cycle);
-        cycle->listening.nelts = listen_nelt;
-    }
-
-#endif
-
     return live;
 }
 
@@ -796,7 +740,6 @@ ngx_master_process_exit(ngx_cycle_t *cycle)
 
     ngx_exit_log = *ngx_cycle->log;
     ngx_exit_log.file = &ngx_exit_log_file;
-    ngx_exit_log.next = NULL;
 
 #if (NGX_SYSLOG)
     if (ngx_exit_log.syslog != NULL) {
@@ -1001,22 +944,6 @@ ngx_worker_process_init(ngx_cycle_t *cycle, ngx_int_t worker)
     }
 #endif
 
-#if (NGX_HAVE_REUSEPORT)
-
-    ngx_event_conf_t    *ecf;
-
-    ecf = ngx_event_get_conf(cycle->conf_ctx, ngx_event_core_module);
-    if (ecf->reuse_port) {
-        if (ngx_open_listening_sockets(cycle) != NGX_OK) {
-            /* fatal */
-            exit(2);
-        }
-
-        ngx_configure_listening_sockets(cycle);
-    }
-
-#endif
-
     if (geteuid() == 0) {
         if (setgid(ccf->group) == -1) {
             ngx_log_error(NGX_LOG_EMERG, cycle->log, ngx_errno,
@@ -1090,8 +1017,6 @@ ngx_worker_process_init(ngx_cycle_t *cycle, ngx_int_t worker)
         ngx_log_error(NGX_LOG_ALERT, cycle->log, ngx_errno,
                       "sigprocmask() failed");
     }
-
-    srandom((ngx_pid << 16) ^ ngx_time());
 
     /*
      * disable deleting previous events for the listening sockets because
@@ -1178,8 +1103,8 @@ ngx_worker_process_exit(ngx_cycle_t *cycle)
                 && !c[i].read->resolver)
             {
                 ngx_log_error(NGX_LOG_ALERT, cycle->log, 0,
-                              "*%uA open socket #%d left in connection %ui",
-                              c[i].number, c[i].fd, i);
+                              "open socket #%d left in connection %ui",
+                              c[i].fd, i);
                 ngx_debug_quit = 1;
             }
         }
@@ -1201,7 +1126,6 @@ ngx_worker_process_exit(ngx_cycle_t *cycle)
 
     ngx_exit_log = *ngx_cycle->log;
     ngx_exit_log.file = &ngx_exit_log_file;
-    ngx_exit_log.next = NULL;
 
 #if (NGX_SYSLOG)
     if (ngx_exit_log.syslog != NULL) {

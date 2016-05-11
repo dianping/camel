@@ -45,7 +45,7 @@ if [ -x $NGX_AUTOTEST ]; then
 fi
 
 
-rm -rf $NGX_AUTOTEST*
+rm -f $NGX_AUTOTEST
 
 
 case $ngx_size in

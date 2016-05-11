@@ -39,7 +39,6 @@
 #include <stddef.h>             /* offsetof() */
 #include <stdio.h>
 #include <stdlib.h>
-#include <ctype.h>
 #include <errno.h>
 #include <string.h>
 #include <signal.h>

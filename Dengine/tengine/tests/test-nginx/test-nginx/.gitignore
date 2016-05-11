@@ -35,5 +35,3 @@ blib
 Makefile.old
 .project
 .includepath
-MYMETA.json
-MYMETA.yml

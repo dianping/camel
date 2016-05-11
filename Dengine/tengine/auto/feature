@@ -120,4 +120,4 @@ else
     echo "----------"    >> $NGX_AUTOCONF_ERR
 fi
 
-rm -rf $NGX_AUTOTEST*
+rm $NGX_AUTOTEST*

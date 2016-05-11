@@ -20,14 +20,6 @@ typedef ngx_int_t (*ngx_ssl_variable_handler_pt)(ngx_connection_t *c,
 #define NGX_DEFAULT_CIPHERS     "HIGH:!aNULL:!MD5"
 #define NGX_DEFAULT_ECDH_CURVE  "prime256v1"
 
-#define NGX_HTTP_NPN_ADVERTISE  "\x08http/1.1"
-
-
-#ifdef TLSEXT_TYPE_application_layer_protocol_negotiation
-static int ngx_http_ssl_alpn_select(ngx_ssl_conn_t *ssl_conn,
-    const unsigned char **out, unsigned char *outlen,
-    const unsigned char *in, unsigned int inlen, void *arg);
-#endif
 
 #ifdef TLSEXT_TYPE_next_proto_neg
 static int ngx_http_ssl_npn_advertised(ngx_ssl_conn_t *ssl_conn,
@@ -41,7 +33,6 @@ static ngx_int_t ngx_http_ssl_variable(ngx_http_request_t *r,
 
 static ngx_int_t ngx_http_ssl_add_variables(ngx_conf_t *cf);
 static void *ngx_http_ssl_create_srv_conf(ngx_conf_t *cf);
-static void *ngx_http_ssl_create_loc_conf(ngx_conf_t *cf);
 static char *ngx_http_ssl_merge_srv_conf(ngx_conf_t *cf,
     void *parent, void *child);
 
@@ -133,13 +124,6 @@ static ngx_command_t  ngx_http_ssl_commands[] = {
       offsetof(ngx_http_ssl_srv_conf_t, ciphers),
       NULL },
 
-    { ngx_string("ssl_buffer_size"),
-      NGX_HTTP_MAIN_CONF|NGX_HTTP_SRV_CONF|NGX_CONF_TAKE1,
-      ngx_conf_set_size_slot,
-      NGX_HTTP_SRV_CONF_OFFSET,
-      offsetof(ngx_http_ssl_srv_conf_t, buffer_size),
-      NULL },
-
     { ngx_string("ssl_verify_client"),
       NGX_HTTP_MAIN_CONF|NGX_HTTP_SRV_CONF|NGX_CONF_TAKE1,
       ngx_conf_set_enum_slot,
@@ -147,15 +131,8 @@ static ngx_command_t  ngx_http_ssl_commands[] = {
       offsetof(ngx_http_ssl_srv_conf_t, verify),
       &ngx_http_ssl_verify },
 
-    { ngx_string("ssl_verify_client_exception"),
-      NGX_HTTP_LOC_CONF|NGX_CONF_TAKE1,
-      ngx_conf_set_flag_slot,
-      NGX_HTTP_LOC_CONF_OFFSET,
-      offsetof(ngx_http_ssl_loc_conf_t, verify_exception),
-      NULL },
-
     { ngx_string("ssl_verify_depth"),
-      NGX_HTTP_MAIN_CONF|NGX_HTTP_SRV_CONF|NGX_CONF_TAKE1,
+      NGX_HTTP_MAIN_CONF|NGX_HTTP_SRV_CONF|NGX_CONF_1MORE,
       ngx_conf_set_num_slot,
       NGX_HTTP_SRV_CONF_OFFSET,
       offsetof(ngx_http_ssl_srv_conf_t, verify_depth),
@@ -187,20 +164,6 @@ static ngx_command_t  ngx_http_ssl_commands[] = {
       ngx_http_ssl_session_cache,
       NGX_HTTP_SRV_CONF_OFFSET,
       0,
-      NULL },
-
-    { ngx_string("ssl_session_tickets"),
-      NGX_HTTP_MAIN_CONF|NGX_HTTP_SRV_CONF|NGX_CONF_FLAG,
-      ngx_conf_set_flag_slot,
-      NGX_HTTP_SRV_CONF_OFFSET,
-      offsetof(ngx_http_ssl_srv_conf_t, session_tickets),
-      NULL },
-
-    { ngx_string("ssl_session_ticket_key"),
-      NGX_HTTP_MAIN_CONF|NGX_HTTP_SRV_CONF|NGX_CONF_TAKE1,
-      ngx_conf_set_str_array_slot,
-      NGX_HTTP_SRV_CONF_OFFSET,
-      offsetof(ngx_http_ssl_srv_conf_t, session_ticket_keys),
       NULL },
 
     { ngx_string("ssl_session_timeout"),
@@ -259,7 +222,7 @@ static ngx_http_module_t  ngx_http_ssl_module_ctx = {
     ngx_http_ssl_create_srv_conf,          /* create server configuration */
     ngx_http_ssl_merge_srv_conf,           /* merge server configuration */
 
-    ngx_http_ssl_create_loc_conf,          /* create location configuration */
+    NULL,                                  /* create location configuration */
     NULL                                   /* merge location configuration */
 };
 
@@ -291,9 +254,6 @@ static ngx_http_variable_t  ngx_http_ssl_vars[] = {
     { ngx_string("ssl_session_id"), NULL, ngx_http_ssl_variable,
       (uintptr_t) ngx_ssl_get_session_id, NGX_HTTP_VAR_CHANGEABLE, 0 },
 
-    { ngx_string("ssl_session_reused"), NULL, ngx_http_ssl_variable,
-      (uintptr_t) ngx_ssl_get_session_reused, NGX_HTTP_VAR_CHANGEABLE, 0 },
-
     { ngx_string("ssl_client_cert"), NULL, ngx_http_ssl_variable,
       (uintptr_t) ngx_ssl_get_certificate, NGX_HTTP_VAR_CHANGEABLE, 0 },
 
@@ -320,65 +280,9 @@ static ngx_http_variable_t  ngx_http_ssl_vars[] = {
 static ngx_str_t ngx_http_ssl_sess_id_ctx = ngx_string("HTTP");
 
 
-#ifdef TLSEXT_TYPE_application_layer_protocol_negotiation
-
-static int
-ngx_http_ssl_alpn_select(ngx_ssl_conn_t *ssl_conn, const unsigned char **out,
-    unsigned char *outlen, const unsigned char *in, unsigned int inlen,
-    void *arg)
-{
-    unsigned int            srvlen;
-    unsigned char          *srv;
-#if (NGX_DEBUG)
-    unsigned int            i;
-#endif
-#if (NGX_HTTP_SPDY)
-    ngx_http_connection_t  *hc;
-#endif
-#if (NGX_HTTP_SPDY || NGX_DEBUG)
-    ngx_connection_t       *c;
-
-    c = ngx_ssl_get_connection(ssl_conn);
-#endif
-
-#if (NGX_DEBUG)
-    for (i = 0; i < inlen; i += in[i] + 1) {
-         ngx_log_debug2(NGX_LOG_DEBUG_HTTP, c->log, 0,
-                        "SSL ALPN supported by client: %*s", in[i], &in[i + 1]);
-    }
-#endif
-
-#if (NGX_HTTP_SPDY)
-    hc = c->data;
-
-    if (hc->addr_conf->spdy) {
-        srv = (unsigned char *) NGX_SPDY_NPN_ADVERTISE NGX_HTTP_NPN_ADVERTISE;
-        srvlen = sizeof(NGX_SPDY_NPN_ADVERTISE NGX_HTTP_NPN_ADVERTISE) - 1;
-
-    } else
-#endif
-    {
-        srv = (unsigned char *) NGX_HTTP_NPN_ADVERTISE;
-        srvlen = sizeof(NGX_HTTP_NPN_ADVERTISE) - 1;
-    }
-
-    if (SSL_select_next_proto((unsigned char **) out, outlen, srv, srvlen,
-                              in, inlen)
-        != OPENSSL_NPN_NEGOTIATED)
-    {
-        return SSL_TLSEXT_ERR_NOACK;
-    }
-
-    ngx_log_debug2(NGX_LOG_DEBUG_HTTP, c->log, 0,
-                   "SSL ALPN selected: %*s", *outlen, *out);
-
-    return SSL_TLSEXT_ERR_OK;
-}
-
-#endif
-
-
 #ifdef TLSEXT_TYPE_next_proto_neg
+
+#define NGX_HTTP_NPN_ADVERTISE  "\x08http/1.1"
 
 static int
 ngx_http_ssl_npn_advertised(ngx_ssl_conn_t *ssl_conn,
@@ -393,13 +297,20 @@ ngx_http_ssl_npn_advertised(ngx_ssl_conn_t *ssl_conn,
 
 #if (NGX_HTTP_SPDY)
     {
-    ngx_http_connection_t  *hc;
+    ngx_http_connection_t      *hc;
+    ngx_http_spdy_srv_conf_t   *sscf;
 
     hc = c->data;
+    sscf = ngx_http_get_module_srv_conf(hc->conf_ctx, ngx_http_spdy_module);
 
     if (hc->addr_conf->spdy) {
-        *out = (unsigned char *) NGX_SPDY_NPN_ADVERTISE NGX_HTTP_NPN_ADVERTISE;
-        *outlen = sizeof(NGX_SPDY_NPN_ADVERTISE NGX_HTTP_NPN_ADVERTISE) - 1;
+        if (sscf->version == NGX_SPDY_VERSION_V3) {
+            *out = (unsigned char *) NGX_SPDY_V3_NPN_ADVERTISE NGX_HTTP_NPN_ADVERTISE;
+            *outlen = sizeof(NGX_SPDY_V3_NPN_ADVERTISE NGX_HTTP_NPN_ADVERTISE) - 1;
+        } else {
+            *out = (unsigned char *) NGX_SPDY_NPN_ADVERTISE NGX_HTTP_NPN_ADVERTISE;
+            *outlen = sizeof(NGX_SPDY_NPN_ADVERTISE NGX_HTTP_NPN_ADVERTISE) - 1;
+        }
 
         return SSL_TLSEXT_ERR_OK;
     }
@@ -526,33 +437,16 @@ ngx_http_ssl_create_srv_conf(ngx_conf_t *cf)
 
     sscf->enable = NGX_CONF_UNSET;
     sscf->prefer_server_ciphers = NGX_CONF_UNSET;
-    sscf->buffer_size = NGX_CONF_UNSET_SIZE;
     sscf->verify = NGX_CONF_UNSET_UINT;
     sscf->verify_depth = NGX_CONF_UNSET_UINT;
     sscf->builtin_session_cache = NGX_CONF_UNSET;
     sscf->session_timeout = NGX_CONF_UNSET;
-    sscf->session_tickets = NGX_CONF_UNSET;
-    sscf->session_ticket_keys = NGX_CONF_UNSET_PTR;
     sscf->stapling = NGX_CONF_UNSET;
     sscf->stapling_verify = NGX_CONF_UNSET;
 
     return sscf;
 }
 
-static void *
-ngx_http_ssl_create_loc_conf(ngx_conf_t *cf)
-{
-    ngx_http_ssl_loc_conf_t *slcf;
-
-    slcf = ngx_pcalloc(cf->pool, sizeof(ngx_http_ssl_loc_conf_t));
-    if (slcf == NULL) {
-        return NULL;
-    }
-
-    slcf->verify_exception = NGX_CONF_UNSET;
-
-    return slcf;
-}
 
 static char *
 ngx_http_ssl_merge_srv_conf(ngx_conf_t *cf, void *parent, void *child)
@@ -582,11 +476,8 @@ ngx_http_ssl_merge_srv_conf(ngx_conf_t *cf, void *parent, void *child)
                          prev->prefer_server_ciphers, 0);
 
     ngx_conf_merge_bitmask_value(conf->protocols, prev->protocols,
-                         (NGX_CONF_BITMASK_SET|NGX_SSL_TLSv1|NGX_SSL_TLSv1_1
-                          |NGX_SSL_TLSv1_2));
-
-    ngx_conf_merge_size_value(conf->buffer_size, prev->buffer_size,
-                         NGX_SSL_BUFSIZE);
+                         (NGX_CONF_BITMASK_SET|NGX_SSL_SSLv3|NGX_SSL_TLSv1
+                          |NGX_SSL_TLSv1_1|NGX_SSL_TLSv1_2));
 
     ngx_conf_merge_uint_value(conf->verify, prev->verify, 0);
     ngx_conf_merge_uint_value(conf->verify_depth, prev->verify_depth, 1);
@@ -668,10 +559,6 @@ ngx_http_ssl_merge_srv_conf(ngx_conf_t *cf, void *parent, void *child)
 
 #endif
 
-#ifdef TLSEXT_TYPE_application_layer_protocol_negotiation
-    SSL_CTX_set_alpn_select_cb(conf->ssl.ctx, ngx_http_ssl_alpn_select, NULL);
-#endif
-
 #ifdef TLSEXT_TYPE_next_proto_neg
     SSL_CTX_set_next_protos_advertised_cb(conf->ssl.ctx,
                                           ngx_http_ssl_npn_advertised, NULL);
@@ -708,10 +595,7 @@ ngx_http_ssl_merge_srv_conf(ngx_conf_t *cf, void *parent, void *child)
         ngx_ssl_error(NGX_LOG_EMERG, cf->log, 0,
                       "SSL_CTX_set_cipher_list(\"%V\") failed",
                       &conf->ciphers);
-        return NGX_CONF_ERROR;
     }
-
-    conf->ssl.buffer_size = conf->buffer_size;
 
     if (conf->verify) {
 
@@ -767,23 +651,6 @@ ngx_http_ssl_merge_srv_conf(ngx_conf_t *cf, void *parent, void *child)
     if (ngx_ssl_session_cache(&conf->ssl, &ngx_http_ssl_sess_id_ctx,
                               conf->builtin_session_cache,
                               conf->shm_zone, conf->session_timeout)
-        != NGX_OK)
-    {
-        return NGX_CONF_ERROR;
-    }
-
-    ngx_conf_merge_value(conf->session_tickets, prev->session_tickets, 1);
-
-#ifdef SSL_OP_NO_TICKET
-    if (!conf->session_tickets) {
-        SSL_CTX_set_options(conf->ssl.ctx, SSL_OP_NO_TICKET);
-    }
-#endif
-
-    ngx_conf_merge_ptr_value(conf->session_ticket_keys,
-                         prev->session_ticket_keys, NULL);
-
-    if (ngx_ssl_session_ticket_keys(cf, &conf->ssl, conf->session_ticket_keys)
         != NGX_OK)
     {
         return NGX_CONF_ERROR;

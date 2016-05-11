@@ -29,7 +29,6 @@ typedef struct {
     size_t            min_shift;
 
     ngx_slab_page_t  *pages;
-    ngx_slab_page_t  *last;
     ngx_slab_page_t   free;
 
     u_char           *start;
@@ -39,8 +38,6 @@ typedef struct {
 
     u_char           *log_ctx;
     u_char            zero;
-
-    unsigned          log_nomem:1;
 
     void             *data;
     void             *addr;

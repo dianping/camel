@@ -56,15 +56,7 @@ def application(env, start_response):
 
 END
 
-my $uwsgihelp = `uwsgi -h`;
-my @uwsgiopts = ();
-
-if ($uwsgihelp !~ /--wsgi-file/) {
-	# uwsgi has no python support, maybe plugin load is necessary
-	push @uwsgiopts, '--plugin', 'python';
-}
-
-$t->run_daemon('uwsgi', '--socket', '127.0.0.1:8081', @uwsgiopts,
+$t->run_daemon('uwsgi', '--socket', '127.0.0.1:8081',
 	'--wsgi-file', $t->testdir() . '/uwsgi_test_app.py',
 	'--logto', $t->testdir() . '/uwsgi_log');
 

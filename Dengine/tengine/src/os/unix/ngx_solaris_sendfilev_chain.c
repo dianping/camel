@@ -207,9 +207,9 @@ ngx_solaris_sendfilev_chain(ngx_connection_t *c, ngx_chain_t *in, off_t limit)
 
         c->sent += sent;
 
-        for ( /* void */ ; in; in = in->next) {
+        for (cl = in; cl; cl = cl->next) {
 
-            if (ngx_buf_special(in->buf)) {
+            if (ngx_buf_special(cl->buf)) {
                 continue;
             }
 
@@ -217,28 +217,28 @@ ngx_solaris_sendfilev_chain(ngx_connection_t *c, ngx_chain_t *in, off_t limit)
                 break;
             }
 
-            size = ngx_buf_size(in->buf);
+            size = ngx_buf_size(cl->buf);
 
             if ((off_t) sent >= size) {
                 sent = (size_t) ((off_t) sent - size);
 
-                if (ngx_buf_in_memory(in->buf)) {
-                    in->buf->pos = in->buf->last;
+                if (ngx_buf_in_memory(cl->buf)) {
+                    cl->buf->pos = cl->buf->last;
                 }
 
-                if (in->buf->in_file) {
-                    in->buf->file_pos = in->buf->file_last;
+                if (cl->buf->in_file) {
+                    cl->buf->file_pos = cl->buf->file_last;
                 }
 
                 continue;
             }
 
-            if (ngx_buf_in_memory(in->buf)) {
-                in->buf->pos += sent;
+            if (ngx_buf_in_memory(cl->buf)) {
+                cl->buf->pos += sent;
             }
 
-            if (in->buf->in_file) {
-                in->buf->file_pos += sent;
+            if (cl->buf->in_file) {
+                cl->buf->file_pos += sent;
             }
 
             break;
@@ -250,11 +250,13 @@ ngx_solaris_sendfilev_chain(ngx_connection_t *c, ngx_chain_t *in, off_t limit)
 
         if (!complete) {
             wev->ready = 0;
-            return in;
+            return cl;
         }
 
-        if (send >= limit || in == NULL) {
-            return in;
+        if (send >= limit || cl == NULL) {
+            return cl;
         }
+
+        in = cl;
     }
 }

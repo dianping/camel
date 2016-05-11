@@ -70,7 +70,7 @@ ngx_event_accept(ngx_event_t *ev)
         s = accept(lc->fd, (struct sockaddr *) sa, &socklen);
 #endif
 
-        if (s == (ngx_socket_t) -1) {
+        if (s == -1) {
             err = ngx_socket_errno;
 
             if (err == NGX_EAGAIN) {
@@ -212,7 +212,6 @@ ngx_event_accept(ngx_event_t *ev)
         c->socklen = socklen;
         c->listening = ls;
         c->local_sockaddr = ls->sockaddr;
-        c->local_socklen = ls->socklen;
 
         c->unexpected_eof = 1;
 
@@ -276,8 +275,7 @@ ngx_event_accept(ngx_event_t *ev)
                 return;
             }
 
-            c->addr_text.len = ngx_sock_ntop(c->sockaddr, c->socklen,
-                                             c->addr_text.data,
+            c->addr_text.len = ngx_sock_ntop(c->sockaddr, c->addr_text.data,
                                              ls->addr_text_max_len, 0);
             if (c->addr_text.len == 0) {
                 ngx_close_accepted_connection(c);
@@ -298,7 +296,7 @@ ngx_event_accept(ngx_event_t *ev)
 
         cidr = ecf->debug_connection.elts;
         for (i = 0; i < ecf->debug_connection.nelts; i++) {
-            if (cidr[i].family != (ngx_uint_t) c->sockaddr->sa_family) {
+            if (cidr[i].family != c->sockaddr->sa_family) {
                 goto next;
             }
 
@@ -344,7 +342,7 @@ ngx_event_accept(ngx_event_t *ev)
 #endif
 
         ngx_log_debug3(NGX_LOG_DEBUG_EVENT, log, 0,
-                       "*%uA accept: %V fd:%d", c->number, &c->addr_text, s);
+                       "*%d accept: %V fd:%d", c->number, &c->addr_text, s);
 
         if (ngx_add_conn && (ngx_event_flags & NGX_USE_EPOLL_EVENT) == 0) {
             if (ngx_add_conn(c) == NGX_ERROR) {

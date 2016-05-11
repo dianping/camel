@@ -57,7 +57,7 @@ extern size_t   ngx_thread_stack_size;
 
 
 static ngx_inline ngx_int_t
-ngx_gettid(void)
+ngx_gettid()
 {
     char  *sp;
 
@@ -83,7 +83,7 @@ ngx_gettid(void)
 }
 
 
-ngx_tid_t ngx_thread_self(void);
+ngx_tid_t ngx_thread_self();
 
 
 typedef ngx_uint_t               ngx_tls_key_t;

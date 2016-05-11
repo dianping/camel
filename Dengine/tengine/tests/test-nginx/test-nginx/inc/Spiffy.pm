@@ -1,24 +1,17 @@
 #line 1
-##
-# name:      Spiffy
-# abstract:  Spiffy Perl Interface Framework For You
-# author:    Ingy döt Net <ingy@ingy.net>
-# license:   perl
-# copyright: 2004, 2006, 2011, 2012
-
 package Spiffy;
 use strict;
 use 5.006001;
 use warnings;
 use Carp;
 require Exporter;
-our $VERSION = '0.31';
+our $VERSION = '0.30';
 our @EXPORT = ();
 our @EXPORT_BASE = qw(field const stub super);
 our @EXPORT_OK = (@EXPORT_BASE, qw(id WWW XXX YYY ZZZ));
 our %EXPORT_TAGS = (XXX => [qw(WWW XXX YYY ZZZ)]);
 
-my $stack_frame = 0;
+my $stack_frame = 0; 
 my $dump = 'yaml';
 my $bases_map = {};
 
@@ -45,7 +38,7 @@ sub new {
         my $method = shift;
         $self->$method(shift);
     }
-    return $self;
+    return $self;    
 }
 
 my $filtered_files = {};
@@ -53,7 +46,7 @@ my $filter_dump = 0;
 my $filter_save = 0;
 our $filter_result = '';
 sub import {
-    no strict 'refs';
+    no strict 'refs'; 
     no warnings;
     my $self_package = shift;
 
@@ -61,12 +54,12 @@ sub import {
     # subclass's boolean_arguments and paired_arguments can conflict, causing
     # difficult debugging. Consider using something truly local.
     my ($args, @export_list) = do {
-        local *boolean_arguments = sub {
+        local *boolean_arguments = sub { 
             qw(
-                -base -Base -mixin -selfless
-                -XXX -dumper -yaml
+                -base -Base -mixin -selfless 
+                -XXX -dumper -yaml 
                 -filter_dump -filter_save
-            )
+            ) 
         };
         local *paired_arguments = sub { qw(-package) };
         $self_package->parse_arguments(@_);
@@ -86,8 +79,8 @@ sub import {
           unless grep /^XXX$/, @EXPORT_BASE;
     }
 
-    spiffy_filter()
-      if ($args->{-selfless} or $args->{-Base}) and
+    spiffy_filter() 
+      if ($args->{-selfless} or $args->{-Base}) and 
          not $filtered_files->{(caller($stack_frame))[1]}++;
 
     my $caller_package = $args->{-package} || caller($stack_frame);
@@ -98,7 +91,7 @@ sub import {
         next unless $class->isa('Spiffy');
         my @export = grep {
             not defined &{"$caller_package\::$_"};
-        } ( @{"$class\::EXPORT"},
+        } ( @{"$class\::EXPORT"}, 
             ($args->{-Base} or $args->{-base})
               ? @{"$class\::EXPORT_BASE"} : (),
           );
@@ -106,7 +99,7 @@ sub import {
             not defined &{"$caller_package\::$_"};
         } @{"$class\::EXPORT_OK"};
 
-        # Avoid calling the expensive Exporter::export
+        # Avoid calling the expensive Exporter::export 
         # if there is nothing to do (optimization)
         my %exportable = map { ($_, 1) } @export, @export_ok;
         next unless keys %exportable;
@@ -170,7 +163,7 @@ sub base {
 sub all_my_bases {
     my $class = shift;
 
-    return $bases_map->{$class}
+    return $bases_map->{$class} 
       if defined $bases_map->{$class};
 
     my @bases = ($class);
@@ -182,10 +175,10 @@ sub all_my_bases {
     $bases_map->{$class} = [grep {not $used->{$_}++} @bases];
 }
 
-my %code = (
-    sub_start =>
+my %code = ( 
+    sub_start => 
       "sub {\n",
-    set_default =>
+    set_default => 
       "  \$_[0]->{%s} = %s\n    unless exists \$_[0]->{%s};\n",
     init =>
       "  return \$_[0]->{%s} = do { my \$self = \$_[0]; %s }\n" .
@@ -196,13 +189,13 @@ my %code = (
       "    Scalar::Util::weaken(\$_[0]->{%s}) if ref \$_[0]->{%s};\n" .
       "    \$_[0]->{%s};\n" .
       "  } unless \$#_ > 0 or defined \$_[0]->{%s};\n",
-    return_if_get =>
+    return_if_get => 
       "  return \$_[0]->{%s} unless \$#_ > 0;\n",
-    set =>
+    set => 
       "  \$_[0]->{%s} = \$_[1];\n",
-    weaken =>
+    weaken => 
       "  Scalar::Util::weaken(\$_[0]->{%s}) if ref \$_[0]->{%s};\n",
-    sub_end =>
+    sub_end => 
       "  return \$_[0]->{%s};\n}\n",
 );
 
@@ -236,7 +229,7 @@ sub field {
       if defined $default;
     $code .= sprintf $code{return_if_get}, $field;
     $code .= sprintf $code{set}, $field;
-    $code .= sprintf $code{weaken}, $field, $field
+    $code .= sprintf $code{weaken}, $field, $field 
       if $args->{-weak};
     $code .= sprintf $code{sub_end}, $field;
 
@@ -281,10 +274,10 @@ sub stub {
     $package = $args->{-package} if defined $args->{-package};
     no strict 'refs';
     return if defined &{"${package}::$field"};
-    *{"${package}::$field"} =
-    sub {
+    *{"${package}::$field"} = 
+    sub { 
         require Carp;
-        Carp::confess
+        Carp::confess 
           "Method $field in package $package must be subclassed";
     }
 }
@@ -308,7 +301,7 @@ sub parse_arguments {
             push @values, $elem;
         }
     }
-    return wantarray ? ($args, @values) : $args;
+    return wantarray ? ($args, @values) : $args;        
 }
 
 sub boolean_arguments { () }
@@ -332,8 +325,8 @@ sub id {
 package DB;
 {
     no warnings 'redefine';
-    sub super_args {
-        my @dummy = caller(@_ ? $_[0] : 2);
+    sub super_args { 
+        my @dummy = caller(@_ ? $_[0] : 2); 
         return @DB::args;
     }
 }
@@ -404,7 +397,7 @@ sub spiffy_base_import {
     my $inheritor = caller(0);
     for my $base_class (@base_classes) {
         next if $inheritor->isa($base_class);
-        croak "Can't mix Spiffy and non-Spiffy classes in 'use base'.\n",
+        croak "Can't mix Spiffy and non-Spiffy classes in 'use base'.\n", 
               "See the documentation of Spiffy.pm for details\n  "
           unless $base_class->isa('Spiffy');
         $stack_frame = 1; # tell import to use different caller
@@ -446,7 +439,7 @@ sub spiffy_mixin_methods {
         $methods{$_}
           ? ($_, \ &{"$methods{$_}\::$_"})
           : ($_, \ &{"$mixin_class\::$_"})
-    } @_
+    } @_ 
       ? (get_roles($mixin_class, @_))
       : (keys %methods);
 }
@@ -457,12 +450,12 @@ sub get_roles {
     while (grep /^!*:/, @roles) {
         @roles = map {
             s/!!//g;
-            /^!:(.*)/ ? do {
-                my $m = "_role_$1";
+            /^!:(.*)/ ? do { 
+                my $m = "_role_$1"; 
                 map("!$_", $mixin_class->$m);
             } :
             /^:(.*)/ ? do {
-                my $m = "_role_$1";
+                my $m = "_role_$1"; 
                 ($mixin_class->$m);
             } :
             ($_)
@@ -541,3 +534,6 @@ sub ZZZ {
 
 1;
 
+__END__
+
+#line 1066

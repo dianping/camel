@@ -1,3 +1,4 @@
+
 /*
  * Copyright (C) Igor Sysoev
  * Copyright (C) Nginx, Inc.
@@ -23,11 +24,10 @@
 #define NGX_HTTP_UPSTREAM_FT_HTTP_502        0x00000020
 #define NGX_HTTP_UPSTREAM_FT_HTTP_503        0x00000040
 #define NGX_HTTP_UPSTREAM_FT_HTTP_504        0x00000080
-#define NGX_HTTP_UPSTREAM_FT_HTTP_403        0x00000100
-#define NGX_HTTP_UPSTREAM_FT_HTTP_404        0x00000200
-#define NGX_HTTP_UPSTREAM_FT_UPDATING        0x00000400
-#define NGX_HTTP_UPSTREAM_FT_BUSY_LOCK       0x00000800
-#define NGX_HTTP_UPSTREAM_FT_MAX_WAITING     0x00001000
+#define NGX_HTTP_UPSTREAM_FT_HTTP_404        0x00000100
+#define NGX_HTTP_UPSTREAM_FT_UPDATING        0x00000200
+#define NGX_HTTP_UPSTREAM_FT_BUSY_LOCK       0x00000400
+#define NGX_HTTP_UPSTREAM_FT_MAX_WAITING     0x00000800
 #define NGX_HTTP_UPSTREAM_FT_NOLIVE          0x40000000
 #define NGX_HTTP_UPSTREAM_FT_OFF             0x80000000
 
@@ -35,7 +35,6 @@
                                              |NGX_HTTP_UPSTREAM_FT_HTTP_502  \
                                              |NGX_HTTP_UPSTREAM_FT_HTTP_503  \
                                              |NGX_HTTP_UPSTREAM_FT_HTTP_504  \
-                                             |NGX_HTTP_UPSTREAM_FT_HTTP_403  \
                                              |NGX_HTTP_UPSTREAM_FT_HTTP_404)
 
 #define NGX_HTTP_UPSTREAM_INVALID_HEADER     40
@@ -101,7 +100,6 @@ typedef struct {
     ngx_uint_t                       max_fails;
     time_t                           fail_timeout;
     ngx_str_t                        id;
-    ngx_str_t                        host;
 
     unsigned                         down:1;
     unsigned                         backup:1;
@@ -200,8 +198,6 @@ typedef struct {
     ngx_flag_t                       cache_lock;
     ngx_msec_t                       cache_lock_timeout;
 
-    ngx_flag_t                       cache_revalidate;
-
     ngx_array_t                     *cache_valid;
     ngx_array_t                     *cache_bypass;
     ngx_array_t                     *no_cache;
@@ -278,7 +274,7 @@ typedef struct {
     ngx_uint_t                       no_port; /* unsigned no_port:1 */
 
     ngx_uint_t                       naddrs;
-    ngx_addr_t                      *addrs;
+    in_addr_t                       *addrs;
 
     struct sockaddr                 *sockaddr;
     socklen_t                        socklen;
@@ -327,7 +323,6 @@ struct ngx_http_upstream_s {
     ngx_http_upstream_headers_in_t   headers_in;
 
     ngx_http_upstream_resolved_t    *resolved;
-    ngx_resolver_ctx_t              *dyn_resolve_ctx;
 
     ngx_buf_t                        from_client;
 
@@ -433,12 +428,8 @@ ngx_uint_t ngx_http_upstream_check_peer_down(ngx_uint_t index);
 void ngx_http_upstream_check_get_peer(ngx_uint_t index);
 void ngx_http_upstream_check_free_peer(ngx_uint_t index);
 
-ngx_uint_t ngx_http_upstream_check_add_dynamic_peer(ngx_pool_t *pool,
-    ngx_http_upstream_srv_conf_t *us, ngx_addr_t *peer);
-void ngx_http_upstream_check_delete_dynamic_peer(ngx_str_t *name,
-     ngx_addr_t *peer_addr);
-
 #endif
+
 
 extern ngx_module_t        ngx_http_upstream_module;
 extern ngx_conf_bitmask_t  ngx_http_upstream_cache_method_mask[];

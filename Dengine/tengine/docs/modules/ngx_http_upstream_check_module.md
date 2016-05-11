@@ -63,8 +63,6 @@ Context: `upstream`
 
 Add health check for the upstream servers.
 
-Passive health checking should not be enabled, as they may interfere. So do not use fail_timeout for the servers in the upstream context for which proactive health checking is enabled.
-
 The parameters' meanings are:
 
 * `interval`: the check request's interval time.
@@ -109,7 +107,7 @@ In addition, in the case of "GET" method, size of the request uri should not be 
 
 Syntax: **check\_http\_expect\_alive** `[ http_2xx | http_3xx | http_4xx | http_5xx ]`
 
-Default: `http_2xx http_3xx`
+Default: `http_2xx | http_3xx`
 
 Context: `upstream`
 
@@ -172,7 +170,7 @@ Below it's the sample html page:
             <tr>
                 <td>0</td>
                 <td>backend</td>
-                <td>192.168.0.1:80</td>
+                <td>106.187.48.116:80</td>
                 <td>up</td>
                 <td>39</td>
                 <td>0</td>
@@ -185,7 +183,7 @@ Below it's the sample html page:
 
 Below it's the sample of csv page:
 
-    0,backend,192.168.0.1:80,up,46,0,http,80
+    0,backend,106.187.48.116:80,up,46,0,http,80
 
 Below it's the sample of json page:
 
@@ -193,7 +191,7 @@ Below it's the sample of json page:
       "total": 1,
       "generation": 3,
       "server": [
-       {"index": 0, "upstream": "backend", "name": "192.168.0.1:80", "status": "up", "rise": 58, "fall": 0, "type": "http", "port": 80}
+       {"index": 0, "upstream": "backend", "name": "106.187.48.116:80", "status": "up", "rise": 58, "fall": 0, "type": "http", "port": 80}
       ]
      }}
 

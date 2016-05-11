@@ -69,9 +69,13 @@ struct ngx_event_s {
 
     unsigned         delayed:1;
 
+    unsigned         read_discarded:1;
+
+    unsigned         unexpected_eof:1;
+
     unsigned         deferred_accept:1;
 
-    /* the pending eof reported by kqueue, epoll or in aio chain operation */
+    /* the pending eof reported by kqueue or in aio chain operation */
     unsigned         pending_eof:1;
 
 #if !(NGX_THREADS)
@@ -352,11 +356,6 @@ extern ngx_event_accept_filter_pt ngx_event_top_accept_filter;
 #define NGX_VNODE_EVENT    0
 
 
-#if (NGX_HAVE_EPOLL) && !(NGX_HAVE_EPOLLRDHUP)
-#define EPOLLRDHUP         0
-#endif
-
-
 #if (NGX_HAVE_KQUEUE)
 
 #define NGX_READ_EVENT     EVFILT_READ
@@ -400,7 +399,7 @@ extern ngx_event_accept_filter_pt ngx_event_top_accept_filter;
 
 #elif (NGX_HAVE_EPOLL)
 
-#define NGX_READ_EVENT     (EPOLLIN|EPOLLRDHUP)
+#define NGX_READ_EVENT     EPOLLIN
 #define NGX_WRITE_EVENT    EPOLLOUT
 
 #define NGX_LEVEL_EVENT    0
@@ -475,10 +474,6 @@ typedef struct {
 
     ngx_flag_t    multi_accept;
     ngx_flag_t    accept_mutex;
-
-#if (NGX_HAVE_REUSEPORT)
-    ngx_flag_t    reuse_port;
-#endif
 
     ngx_msec_t    accept_mutex_delay;
 
