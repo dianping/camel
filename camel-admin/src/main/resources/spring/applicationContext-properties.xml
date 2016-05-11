@@ -12,8 +12,8 @@
         <property name="order" value="1"/>
         <property name="locations">
             <list>
-                <value>file:/data/appdatas/slb/jdbc-mysql.properties</value>
-                <value>file:/data/appdatas/slb/mongo.properties</value>
+                <value>file:/data/appdatas/camel/jdbc-mysql.properties</value>
+                <value>file:/data/appdatas/camel/mongo.properties</value>
                 <value>classpath:slb.properties</value>
                 <value>classpath:web.properties</value>
             </list>
