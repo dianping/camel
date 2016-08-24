@@ -31,7 +31,6 @@ timer_gdb.sh
 
 # others
 TestNoSubmit.java
-lib
 dump
 dumpdata
 dump.tar
