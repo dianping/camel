@@ -1,0 +1,38 @@
+Camel
+
+Third party libraries
+---------------------
+
+This product includes software developed by The Apache Software
+Foundation (http://www.apache.org/),including, but not limit to:
+  - Apache Commons
+  - Apache Maven
+  - Apache log4j
+  - Apache velocity
+  - Apache HttpComponents
+
+This product includes the several frameworks developped by 
+unidal.org (https://github.com/unidal/),including:
+  - maven-plugins (https://github.com/unidal/maven-plugins)
+Copyright 2011-2013 unidal.org
+
+This product includes Tengine (just include, not modified any source code)
+(http://tengine.taobao.org/)
+distributed under BSD-style license
+
+Gson
+(http://code.google.com/p/google-gson)
+distributed under the Apache Software License, Version 2.0.
+Copyright (c) 2010 Google Inc.
+
+JUnit
+(http://www.junit.org/) 
+distributed under the Common Public License v1.0
+
+Spring
+(https://spring.io/)
+distributed under the Apache Software License, Version 2.0.
+
+Struts 2
+(https://struts.apache.org/2.x/)
+distributed under the Apache Software License, Version 2.0.
