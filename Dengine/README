@@ -1,5 +1,5 @@
 ## Insall Dengine:
-	sudo ./lbinstall
+	sudo bash ./install_dengine
 
 ## Verification:
-	sudo ./verification
+	sudo bash ./verification
