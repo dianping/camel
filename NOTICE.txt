@@ -16,7 +16,7 @@ unidal.org (https://github.com/unidal/),including:
   - maven-plugins (https://github.com/unidal/maven-plugins)
 Copyright 2011-2013 unidal.org
 
-This product includes Tengine (just include, not modified any source code)
+This product includes Tengine
 (http://tengine.taobao.org/)
 distributed under BSD-style license
 
