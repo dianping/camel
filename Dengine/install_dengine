@@ -1,0 +1,62 @@
+#!/bin/bash
+
+if [ ! -f tengine/configure ]; then
+        echo 'tengine not exist!'
+        exit
+fi
+
+if [ ! -d "openssl-1.0.1h" ]; then
+  # Control will enter here if $DIRECTORY doesn't exist.
+  tar -xvf openssl-1.0.1h.tar.gz
+fi
+
+platform=`uname -o`
+
+if [ "$platform" = "GNU/Linux" ]; then
+	yum -y install pcre.x86_64 pcre-devel.x86_64
+fi
+
+cd lua-5.1.4/
+
+make linux
+
+make install
+
+cd ..
+
+cd luajit-2.0
+
+make
+
+make install
+
+cd ..
+
+already=0
+while read line
+do
+	if [ "$line" = "/usr/local/lib" ]; then
+		already=1
+	fi
+done < /etc/ld.so.conf
+if [ $already = 0 ]; then
+	echo "/usr/local/lib" >> /etc/ld.so.conf
+fi
+ldconfig
+
+cd tengine
+if [ ! -f "Makefile" ]; then
+	#CFLAGS="-g -O0"  ./configure  --with-debug --with-http_upstream_check_module --add-module=../ngx_dynamic_proxy_pass_module --with-luajit-inc=/usr/local/include/luajit-2.0 --with-luajit-lib=/usr/local/lib/ --with-http_lua_module --add-module=../ngx_http_dyups_module --add-module=../nginx_upstream_hash/ --add-module=../echo-nginx-module/ --add-module=../headers-more-nginx-module-0.24 --with-openssl=../openssl-1.0.1h --with-openssl-opt="enable-tlsext" --add-module=../ngx_http_flush_filter  --add-module=../ngx_log_if
+	./configure  --with-debug --with-http_upstream_check_module --add-module=../ngx_dynamic_proxy_pass_module --with-luajit-inc=/usr/local/include/luajit-2.0 --with-luajit-lib=/usr/local/lib/ --with-http_lua_module --add-module=../ngx_http_dyups_module --add-module=../nginx_upstream_hash/ --add-module=../echo-nginx-module/ --add-module=../headers-more-nginx-module-0.24 --with-openssl=../openssl-1.0.1h --with-openssl-opt="enable-tlsext" --add-module=../ngx_http_flush_filter  --add-module=../ngx_log_if
+
+	make
+
+	make install
+fi
+cd ..
+
+mkdir -p /usr/local/nginx/tmpdir
+cp -r conf/* /usr/local/nginx/conf/
+cp ngx_dynamic_proxy_pass_module/rule.lua /usr/local/nginx/conf/phoenix-slb/rule.lua
+
+chmod a+wr /usr/local/nginx/conf/ -R
