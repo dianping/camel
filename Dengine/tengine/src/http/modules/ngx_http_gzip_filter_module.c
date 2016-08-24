@@ -572,6 +572,7 @@ ngx_http_gzip_filter_buffer(ngx_http_gzip_ctx_t *ctx, ngx_chain_t *in)
             b->pos = b->last;
 
             buf->last_buf = b->last_buf;
+            buf->flush = b->flush;
             buf->tag = (ngx_buf_tag_t) &ngx_http_gzip_filter_module;
 
             cl->buf = buf;

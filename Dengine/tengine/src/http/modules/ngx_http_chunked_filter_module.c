@@ -221,6 +221,9 @@ ngx_http_chunked_body_filter(ngx_http_request_t *r, ngx_chain_t *in)
         *ll = NULL;
     }
 
+    ngx_log_debug1(NGX_LOG_DEBUG_HTTP, r->connection->log, 0,
+                   "send chunked data: %d", size);
+
     rc = ngx_http_next_body_filter(r, out);
 
     ngx_chain_update_chains(r->pool, &ctx->free, &ctx->busy, &out,
