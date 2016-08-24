@@ -1,0 +1,5 @@
+## Insall Dengine:
+	sudo ./lbinstall
+
+## Verification:
+	sudo ./verification
