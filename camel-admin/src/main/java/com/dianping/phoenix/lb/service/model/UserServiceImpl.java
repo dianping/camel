@@ -10,7 +10,6 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -33,7 +32,7 @@ public class UserServiceImpl extends ConcurrentControlServiceTemplate implements
 		this.m_userDao = userDao;
 	}
 
-	@PostConstruct
+	// @PostConstruct
 	private void initUser() {
 		List<User> users = generateUsers();
 
