@@ -10,7 +10,6 @@ import com.dianping.phoenix.lb.exception.BizException;
 import com.dianping.phoenix.lb.model.VirtualServerGroup;
 import com.dianping.phoenix.lb.model.entity.*;
 import com.dianping.phoenix.lb.service.ConcurrentControlServiceTemplate;
-import com.dianping.phoenix.lb.service.GitService;
 import com.dianping.phoenix.lb.service.NginxService;
 import com.dianping.phoenix.lb.service.NginxService.NginxCheckResult;
 import com.dianping.phoenix.lb.utils.ExceptionUtils;
@@ -38,7 +37,6 @@ import java.util.regex.Pattern;
  * t
  *
  * @author Leo Liang
- *
  */
 @Service
 public class VirtualServerServiceImpl extends ConcurrentControlServiceTemplate implements VirtualServerService {
@@ -71,8 +69,8 @@ public class VirtualServerServiceImpl extends ConcurrentControlServiceTemplate i
 
 	@Autowired(required = true)
 	public VirtualServerServiceImpl(VirtualServerDao virtualServerDao, StrategyDao strategyDao, PoolDao poolDao,
-			SlbPoolDao slbPoolDao, VariableDao variableDao, CommonAspectDao commonAspectDao, NginxService nginxService,
-			GitService gitService) throws ComponentLookupException {
+			SlbPoolDao slbPoolDao, VariableDao variableDao, CommonAspectDao commonAspectDao, NginxService nginxService)
+			throws ComponentLookupException {
 		super();
 		this.virtualServerDao = virtualServerDao;
 		this.strategyDao = strategyDao;
@@ -88,39 +86,36 @@ public class VirtualServerServiceImpl extends ConcurrentControlServiceTemplate i
 
 		tagCache = cacheManager.createGuavaCache(cacheCount, new CacheLoader<TagCacheEntryKey, TagCacheEntryValue>() {
 
-					@Override
-					public TagCacheEntryValue load(TagCacheEntryKey key) throws Exception {
+			@Override
+			public TagCacheEntryValue load(TagCacheEntryKey key) throws Exception {
 
-						if (logger.isInfoEnabled()) {
-							logger.info("[load]" + key);
-						}
-						SlbModelTree slbModelTree = virtualServerDao.findTagById(key.getVsName(), key.getTagId());
-						String nginxConfig = null;
-						if (slbModelTree != null) {
-							nginxConfig = getNginxConfig(slbModelTree);
-						}
-						VirtualServer vs = new ArrayList<VirtualServer>(slbModelTree.getVirtualServers().values())
-								.get(0);
+				if (logger.isInfoEnabled()) {
+					logger.info("[load]" + key);
+				}
+				SlbModelTree slbModelTree = virtualServerDao.findTagById(key.getVsName(), key.getTagId());
+				String nginxConfig = null;
+				if (slbModelTree != null) {
+					nginxConfig = getNginxConfig(slbModelTree);
+				}
+				VirtualServer vs = new ArrayList<VirtualServer>(slbModelTree.getVirtualServers().values()).get(0);
 
-						return new TagCacheEntryValue(nginxConfig, slbModelTree, vs.getSslCertificate(),
-								vs.getSslCertificateKey());
-					}
+				return new TagCacheEntryValue(nginxConfig, slbModelTree, vs.getSslCertificate(),
+						vs.getSslCertificateKey());
+			}
 
-				});
+		});
 
 	}
 
 	/**
-	 * @param strategyDao
-	 *            the strategyDao to set
+	 * @param strategyDao the strategyDao to set
 	 */
 	public void setStrategyDao(StrategyDao strategyDao) {
 		this.strategyDao = strategyDao;
 	}
 
 	/**
-	 * @param virtualServerDao
-	 *            the virtualServerDao to set
+	 * @param virtualServerDao the virtualServerDao to set
 	 */
 	public void setVirtualServerDao(VirtualServerDao virtualServerDao) {
 		this.virtualServerDao = virtualServerDao;
