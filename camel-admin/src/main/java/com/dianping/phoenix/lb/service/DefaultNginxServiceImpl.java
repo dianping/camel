@@ -13,6 +13,7 @@ import org.apache.commons.lang.StringUtils;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.unidal.tuple.Pair;
 
@@ -36,11 +37,16 @@ import java.util.Set;
 @Service
 public class DefaultNginxServiceImpl implements NginxService {
 
+	@Value("${local.nginx.config.check}")
+	private boolean m_ifNeedCheck;
+
 	private static final String TEST_CONF = "test.conf";
 
 	private final Logger logger = LoggerFactory.getLogger(getClass());
 
 	private ConfigManager configManager;
+
+	private static final NginxCheckResult NO_NEED_CHECK_RESULT = new NginxCheckResult(true, "no need to check");
 
 	public static void main(String[] args) throws Exception {
 		DefaultNginxServiceImpl service = new DefaultNginxServiceImpl();
@@ -78,6 +84,9 @@ public class DefaultNginxServiceImpl implements NginxService {
 	@Override
 	public synchronized NginxCheckResult checkConfig(String configContent, String vsName, String certifacate,
 			String key) throws BizException {
+		if (!m_ifNeedCheck) {
+			return NO_NEED_CHECK_RESULT;
+		}
 		File serverConf = new File(configManager.getNginxCheckConfigFileName());
 		File sslParentFile = null;
 
