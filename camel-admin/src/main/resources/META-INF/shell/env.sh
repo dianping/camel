@@ -1,0 +1,1 @@
+chmod a+rw /usr/local/nginx/conf/ -R
