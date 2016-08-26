@@ -20,6 +20,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.util.*;
 
@@ -56,6 +57,20 @@ public class MongoModelStoreImpl extends AbstractDbStore implements ModelStore {
 	private KeyLock singleKeyLock;
 	@Resource(name = "mongoTemplateConfig")
 	private MongoTemplate mongoTemplate;
+
+	@PostConstruct
+	private void initSlbBaseCollection() {
+		if (mongoTemplate.collectionExists(SLB_BASE_COLLECTION_NAME)) {
+			return;
+		} else {
+			mongoTemplate.createCollection(SLB_BASE_COLLECTION_NAME);
+
+			SlbModelTree initSlbModelTree = new SlbModelTree();
+
+			initSlbModelTree.setTag(0);
+			mongoTemplate.insert(initSlbModelTree, SLB_BASE_COLLECTION_NAME);
+		}
+	}
 
 	@Override
 	public VirtualServer findVirtualServer(String vsName) {
