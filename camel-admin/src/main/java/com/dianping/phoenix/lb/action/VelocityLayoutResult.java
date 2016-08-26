@@ -130,8 +130,8 @@ public class VelocityLayoutResult extends VelocityResult {
 			layoutVm.merge(context, writer);
 			writer.flush();
 		} catch (Exception e) {
-			logger.error("Unable to render Velocity Template, '" + finalLocation + "'", e);
-			throw e;
+			// logger.error("Unable to render Velocity Template, '" + finalLocation + "'", e);
+			// throw e;
 		} finally {
 			if (usedJspFactory) {
 				jspFactory.releasePageContext(pageContext);
