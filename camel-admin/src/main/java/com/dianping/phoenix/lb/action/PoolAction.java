@@ -82,7 +82,7 @@ public class PoolAction extends MenuAction {
 	public String index() {
 		pools = poolService.listPools();
 		if (pools.size() == 0) {
-			return "noneVs";
+			return "nonePool";
 		}
 		poolName = pools.get(0).getName();//重定向
 		return "redirect";
