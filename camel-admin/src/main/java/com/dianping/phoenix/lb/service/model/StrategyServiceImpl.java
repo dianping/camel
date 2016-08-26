@@ -55,7 +55,7 @@ public class StrategyServiceImpl extends ConcurrentControlServiceTemplate implem
 
 		Strategy roundRobin = new Strategy();
 
-		roundRobin.setName("round-robinh");
+		roundRobin.setName("round-robin");
 		roundRobin.setType("round-robin");
 
 		addStrategy("round-robin", roundRobin);
