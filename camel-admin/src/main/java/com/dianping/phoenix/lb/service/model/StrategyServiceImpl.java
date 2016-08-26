@@ -15,11 +15,11 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.util.List;
 
 /**
  * @author Leo Liang
- *
  */
 @Service
 public class StrategyServiceImpl extends ConcurrentControlServiceTemplate implements StrategyService {
@@ -35,9 +35,51 @@ public class StrategyServiceImpl extends ConcurrentControlServiceTemplate implem
 		this.strategyDao = strategyDao;
 	}
 
+	@PostConstruct
+	private void initStrategy() throws BizException {
+		List<Strategy> strategies = listStrategies();
+
+		if (strategies.size() == 0) {
+			initDefaultStrategy();
+		}
+	}
+
+	private void initDefaultStrategy() throws BizException {
+		Strategy ipHash = new Strategy();
+
+		ipHash.setName("ip-hash");
+		ipHash.setType("ip-hash");
+		ipHash.setDynamicAttribute("argumentType", "NON_ARGUMENT");
+
+		addStrategy("ip-hash", ipHash);
+
+		Strategy roundRobin = new Strategy();
+
+		roundRobin.setName("round-robinh");
+		roundRobin.setType("round-robin");
+
+		addStrategy("round-robin", roundRobin);
+
+		Strategy consistentHashRid = new Strategy();
+
+		consistentHashRid.setName("consistent_hash_rid");
+		consistentHashRid.setType("consistent_hash");
+		consistentHashRid.setDynamicAttribute("target", "$arg_rid");
+
+		addStrategy("consistent_hash_rid", consistentHashRid);
+
+		Strategy consistentHashRequestId = new Strategy();
+
+		consistentHashRequestId.setName("consistent_hash_arg_requestId");
+		consistentHashRequestId.setType("consistent_hash");
+		consistentHashRequestId.setDynamicAttribute("target", "$arg_requestId");
+		consistentHashRequestId.setDynamicAttribute("argumentType", "ONE_ARGUMENT");
+
+		addStrategy("consistent_hash_arg_requestId", consistentHashRequestId);
+	}
+
 	/**
-	 * @param strategyDao
-	 *            the strategyDao to set
+	 * @param strategyDao the strategyDao to set
 	 */
 	public void setStrategyDao(StrategyDao strategyDao) {
 		this.strategyDao = strategyDao;

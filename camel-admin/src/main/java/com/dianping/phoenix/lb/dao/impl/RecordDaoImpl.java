@@ -42,9 +42,8 @@ public class RecordDaoImpl extends AbstractMongoDao implements RecordDao {
 	public void initCollection() {
 		try {
 			Index index = new Index().on("date", Direction.DESC);
-			CollectionOptions options = new CollectionOptions(1 * 1024 * 1024 * 1024, 100 * 365, true);
 
-			createIfNullCollection(SLB_RECORD_COLLECTION_NAME, options, index);
+			createIfNullCollection(SLB_RECORD_COLLECTION_NAME, null, index);
 		} catch (Exception ex) {
 			logger.error("create colection failed: " + SLB_RECORD_COLLECTION_NAME, ex);
 		}

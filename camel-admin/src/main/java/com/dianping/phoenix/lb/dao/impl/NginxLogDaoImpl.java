@@ -47,9 +47,9 @@ public class NginxLogDaoImpl extends AbstractMongoDao implements NginxLogDao {
 	public void initCollection() {
 		try {
 			Index index = new Index().on("m_time", Direction.DESC);
-			CollectionOptions options = new CollectionOptions(100 * 1024 * 1024 * 1024, 200 * 60 * 60 * 24 * 7, true);
+			// CollectionOptions options = new CollectionOptions(100 * 1024 * 1024 * 1024, 200 * 60 * 60 * 24 * 7, true);
 
-			createIfNullCollection(SLB_NGINX_LOG_COLLECTION_NAME, options, index);
+			createIfNullCollection(SLB_NGINX_LOG_COLLECTION_NAME, null, index);
 		} catch (Exception ex) {
 			logger.error("create colection failed: " + SLB_NGINX_LOG_COLLECTION_NAME, ex);
 		}
