@@ -51,6 +51,82 @@
                     </div>
                 </div>
 
+
+                <div ng-show="pool.check.type == 'HTTP'">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label no-padding-right" for="inputEmail">健康检查的http报文</label>
+
+                        <div class="col-sm-7">
+                            <div class="input-append">
+                                <input ng-trim="true" class="input-large" ng-model="pool.check.checkHttpSend"
+                                       type="text"
+                                       placeholder=""> <span
+                                    class="add-on" style="font-size: 8px;"><a href="javascript:;" data-toggle="tooltip"
+                                                                              title="该指令可以配置http健康检查包发送的请求内容。只需要配置Get方法之后的资源路径，默认是/inspect/healthcheck">
+                                <i
+                                        class="icon-question-sign"></i></a></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label no-padding-right" for="inputEmail">http返回码</label>
+
+                        <div class="col-sm-7">
+                            <div class="input-append">
+                                <input ng-trim="true" class="input-large" ng-model="pool.check.checkHttpExpectAlive"
+                                       type="text" placeholder=""> <span
+                                    class="add-on" style="font-size: 8px;"><a href="javascript:;" data-toggle="tooltip"
+                                                                              title="该指令可以配置期待的http返回码，默认：http_2xx，可以配置多个，比如：http_2xx http_3xx">
+                                <i
+                                        class="icon-question-sign"></i></a></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label no-padding-right" for="inputEmail">http消息体</label>
+
+                        <div class="col-sm-7">
+                            <div class="input-append">
+                                <input ng-trim="true" class="input-large" ng-model="pool.check.checkHttpExpectPattern"
+                                       type="text" placeholder=""> <span
+                                    class="add-on" style="font-size: 8px;"><a href="javascript:;" data-toggle="tooltip"
+                                                                              title="该指令可以配置期待的消息体，支持正则表达式，默认空"> <i
+                                    class="icon-question-sign"></i></a></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-5" style="margin-top: 0px; border-left: 1px solid #ddd;">
+                <div class="form-group">
+                    <label class="col-sm-4 control-label no-padding-right" for="inputEmail">健康检查的超时时间</label>
+
+                    <div class="col-sm-7">
+                        <div class="input-append">
+                            <input ng-trim="true" class="input-large" ng-model="pool.check.timeout" type="text"
+                                   placeholder=""> <span
+                                class="add-on" style="font-size: 8px;"><a href="javascript:;" data-toggle="tooltip"
+                                                                          title="后端健康请求的超时时间，超时则视为请求失败，累计一次fall"> <i
+                                class="icon-question-sign"></i></a></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-4 control-label no-padding-right" for="inputEmail">健康检查的时间间隔</label>
+
+                    <div class="col-sm-7">
+                        <div class="input-append">
+                            <input ng-trim="true" class="input-large" ng-model="pool.check.interval" type="text"
+                                   placeholder=""> <span
+                                class="add-on" style="font-size: 8px;"><a href="javascript:;" data-toggle="tooltip"
+                                                                          title="后端健康请求的时间间隔，每隔指定时间，检查一次"> <i
+                                class="icon-question-sign"></i></a></span>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="form-group">
                     <label class="col-sm-4 control-label no-padding-right" for="inputPassword">pool降级比例</label>
 
@@ -60,7 +136,9 @@
                            title="请输入0~100之间的数值，pool中可用节点数低于此比例时，则进行降级, -1代表使用默认值"> <i
                                 class="icon-question-sign"></i></a>
                     </div>
+                </div>
 
+                <div class="form-group">
                     <label class="col-sm-4 control-label no-padding-right"
                            for="inputPassword">pool强制降级</label>
 
@@ -75,104 +153,11 @@
                                 title="强制pool处于某种状态"> <i
                                 class="icon-question-sign"></i></a>
                     </div>
-
-                </div>
-
-                <div class="form-group" ng-show="pool.check.type == 'HTTP'">
-                    <label class="col-sm-4 control-label no-padding-right" for="inputEmail">健康检查的http报文</label>
-
-                    <div class="col-sm-7">
-                        <div class="input-append">
-                            <input ng-trim="true" class="input-large" ng-model="pool.check.checkHttpSend" type="text"
-                                   placeholder=""> <span
-                                class="add-on" style="font-size: 8px;"><a href="javascript:;" data-toggle="tooltip"
-                                                                          title="该指令可以配置http健康检查包发送的请求内容。只需要配置Get方法之后的资源路径，默认是/inspect/healthcheck">
-                            <i
-                                    class="icon-question-sign"></i></a></span>
-                        </div>
-                    </div>
-                    <label class="col-sm-4 control-label no-padding-right" for="inputEmail">http返回码</label>
-
-                    <div class="col-sm-7">
-                        <div class="input-append">
-                            <input ng-trim="true" class="input-large" ng-model="pool.check.checkHttpExpectAlive"
-                                   type="text" placeholder=""> <span
-                                class="add-on" style="font-size: 8px;"><a href="javascript:;" data-toggle="tooltip"
-                                                                          title="该指令可以配置期待的http返回码，默认：http_2xx，可以配置多个，比如：http_2xx http_3xx">
-                            <i
-                                    class="icon-question-sign"></i></a></span>
-                        </div>
-                    </div>
-                    <label class="col-sm-4 control-label no-padding-right" for="inputEmail">http消息体</label>
-
-                    <div class="col-sm-7">
-                        <div class="input-append">
-                            <input ng-trim="true" class="input-large" ng-model="pool.check.checkHttpExpectPattern"
-                                   type="text" placeholder=""> <span
-                                class="add-on" style="font-size: 8px;"><a href="javascript:;" data-toggle="tooltip"
-                                                                          title="该指令可以配置期待的消息体，支持正则表达式，默认空"> <i
-                                class="icon-question-sign"></i></a></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-4 control-label no-padding-right" for="inputEmail">健康检查的超时时间</label>
-
-                    <div class="col-sm-7">
-                        <div class="input-append">
-                            <input ng-trim="true" class="input-large" ng-model="pool.check.timeout" type="text"
-                                   placeholder=""> <span
-                                class="add-on" style="font-size: 8px;"><a href="javascript:;" data-toggle="tooltip"
-                                                                          title="后端健康请求的超时时间，超时则视为请求失败，累计一次fall"> <i
-                                class="icon-question-sign"></i></a></span>
-                        </div>
-                    </div>
-
-                    <label class="col-sm-4 control-label no-padding-right" for="inputEmail">健康检查的时间间隔</label>
-
-                    <div class="col-sm-7">
-                        <div class="input-append">
-                            <input ng-trim="true" class="input-large" ng-model="pool.check.interval" type="text"
-                                   placeholder=""> <span
-                                class="add-on" style="font-size: 8px;"><a href="javascript:;" data-toggle="tooltip"
-                                                                          title="后端健康请求的时间间隔，每隔指定时间，检查一次"> <i
-                                class="icon-question-sign"></i></a></span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-sm-5" style="margin-top: 0px; border-left: 1px solid #ddd;">
-                <div class="form-group">
-                    <label class="col-sm-4 control-label no-padding-right" for="inputEmail">安全防火墙打开</label>
-
-                    <div class="col-sm-7">
-                        <div class="input-append">
-                            <input class="input-small" ng-model="pool.upstreamFilter.authFilterOpen" type="checkbox">
-		          	<span
-                            class="add-on" style="font-size: 8px;"><a href="javascript:;" data-toggle="tooltip"
-                                                                      title="如果开启对接sso功能，将对每个请求，调用sso模块，过滤掉所有非法请求"> <i
-                            class="icon-question-sign"></i></a></span>
-                        </div>
-                    </div>
-                </div>
-
-                <label class="col-sm-4 control-label no-padding-right" for="inputEmail">通过的uri格式</label>
-
-                <div class="col-sm-7">
-                    <div class="input-append">
-                        <input ng-trim="true" class="input-large" ng-model="pool.upstreamFilter.authFilterPassPattern"
-                               type="text" placeholder=""> <span
-                            class="add-on" style="font-size: 8px;"><a href="javascript:;" data-toggle="tooltip"
-                                                                      title="可以通过的uri格式（正则表达式），多个uri格式请用空格隔开，例如(.*\.jpg&nbsp;&nbsp;.*\.png)">
-                        <i
-                                class="icon-question-sign"></i></a></span>
-                    </div>
                 </div>
             </div>
         </div>
-        <div class="row">
 
+        <div class="row">
             <br> <a style="float: right; margin-right: 30px;" ng-click="addMember();" href="javascript:;"> <i
                 class="icon-plus"></i> 添加新节点
         </a>

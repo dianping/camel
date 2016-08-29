@@ -52,35 +52,10 @@
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <label class="col-sm-4 control-label no-padding-right"
-                           for="inputPassword">pool降级比例</label>
 
-                    <div class="col-sm-7">
-                        <input disabled class="input-mini" ng-model="pool.degradeRate"
-                               type="text" integer type="number" min="0" max="100"> <a
-                            href="javascript:;" data-toggle="tooltip"
-                            title="请输入0~100之间的数值，pool中可用节点数低于此比例时，则进行降级，-1代表使用默认值"> <i
-                            class="icon-question-sign"></i></a>
-                    </div>
-                    <label class="col-sm-4 control-label no-padding-right"
-                           for="inputPassword">pool强制降级</label>
 
-                    <div class="col-sm-7">
-                        <select disabled class="span2" ng-model="pool.degradeForceState">
-                            <option value="0">自动</option>
-                            <option value="1">强制升级</option>
-                            <option value="-1">强制降级</option>
-                        </select>
-                        <a
-                                href="javascript:;" data-toggle="tooltip"
-                                title="强制pool处于某种状态"> <i
-                                class="icon-question-sign"></i></a>
-                    </div>
-                </div>
-
-                <div class="form-group" ng-show="pool.check.type == 'HTTP'">
-                    <div class="row">
+                <div ng-show="pool.check.type == 'HTTP'">
+                    <div class="form-group">
                         <label class="col-sm-4 control-label no-padding-right"
                                for="inputEmail">健康检查的http报文</label>
 
@@ -96,7 +71,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row">
+
+                    <div class="form-group">
                         <label class="col-sm-4 control-label no-padding-right"
                                for="inputEmail">http返回码</label>
 
@@ -114,7 +90,7 @@
                         </div>
                     </div>
 
-                    <div class="row">
+                    <div class="form-group">
                         <label class="col-sm-4 control-label no-padding-right"
                                for="inputEmail">http消息体</label>
 
@@ -132,7 +108,9 @@
                         </div>
                     </div>
                 </div>
-
+            </div>
+            <div class="col-sm-5"
+                 style="margin-top: 0px; border-left: 1px solid #ddd;">
                 <div class="form-group">
                     <label class="col-sm-4 control-label no-padding-right"
                            for="inputEmail">健康检查的超时时间</label>
@@ -147,6 +125,8 @@
                                     class="icon-question-sign"></i></a></span>
                         </div>
                     </div>
+                </div>
+                <div class="form-group">
                     <label class="col-sm-4 control-label no-padding-right"
                            for="inputEmail">健康检查的时间间隔</label>
 
@@ -161,40 +141,34 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-sm-5"
-                 style="margin-top: 0px; border-left: 1px solid #ddd;">
+
                 <div class="form-group">
                     <label class="col-sm-4 control-label no-padding-right"
-                           for="inputEmail">安全防火墙打开</label>
+                           for="inputPassword">pool降级比例</label>
 
                     <div class="col-sm-7">
-                        <div class="input-append">
-                            <input class="input-small" disabled
-                                   ng-model="pool.upstreamFilter.authFilterOpen"
-                                   type="checkbox"> <span class="add-on"
-                                                          style="font-size: 8px;"><a href="javascript:;"
-                                                                                     data-toggle="tooltip"
-                                                                                     title="如果开启对接sso功能，将对每个请求，调用sso模块，过滤掉所有非法请求">
-                            <i
-                                    class="icon-question-sign"></i></a></span>
-                        </div>
+                        <input disabled class="input-mini" ng-model="pool.degradeRate"
+                               type="text" integer type="number" min="0" max="100"> <a
+                            href="javascript:;" data-toggle="tooltip"
+                            title="请输入0~100之间的数值，pool中可用节点数低于此比例时，则进行降级，-1代表使用默认值"> <i
+                            class="icon-question-sign"></i></a>
                     </div>
                 </div>
 
-                <label class="col-sm-4 control-label no-padding-right"
-                       for="inputEmail">通过的uri格式</label>
+                <div class="form-group">
+                    <label class="col-sm-4 control-label no-padding-right"
+                           for="inputPassword">pool强制降级</label>
 
-                <div class="col-sm-7">
-                    <div class="input-append">
-                        <input ng-trim="true" class="input-large" disabled
-                               ng-model="pool.upstreamFilter.authFilterPassPattern"
-                               type="text" placeholder=""> <span class="add-on"
-                                                                 style="font-size: 8px;"><a href="javascript:;"
-                                                                                            data-toggle="tooltip"
-                                                                                            title="可以通过的uri格式（正则表达式），多个uri格式请用空格隔开，例如(.*\.jpg&nbsp;&nbsp;.*\.png)">
-                        <i class="icon-question-sign"></i>
-                    </a></span>
+                    <div class="col-sm-7">
+                        <select disabled class="span2" ng-model="pool.degradeForceState">
+                            <option value="0">自动</option>
+                            <option value="1">强制升级</option>
+                            <option value="-1">强制降级</option>
+                        </select>
+                        <a
+                                href="javascript:;" data-toggle="tooltip"
+                                title="强制pool处于某种状态"> <i
+                                class="icon-question-sign"></i></a>
                     </div>
                 </div>
             </div>
@@ -232,14 +206,16 @@
                                                             ng-model="member.state" type="radio" value="ENABLED">
                         ENABLED
                     </label> <label class="radio inline"> <input disabled
-                                                                 ng-model="member.state" type="radio" value="DISABLED">
+                                                                 ng-model="member.state" type="radio"
+                                                                 value="DISABLED">
                         DISABLED
                     </label> <label class="radio inline"> <input disabled
                                                                  ng-model="member.state" type="radio"
                                                                  value="FORCED_OFFLINE">
                         FORCED_OFFLINE
                     </label> <label class="radio inline"> <input disabled
-                                                                 ng-model="member.state" type="radio" value="DEGRADE">
+                                                                 ng-model="member.state" type="radio"
+                                                                 value="DEGRADE">
                         DEGRADE
                     </label></td>
                 </tr>
