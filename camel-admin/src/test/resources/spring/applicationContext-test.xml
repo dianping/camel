@@ -19,7 +19,6 @@
 
     <import resource="applicationContext-properties-test.xml"/>
     <import resource="applicationContext-database.xml"/>
-    <import resource="applicationContext-service.xml"/>
     <import resource="applicationContext-mongo.xml"/>
 
 </beans>
