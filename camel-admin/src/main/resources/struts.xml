@@ -47,7 +47,7 @@
             <result name="redirect" type="redirect">
                 <param name="location">/console/vs/${virtualServerName}</param>
             </result>
-            <result name="noneVs" type="velocity">/vs/none.htm</result>
+            <result name="noneVs" type="velocity">/common/none.htm</result>
         </action>
         <action name="console/vs/list" class="virtualServerAction"
                 method="list">
@@ -136,7 +136,7 @@
                 <param name="location">/console/pool/${poolName}</param>
             </result>
             <result name="nonePool" type="velocity">
-                /pool/none.htm
+                /common/none.htm
             </result>
         </action>
         <action name="console/pool/{poolName}/save" class="poolAction"
@@ -187,7 +187,7 @@
                 <param name="location">/console/slbPool/${slbPoolName}</param>
             </result>
             <result name="noneSlbPool" type="velocity">
-                /slbPool/none.htm
+                /common/none.htm
             </result>
         </action>
         <action name="console/slbPool/list" class="slbPoolAction"
