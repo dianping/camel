@@ -1,29 +1,45 @@
 <style>
     body {
-        background: url(/static/img/restaurant_icons.png) repeat 0 0;
+        background: url(./static/img/shl.png) repeat 0 0;
     }
 </style>
 <div class="content">
     <div class="header">
     </div>
-    <div class="container-fluid">
-        <div class="row-fluid" style="min-height: 500px;">
-            <div class="col-md-4 col-md-offset-4">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
                 <br><br>
 
-                <h2>使用软负载，请新建以下数据：</h2>
+                <h3>欢迎使用Camel！</h3>
+                <br/>
 
-                <h3>1. <a href="/config/strategy/index"> 添加负载策略 </a></h3>
+                <h4>这是您第一次使用Camel，目前没有数据。请按照下列提示，请添加最基本的数据。</h4>
+                <h4>基本数据由三部分组成：</h4>
+                <ul>
+                    <li>后端服务器集群 - 对应Nginx配置中的upstream块</li>
+                    <li>Nginx集群</li>
+                    <li>站点配置 - 对应Nginx配置中的server块</li>
+                </ul>
+                <h4>请按下述步骤列表配置基本信息。站点信息依赖集群及Nginx集群信息，所以需要在最后配置。</h4>
+                <br/>
 
-                <h3>2. <a href="javascript:app.openAddPoolModal();"> 新增集群 </a></h3>
+                <h4>配置步骤列表：</h4>
+                <h5>1. <a href="javascript:app.openAddPoolModal();"> 点击新增集群 </a></h5>
+                <h5>2. <a href="javascript:app.openAddSlbPoolModal();"> 点击新增Nginx集群 </a></h5>
+                <h5>3. <a href="javascript:app.openAddVirtualServerModal();"> 点击新增站点 </a></h5>
+                <h4>配置完毕，感受Camel的强大吧:D</h4>
+                <br/>
 
-                <h3>3. <a href="javascript:app.openAddSlbPoolModal();"> 新增Nginx集群 </a></h3>
-
-                <h3>4. <a href="javascript:app.openAddVirtualServerModal();"> 新增站点 </a></h3>
-
+                <h4>
+                    <i class="icon-book"></i>&nbsp;Camel具体使用方法，请见<a href="http://leonindy.coding.me/camel/"
+                                                                    target="_blank">Camel in Action</a>
+                </h4>
+                <h4>
+                    <i class="icon-headphones"></i>&nbsp;如有任何疑问，请联系 QQ: 776716705, mail: leonindy@163.com
+                </h4>
                 <div class="clearfix"></div>
             </div>
         </div>
-        #parse("common/simplefooter.htm")
     </div>
 </div>
