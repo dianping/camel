@@ -3,7 +3,6 @@ package com.dianping.platform.slb.agent.core.workflow.deploy;
 import com.dianping.platform.slb.agent.core.script.ScriptFileManager;
 import com.dianping.platform.slb.agent.core.workflow.Context;
 import com.dianping.platform.slb.agent.core.workflow.Step;
-import com.dianping.platform.slb.agent.web.ApiController;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
