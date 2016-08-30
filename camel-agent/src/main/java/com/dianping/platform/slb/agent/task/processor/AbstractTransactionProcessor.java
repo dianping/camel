@@ -76,6 +76,9 @@ public abstract class AbstractTransactionProcessor implements TransactionProcess
 			m_transactionManager.saveTransaction(transaction);
 
 			transaction.setStatus(doTransaction(transaction));
+		} catch (Exception ex) {
+			transaction.setStatus(Transaction.Status.FAILED);
+			throw ex;
 		} finally {
 			m_currentTransaction.set(null);
 			try {
