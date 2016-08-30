@@ -10,8 +10,6 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.concurrent.TimeUnit;
-
 /**
  * dianping.com @2015
  * slb - soft load balance
@@ -29,7 +27,7 @@ public class UpgradeTransactionProcessor extends AbstractTransactionProcessor {
 	@Override
 	protected Transaction.Status doTransaction(Transaction transaction) {
 		transaction.addProperty(ConfigureManager.PROPERTY_TRANSACTIONMANAGER, m_transactionManager);
-		int exitCode = -1;
+		int exitCode = Step.CODE_FAIL;
 
 		try {
 			exitCode = m_engine.executeStep(ConfigUpgradeStep.INIT, transaction);
@@ -52,7 +50,5 @@ public class UpgradeTransactionProcessor extends AbstractTransactionProcessor {
 		}
 		return false;
 	}
-
-
 
 }
