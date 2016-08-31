@@ -16,9 +16,9 @@ import org.springframework.stereotype.Service;
  * Created by leon.li(Li Yang)
  */
 @Service
-public class UpgradeTransactionProcessor extends AbstractTransactionProcessor {
+public class ConfigUpdateTransactionProcessor extends AbstractTransactionProcessor {
 
-	private final static Logger m_logger = Logger.getLogger(UpgradeTransactionProcessor.class);
+	private final static Logger m_logger = Logger.getLogger(ConfigUpdateTransactionProcessor.class);
 
 	@Autowired
 	private Engine m_engine;
