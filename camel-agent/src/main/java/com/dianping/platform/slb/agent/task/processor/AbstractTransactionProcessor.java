@@ -104,7 +104,7 @@ public abstract class AbstractTransactionProcessor implements TransactionProcess
 	public boolean isTransactionProcessing(long transactionId) {
 		Transaction currentTransaction = m_currentTransaction.get();
 
-		if (currentTransaction.getTransactionID() == transactionId) {
+		if ((currentTransaction != null) && (currentTransaction.getTransactionID() == transactionId)) {
 			return true;
 		}
 		return false;
