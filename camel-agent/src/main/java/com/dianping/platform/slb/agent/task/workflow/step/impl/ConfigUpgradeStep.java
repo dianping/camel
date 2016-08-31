@@ -115,11 +115,13 @@ public abstract class ConfigUpgradeStep implements Step {
 			ScriptExecutor scriptExecutor = new DefaultScriptExecutor();
 			int shellExecuteCode;
 
-			if (configUpgradeTask.isReload()) {
+			/* if (configUpgradeTask.isReload()) {
 				shellExecuteCode = runShellCmd("reload_config", configUpgradeTask, outputStream, scriptExecutor);
 			} else {
 				shellExecuteCode = runDynamicRefreshShellCmd(configUpgradeTask, outputStream, scriptExecutor);
-			}
+			} */
+			shellExecuteCode = scriptExecutor
+					.execute(ConfigureManager.getNginxReloadScriptFile().getAbsolutePath(), outputStream, outputStream);
 			if (shellExecuteCode == 0) {
 				return Step.CODE_SUCCESS;
 			} else {
