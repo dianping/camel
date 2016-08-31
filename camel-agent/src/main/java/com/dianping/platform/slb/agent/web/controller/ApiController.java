@@ -116,7 +116,10 @@ public class ApiController implements API {
 	}
 
 	@Override
-	public Response fetchStatus(final long deployId) {
+	@RequestMapping(params = "op=status")
+	public Response fetchStatus(
+			@RequestParam("deployId")
+			final long deployId) {
 		final Response response = new Response();
 
 		return m_responseAction.doTransaction(response, "load transaction error", new Wrapper<Response>() {
@@ -131,8 +134,31 @@ public class ApiController implements API {
 	}
 
 	@Override
-	public Object fetchLog(long deployId) {
+	@RequestMapping(params = "op=log")
+	public Response fetchLog(
+			@RequestParam("deployId")
+			final long deployId) {
 		return null;
+	}
+
+	@Override
+	@RequestMapping(params = "op=cancel")
+	public Response cancel(
+			@RequestParam("deployId")
+			final long deployId) {
+		final Response response = new Response();
+
+		return m_responseAction.doTransaction(response, "cancel failed", new Wrapper<Response>() {
+			@Override
+			public Response doAction() throws Exception {
+				if (m_transactionProcessor.cancel(deployId)) {
+					response.setStatus(Response.Status.SUCCESS);
+				} else {
+					response.setStatus(Response.Status.FAIL);
+				}
+				return response;
+			}
+		})
 	}
 
 	@Override

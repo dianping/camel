@@ -10,7 +10,7 @@ import com.dianping.platform.slb.agent.web.model.Response;
  */
 public interface API {
 
-	Object fetchLog(long deployId);
+	Response fetchLog(long deployId);
 
 	Response deploy(long deployId, String vsName, String version, String config, boolean needReload,
 			String dynamicRefreshPostDataStr, String dynamicVsPostData);
@@ -24,5 +24,7 @@ public interface API {
 	Response delVsConfig(String vsName);
 
 	Response reloadNginx();
+
+	Response cancel(long deployId);
 
 }
