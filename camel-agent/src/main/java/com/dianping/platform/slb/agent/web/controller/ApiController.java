@@ -83,8 +83,8 @@ public class ApiController implements API {
 				if (vsNames == null || versions == null || vsNames.length != versions.length) {
 					throw new IllegalArgumentException("vs count not equal version count.");
 				}
-				if (needReload && StringUtils.isBlank(refreshPostDataStr)) {
-					throw new IllegalArgumentException("refreshPostData cannot be null when not need reload");
+				if (!needReload && StringUtils.isBlank(refreshPostDataStr)) {
+					throw new IllegalArgumentException("refreshPostData cannot be null when no need reload nginx");
 				}
 
 				List<Map<String, String>> refreshPostData = null;
