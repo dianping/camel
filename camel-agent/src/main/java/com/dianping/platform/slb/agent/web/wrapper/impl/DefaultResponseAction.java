@@ -33,7 +33,7 @@ public class DefaultResponseAction implements ResponseAction {
 		}
 	}
 
-	private String buildErrorMessage(String exceptionMessage, Exception ex) {
+	public static String buildErrorMessage(String exceptionMessage, Exception ex) {
 		StringBuilder builder = new StringBuilder(
 				exceptionMessage == null ? EXCEPTION_STACK_INFO : exceptionMessage + EXCEPTION_STACK_INFO);
 		StringWriter strWriter = new StringWriter();

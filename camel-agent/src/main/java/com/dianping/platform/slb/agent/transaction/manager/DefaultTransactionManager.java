@@ -103,8 +103,11 @@ public class DefaultTransactionManager implements TransactionManager {
 		File transactionLog = new File(transactionDir, TRANSACTION_LOG_FILE);
 
 		if (!transactionLog.exists()) {
-			throw new IllegalStateException("transaction log not exists:" + txId);
+			return null;
 		}
-		return new FileReader(transactionLog);
+		Reader reader = new FileReader(transactionLog);
+
+		reader.skip(offset);
+		return reader;
 	}
 }

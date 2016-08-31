@@ -9,10 +9,12 @@ import com.dianping.platform.slb.agent.task.model.config.upgrade.ConfigUpgradeTa
 import com.dianping.platform.slb.agent.task.processor.TransactionProcessor;
 import com.dianping.platform.slb.agent.transaction.Transaction;
 import com.dianping.platform.slb.agent.transaction.manager.TransactionManager;
+import com.dianping.platform.slb.agent.utils.CharacterReplaceFilterWriter;
 import com.dianping.platform.slb.agent.web.api.API;
 import com.dianping.platform.slb.agent.web.model.Response;
 import com.dianping.platform.slb.agent.web.wrapper.ResponseAction;
 import com.dianping.platform.slb.agent.web.wrapper.Wrapper;
+import com.dianping.platform.slb.agent.web.wrapper.impl.DefaultResponseAction;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import org.apache.commons.io.FileUtils;
@@ -23,12 +25,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * dianping.com @2015
@@ -137,8 +139,63 @@ public class ApiController implements API {
 	@RequestMapping(params = "op=log")
 	public Response fetchLog(
 			@RequestParam("deployId")
-			final long deployId) {
-		return null;
+			long deployId,
+			@RequestParam("offset")
+			int offset,
+			@RequestParam("br")
+			int br, HttpServletResponse httpResponse) {
+		try {
+			Reader reader = m_transactionManager.getLogReader(deployId, offset);
+
+			while (reader == null && m_transactionProcessor.isTransactionProcessing(deployId)) {
+				TimeUnit.MILLISECONDS.sleep(200);
+				reader = m_transactionManager.getLogReader(deployId, offset);
+			}
+			if (reader != null) {
+				httpResponse.setHeader("Content-Type", "text/html; charset=UTF-8");
+				Writer writer = httpResponse.getWriter();
+
+				if (br > 0) {
+					writer = new CharacterReplaceFilterWriter(writer, '\n', "<br/>");
+				}
+				transfer(reader, writer, m_transactionManager, deployId);
+				return null;
+			} else {
+				throw new IllegalStateException("no log for transaction " + deployId);
+			}
+		} catch (Exception ex) {
+			Response response = new Response();
+
+			response.setStatus(Response.Status.FAIL);
+			response.setMessage(DefaultResponseAction.buildErrorMessage("fetch log error", ex));
+			return response;
+		}
+	}
+
+	private void transfer(Reader reader, Writer writer, TransactionManager transactionManager, long deployId)
+			throws IOException, ClassNotFoundException {
+		char[] cacheChar = new char[4096];
+
+		while (true) {
+			int length = reader.read(cacheChar);
+
+			if (length > 0) {
+				writer.write(cacheChar, 0, length);
+				writer.flush();
+			} else {
+				Transaction tx = transactionManager.loadTransaction(deployId);
+
+				if (!tx.getStatus().isCompleted()) {
+					try {
+						TimeUnit.MILLISECONDS.sleep(500);
+					} catch (Exception ex) {
+						// ignore
+					}
+				} else {
+					break;
+				}
+			}
+		}
 	}
 
 	@Override

@@ -37,8 +37,8 @@ public class Transaction implements Serializable {
 			COMPLETED_STATUS.add(REJECTED);
 		}
 
-		public boolean isCompleted(Status status) {
-			if (COMPLETED_STATUS.contains(status)) {
+		public boolean isCompleted() {
+			if (COMPLETED_STATUS.contains(this)) {
 				return true;
 			}
 			return false;

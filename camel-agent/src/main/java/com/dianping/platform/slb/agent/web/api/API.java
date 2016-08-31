@@ -2,6 +2,8 @@ package com.dianping.platform.slb.agent.web.api;
 
 import com.dianping.platform.slb.agent.web.model.Response;
 
+import javax.servlet.http.HttpServletResponse;
+
 /**
  * dianping.com @2015
  * slb - soft load balance
@@ -10,7 +12,7 @@ import com.dianping.platform.slb.agent.web.model.Response;
  */
 public interface API {
 
-	Response fetchLog(long deployId);
+	Response fetchLog(long deployId, int offset, int br, HttpServletResponse response);
 
 	Response deploy(long deployId, String vsName, String version, String config, boolean needReload,
 			String dynamicRefreshPostDataStr, String dynamicVsPostData);
