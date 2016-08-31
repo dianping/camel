@@ -1,6 +1,5 @@
 package com.dianping.platform.slb.agent.task.processor.config;
 
-import com.dianping.platform.slb.agent.conf.ConfigureManager;
 import com.dianping.platform.slb.agent.task.processor.AbstractTransactionProcessor;
 import com.dianping.platform.slb.agent.task.workflow.engine.Engine;
 import com.dianping.platform.slb.agent.task.workflow.step.ConfigUpgradeStep;
@@ -26,7 +25,6 @@ public class UpgradeTransactionProcessor extends AbstractTransactionProcessor {
 
 	@Override
 	protected Transaction.Status doTransaction(Transaction transaction) {
-		transaction.addProperty(ConfigureManager.PROPERTY_TRANSACTIONMANAGER, m_transactionManager);
 		int exitCode = Step.CODE_FAIL;
 
 		try {

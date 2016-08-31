@@ -20,8 +20,6 @@ public class ConfigureManager {
 
 	private static final String PATH_NGINX_CONF_DIR = "/usr/local/nginx/conf/phoenix-slb";
 
-	public static final String PROPERTY_TRANSACTIONMANAGER = "transaction_manager";
-
 	static {
 		File scriptDir = getNginxReloadScriptFile().getParentFile();
 		Iterator<File> scriptIter = FileUtils.iterateFiles(scriptDir, new String[] { "sh" }, true);
