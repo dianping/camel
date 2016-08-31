@@ -5,6 +5,7 @@ import com.dianping.platform.slb.agent.task.workflow.log.LogPrinter;
 import com.dianping.platform.slb.agent.task.workflow.step.Step;
 import com.dianping.platform.slb.agent.transaction.Transaction;
 import com.dianping.platform.slb.agent.transaction.manager.TransactionManager;
+import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -70,6 +71,7 @@ public class DefaultEngine implements Engine {
 		} catch (IOException e) {
 			m_logger.error("write log terminator error" + transactionID, e);
 		}
+		IOUtils.closeQuietly(transactionOutputStream);
 		return exitCode;
 	}
 
