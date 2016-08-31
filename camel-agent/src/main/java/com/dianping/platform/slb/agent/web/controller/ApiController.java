@@ -8,6 +8,7 @@ import com.dianping.platform.slb.agent.task.model.SubmitResult;
 import com.dianping.platform.slb.agent.task.model.config.upgrade.ConfigUpgradeTask;
 import com.dianping.platform.slb.agent.task.processor.TransactionProcessor;
 import com.dianping.platform.slb.agent.transaction.Transaction;
+import com.dianping.platform.slb.agent.transaction.manager.TransactionManager;
 import com.dianping.platform.slb.agent.web.api.API;
 import com.dianping.platform.slb.agent.web.model.Response;
 import com.dianping.platform.slb.agent.web.wrapper.ResponseAction;
@@ -44,6 +45,9 @@ public class ApiController implements API {
 
 	@Autowired
 	private TransactionProcessor m_transactionProcessor;
+
+	@Autowired
+	private TransactionManager m_transactionManager;
 
 	@Override
 	@RequestMapping(params = "op=deploy", method = RequestMethod.POST)
@@ -112,8 +116,18 @@ public class ApiController implements API {
 	}
 
 	@Override
-	public Response fetchStatus(long deployId) {
-		return null;
+	public Response fetchStatus(final long deployId) {
+		final Response response = new Response();
+
+		return m_responseAction.doTransaction(response, "load transaction error", new Wrapper<Response>() {
+			@Override
+			public Response doAction() throws Exception {
+				Transaction transaction = m_transactionManager.loadTransaction(deployId);
+
+				response.setStatus(transaction.getStatus().toString().toLowerCase());
+				return response;
+			}
+		});
 	}
 
 	@Override

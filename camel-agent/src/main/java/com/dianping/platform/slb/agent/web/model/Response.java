@@ -17,7 +17,11 @@ public class Response {
 	}
 
 	public void setStatus(Status status) {
-		this.status = status.getMessage();
+		setStatus(status.getMessage());
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 	public String getMessage() {
