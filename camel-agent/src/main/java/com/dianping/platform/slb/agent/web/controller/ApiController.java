@@ -260,7 +260,7 @@ public class ApiController implements API {
 	}
 
 	@Override
-	@RequestMapping(params = "op=listvs")
+	@RequestMapping(params = "op=vslist")
 	public Response listVsNames() {
 		final Response response = new Response();
 
