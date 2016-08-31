@@ -15,7 +15,7 @@ import java.io.*;
 @Service
 public class DefaultTransactionManager implements TransactionManager {
 
-	private static final String DEFAULT_TRANSACTION_ROOT = "/data/applogs/phoenix/transaction/";
+	private static final String DEFAULT_TRANSACTION_ROOT = "/data/applogs/camel/transaction/";
 
 	private static final String TRANSACTION_LOCK_FILE = "tx.lock";
 
