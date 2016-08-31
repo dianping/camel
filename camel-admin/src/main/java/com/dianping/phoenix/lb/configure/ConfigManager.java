@@ -210,11 +210,6 @@ public class ConfigManager implements Initializable {
 		return String.format(m_config.getNginxDynamicUpdateUpstreamUrlPattern(), UrlUtils.encode(upstreamName));
 	}
 
-	public File getGitScript() {
-		check();
-		return getScriptFile("git.sh");
-	}
-
 	public File getNginxScript() {
 		check();
 		return getScriptFile("nginx.sh");
@@ -249,7 +244,7 @@ public class ConfigManager implements Initializable {
 	}
 
 	private void makeShellScriptExecutable() {
-		File scriptDir = getGitScript().getParentFile();
+		File scriptDir = getNginxScript().getParentFile();
 		Iterator<File> scriptIter = FileUtils.iterateFiles(scriptDir, new String[] { "sh" }, true);
 		while (scriptIter != null && scriptIter.hasNext()) {
 			scriptIter.next().setExecutable(true, false);
