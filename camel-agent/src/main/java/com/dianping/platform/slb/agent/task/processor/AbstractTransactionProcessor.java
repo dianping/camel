@@ -71,21 +71,30 @@ public abstract class AbstractTransactionProcessor implements TransactionProcess
 
 	protected void runTransaction(Transaction transaction) throws Exception {
 		try {
-			m_currentTransaction.set(transaction);
-			transaction.setStatus(Transaction.Status.RUNNNG);
-			m_transactionManager.saveTransaction(transaction);
+			startTransaction(transaction);
 
 			transaction.setStatus(doTransaction(transaction));
 		} catch (Exception ex) {
 			transaction.setStatus(Transaction.Status.FAILED);
 			throw ex;
 		} finally {
+			endTransaction(transaction);
+		}
+	}
+
+	private void startTransaction(Transaction transaction) throws IOException {
+		m_currentTransaction.set(transaction);
+		transaction.setStatus(Transaction.Status.RUNNNG);
+		m_transactionManager.saveTransaction(transaction);
+	}
+
+	private void endTransaction(Transaction transaction) {
+		try {
+			m_transactionManager.saveTransaction(transaction);
+		} catch (IOException e) {
+			m_logger.error("[save transaction error]" + transaction.getTransactionID());
+		} finally {
 			m_currentTransaction.set(null);
-			try {
-				m_transactionManager.saveTransaction(transaction);
-			} catch (IOException e) {
-				m_logger.error("[save transaction error]" + transaction.getTransactionID());
-			}
 		}
 	}
 
