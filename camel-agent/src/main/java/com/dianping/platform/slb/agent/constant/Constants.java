@@ -10,6 +10,6 @@ public class Constants {
 
 	public static final String CHAREST_UTF8 = "utf-8";
 
-	public static final String TX_PROPERTY_OUTPUT_STREAM = "OUTPUT_STREAM";
+	public static final String TASK_PROPERTY_OUTPUT_STREAM = "OUTPUT_STREAM";
 
 }

@@ -3,6 +3,7 @@ package com.dianping.platform.slb.agent.task.model.config.upgrade;
 import com.dianping.platform.slb.agent.task.AbstractTask;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
+import java.io.OutputStream;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +24,7 @@ public class ConfigUpgradeTask extends AbstractTask {
 	private List<Map<String, String>> dynamicRefreshPostData;
 	private Map<String, String> dynamicVsPostData;
 	private static Set<String> excludes = new HashSet<String>();
+	private OutputStream m_outputStream;
 
 	static {
 		excludes.add("dynamicVsPostData");
@@ -99,5 +101,15 @@ public class ConfigUpgradeTask extends AbstractTask {
 
 	public static void setExcludes(Set<String> excludes) {
 		ConfigUpgradeTask.excludes = excludes;
+	}
+
+	@Override
+	public void setTaskOutputStream(OutputStream outputStream) {
+		this.m_outputStream = outputStream;
+	}
+
+	@Override
+	public OutputStream getTaskOutputStream() {
+		return m_outputStream;
 	}
 }

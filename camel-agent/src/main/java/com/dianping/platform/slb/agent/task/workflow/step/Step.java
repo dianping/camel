@@ -1,6 +1,6 @@
 package com.dianping.platform.slb.agent.task.workflow.step;
 
-import com.dianping.platform.slb.agent.transaction.Transaction;
+import com.dianping.platform.slb.agent.task.Task;
 
 import java.util.Map;
 
@@ -26,7 +26,7 @@ public interface Step {
 
 	String STATUS_FAIL = "failed";
 
-	int doStep(Transaction transaction) throws Exception;
+	int doStep(Task task) throws Exception;
 
 	Step getNextStep(int status);
 

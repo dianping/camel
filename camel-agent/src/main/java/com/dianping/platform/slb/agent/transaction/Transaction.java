@@ -19,7 +19,7 @@ public class Transaction implements Serializable {
 
 	private long transactionID;
 
-	private Task task;
+	private transient Task task;
 
 	private Status status;
 

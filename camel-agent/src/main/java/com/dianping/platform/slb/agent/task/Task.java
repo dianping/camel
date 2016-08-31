@@ -1,5 +1,6 @@
 package com.dianping.platform.slb.agent.task;
 
+import java.io.OutputStream;
 import java.io.Serializable;
 
 /**
@@ -9,5 +10,9 @@ import java.io.Serializable;
  * Created by leon.li(Li Yang)
  */
 public interface Task extends Serializable {
+
+	OutputStream getTaskOutputStream();
+
+	void setTaskOutputStream(OutputStream outputStream);
 
 }

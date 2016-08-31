@@ -1,11 +1,12 @@
-package com.dianping.platform.slb.agent.task.workflow.step;
+package com.dianping.platform.slb.agent.task.workflow.step.impl;
 
 import com.dianping.platform.slb.agent.conf.ConfigureManager;
 import com.dianping.platform.slb.agent.constant.Constants;
 import com.dianping.platform.slb.agent.shell.ScriptExecutor;
 import com.dianping.platform.slb.agent.shell.impl.DefaultScriptExecutor;
+import com.dianping.platform.slb.agent.task.Task;
 import com.dianping.platform.slb.agent.task.model.config.upgrade.ConfigUpgradeTask;
-import com.dianping.platform.slb.agent.transaction.Transaction;
+import com.dianping.platform.slb.agent.task.workflow.step.Step;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -25,7 +26,7 @@ public abstract class ConfigUpgradeStep implements Step {
 
 	public static final ConfigUpgradeStep SUCCESS = new ConfigUpgradeStep(null, null, 7) {
 		@Override
-		public int doStep(Transaction transaction) throws Exception {
+		public int doStep(Task task) throws Exception {
 			return Step.CODE_SUCCESS;
 		}
 
@@ -37,7 +38,7 @@ public abstract class ConfigUpgradeStep implements Step {
 
 	public static final ConfigUpgradeStep FAIL = new ConfigUpgradeStep(null, null, 7) {
 		@Override
-		public int doStep(Transaction transaction) throws Exception {
+		public int doStep(Task task) throws Exception {
 			return Step.CODE_FAIL;
 		}
 
@@ -49,11 +50,11 @@ public abstract class ConfigUpgradeStep implements Step {
 
 	public static final ConfigUpgradeStep ROLL_BACK_CONFIG = new ConfigUpgradeStep(FAIL, FAIL, 6) {
 		@Override
-		public int doStep(Transaction transaction) throws Exception {
-			ConfigUpgradeTask task = extractConfigUpgradeTask(transaction);
-			String configFileName = task.getConfigFileName();
+		public int doStep(Task task) throws Exception {
+			ConfigUpgradeTask configUpgradeTask = (ConfigUpgradeTask) task;
+			String configFileName = configUpgradeTask.getConfigFileName();
 
-			for (String vsName : task.getVirtualServerNames()) {
+			for (String vsName : configUpgradeTask.getVirtualServerNames()) {
 				File vsDir = new File(ConfigureManager.getNginxConfDir(), vsName);
 				File backupFile = new File(vsDir, generateBackupFileName(configFileName));
 				File configFile = new File(vsDir, configFileName);
@@ -79,10 +80,10 @@ public abstract class ConfigUpgradeStep implements Step {
 
 	public static final ConfigUpgradeStep UPDATE_CONFIG_VERSION = new ConfigUpgradeStep(SUCCESS, ROLL_BACK_CONFIG, 6) {
 		@Override
-		public int doStep(Transaction transaction) throws Exception {
-			ConfigUpgradeTask task = extractConfigUpgradeTask(transaction);
-			String[] vsNames = task.getVirtualServerNames();
-			String[] versions = task.getVersions();
+		public int doStep(Task task) throws Exception {
+			ConfigUpgradeTask configUpgradeTask = (ConfigUpgradeTask) task;
+			String[] vsNames = configUpgradeTask.getVirtualServerNames();
+			String[] versions = configUpgradeTask.getVersions();
 			int length = vsNames.length;
 
 			for (int i = 0; i < length; i++) {
@@ -108,16 +109,16 @@ public abstract class ConfigUpgradeStep implements Step {
 	public static final ConfigUpgradeStep RELOAD_OR_DYNAMIC_REFRESH_NGINX = new ConfigUpgradeStep(UPDATE_CONFIG_VERSION,
 			ROLL_BACK_CONFIG, 5) {
 		@Override
-		public int doStep(Transaction transaction) throws Exception {
-			ConfigUpgradeTask task = extractConfigUpgradeTask(transaction);
-			OutputStream outputStream = getTransactionOutputStream(transaction);
+		public int doStep(Task task) throws Exception {
+			ConfigUpgradeTask configUpgradeTask = (ConfigUpgradeTask) task;
+			OutputStream outputStream = configUpgradeTask.getTaskOutputStream();
 			ScriptExecutor scriptExecutor = new DefaultScriptExecutor();
 			int shellExecuteCode;
 
-			if (task.isReload()) {
-				shellExecuteCode = runShellCmd("reload_config", task, outputStream, scriptExecutor);
+			if (configUpgradeTask.isReload()) {
+				shellExecuteCode = runShellCmd("reload_config", configUpgradeTask, outputStream, scriptExecutor);
 			} else {
-				shellExecuteCode = runDynamicRefreshShellCmd(task, outputStream, scriptExecutor);
+				shellExecuteCode = runDynamicRefreshShellCmd(configUpgradeTask, outputStream, scriptExecutor);
 			}
 			if (shellExecuteCode == 0) {
 				return Step.CODE_SUCCESS;
@@ -185,12 +186,12 @@ public abstract class ConfigUpgradeStep implements Step {
 	public static final ConfigUpgradeStep PUT_NEW_CONFIG = new ConfigUpgradeStep(RELOAD_OR_DYNAMIC_REFRESH_NGINX,
 			ROLL_BACK_CONFIG, 4) {
 		@Override
-		public int doStep(Transaction transaction) throws Exception {
-			ConfigUpgradeTask task = extractConfigUpgradeTask(transaction);
-			String fileName = task.getConfigFileName();
-			Map<String, String> dynamicVsPostData = task.getDynamicVsPostData();
+		public int doStep(Task task) throws Exception {
+			ConfigUpgradeTask configUpgradeTask = (ConfigUpgradeTask) task;
+			String fileName = configUpgradeTask.getConfigFileName();
+			Map<String, String> dynamicVsPostData = configUpgradeTask.getDynamicVsPostData();
 
-			for (String vsName : task.getVirtualServerNames()) {
+			for (String vsName : configUpgradeTask.getVirtualServerNames()) {
 				if (!putConfigFile(vsName, fileName, dynamicVsPostData.get((vsName)))) {
 					return Step.CODE_FAIL;
 				}
@@ -222,11 +223,11 @@ public abstract class ConfigUpgradeStep implements Step {
 
 	public static final ConfigUpgradeStep BACKUP_OLD_CONFIG = new ConfigUpgradeStep(PUT_NEW_CONFIG, FAIL, 3) {
 		@Override
-		public int doStep(Transaction transaction) throws Exception {
-			ConfigUpgradeTask task = extractConfigUpgradeTask(transaction);
-			String fileName = task.getConfigFileName();
+		public int doStep(Task task) throws Exception {
+			ConfigUpgradeTask configUpgradeTask = (ConfigUpgradeTask) task;
+			String fileName = configUpgradeTask.getConfigFileName();
 
-			for (String vsName : task.getVirtualServerNames()) {
+			for (String vsName : configUpgradeTask.getVirtualServerNames()) {
 				if (!backupConfigFile(vsName, fileName)) {
 					return Step.CODE_FAIL;
 				}
@@ -252,26 +253,26 @@ public abstract class ConfigUpgradeStep implements Step {
 
 	public static final ConfigUpgradeStep CHECK_ARGUMENT = new ConfigUpgradeStep(BACKUP_OLD_CONFIG, FAIL, 2) {
 		@Override
-		public int doStep(Transaction transaction) throws Exception {
-			ConfigUpgradeTask task = extractConfigUpgradeTask(transaction);
+		public int doStep(Task task) throws Exception {
+			ConfigUpgradeTask configUpgradeTask = (ConfigUpgradeTask) task;
 
-			if (task.getVirtualServerNames() == null || task.getVersions() == null) {
+			if (configUpgradeTask.getVirtualServerNames() == null || configUpgradeTask.getVersions() == null) {
 				return Step.CODE_FAIL;
 			}
 
-			int length = task.getVirtualServerNames().length;
+			int length = configUpgradeTask.getVirtualServerNames().length;
 
-			Map<String, String> dynamicVsPostData = task.getDynamicVsPostData();
+			Map<String, String> dynamicVsPostData = configUpgradeTask.getDynamicVsPostData();
 
-			if (length != task.getVersions().length || length != dynamicVsPostData.size()) {
+			if (length != configUpgradeTask.getVersions().length || length != dynamicVsPostData.size()) {
 				return Step.CODE_FAIL;
 			}
-			for (String version : task.getVersions()) {
+			for (String version : configUpgradeTask.getVersions()) {
 				if (StringUtils.isEmpty(version)) {
 					return Step.CODE_FAIL;
 				}
 			}
-			for (String vsName : task.getVirtualServerNames()) {
+			for (String vsName : configUpgradeTask.getVirtualServerNames()) {
 				if (StringUtils.isEmpty(vsName)) {
 					return Step.CODE_FAIL;
 				}
@@ -290,10 +291,10 @@ public abstract class ConfigUpgradeStep implements Step {
 
 	public static final ConfigUpgradeStep INIT = new ConfigUpgradeStep(CHECK_ARGUMENT, FAIL, 1) {
 		@Override
-		public int doStep(Transaction transaction) throws Exception {
-			ConfigUpgradeTask task = extractConfigUpgradeTask(transaction);
+		public int doStep(Task task) throws Exception {
+			ConfigUpgradeTask configUpgradeTask = (ConfigUpgradeTask) task;
 
-			for (String vsName : task.getVirtualServerNames()) {
+			for (String vsName : configUpgradeTask.getVirtualServerNames()) {
 				File vsDir = new File(ConfigureManager.getNginxConfDir(), vsName);
 
 				if (!vsDir.exists() || vsDir.isFile()) {
@@ -344,19 +345,6 @@ public abstract class ConfigUpgradeStep implements Step {
 		header.put(HEADER_STEP, toString());
 		header.put(HEADER_PROGRESS, String.format("%s/%s", m_sequence, getTotalSteps()));
 		return header;
-	}
-
-	private static OutputStream getTransactionOutputStream(Transaction transaction) throws IOException {
-		OutputStream outputStream = (OutputStream) transaction.findProperty(Constants.TX_PROPERTY_OUTPUT_STREAM);
-
-		if (outputStream == null) {
-			throw new IllegalStateException("transaction has no property: !" + Constants.TX_PROPERTY_OUTPUT_STREAM);
-		}
-		return outputStream;
-	}
-
-	private static ConfigUpgradeTask extractConfigUpgradeTask(Transaction transaction) {
-		return (ConfigUpgradeTask) transaction.getTask();
 	}
 
 	private static String generateBackupFileName(String configFileName) {

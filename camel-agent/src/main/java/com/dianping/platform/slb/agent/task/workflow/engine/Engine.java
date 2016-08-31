@@ -1,7 +1,7 @@
 package com.dianping.platform.slb.agent.task.workflow.engine;
 
+import com.dianping.platform.slb.agent.task.Task;
 import com.dianping.platform.slb.agent.task.workflow.step.Step;
-import com.dianping.platform.slb.agent.transaction.Transaction;
 
 import java.io.IOException;
 
@@ -13,7 +13,7 @@ import java.io.IOException;
  */
 public interface Engine {
 
-	int executeStep(Step initStep, Transaction transaction) throws IOException;
+	int executeStep(Step initStep, Task task) throws IOException;
 
 	void kill();
 

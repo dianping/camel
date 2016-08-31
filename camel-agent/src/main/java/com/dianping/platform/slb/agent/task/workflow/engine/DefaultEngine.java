@@ -1,17 +1,14 @@
 package com.dianping.platform.slb.agent.task.workflow.engine;
 
-import com.dianping.platform.slb.agent.constant.Constants;
+import com.dianping.platform.slb.agent.task.Task;
 import com.dianping.platform.slb.agent.task.workflow.log.LogPrinter;
 import com.dianping.platform.slb.agent.task.workflow.step.Step;
-import com.dianping.platform.slb.agent.transaction.Transaction;
-import com.dianping.platform.slb.agent.transaction.manager.TransactionManager;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -30,48 +27,41 @@ public class DefaultEngine implements Engine {
 	@Autowired
 	private LogPrinter m_logPrinter;
 
-	@Autowired
-	private TransactionManager m_transactionManager;
-
 	@Override
-	public int executeStep(Step initStep, Transaction transaction) throws IOException {
+	public int executeStep(Step initStep, Task task) throws IOException {
 		Step currentStep = initStep;
-		long transactionID = transaction.getTransactionID();
-		OutputStream transactionOutputStream = m_transactionManager.getLogOutputStream(transactionID);
 		int exitCode = 0;
-
-		transaction.addProperty(Constants.TX_PROPERTY_OUTPUT_STREAM, transactionOutputStream);
 
 		while (currentStep != null) {
 			if (m_isKilled.get()) {
 				break;
 			}
 			try {
-				m_logPrinter.writeChunkHeader(transactionOutputStream, currentStep.getHeader());
+				m_logPrinter.writeChunkHeader(task.getTaskOutputStream(), currentStep.getHeader());
 			} catch (IOException e) {
-				m_logger.error("write chunk header error" + transactionID, e);
+				m_logger.error("write chunk header error", e);
 			}
 
 			try {
-				exitCode = currentStep.doStep(transaction);
+				exitCode = currentStep.doStep(task);
 			} catch (Exception ex) {
 				exitCode = Step.CODE_FAIL;
-				m_logger.error("execute step error" + transactionID, ex);
+				m_logger.error("execute step error", ex);
 			}
 
 			try {
-				m_logPrinter.writeChunkTerminator(transactionOutputStream);
+				m_logPrinter.writeChunkTerminator(task.getTaskOutputStream());
 			} catch (IOException e) {
-				m_logger.error("write chunk terminator error" + transactionID, e);
+				m_logger.error("write chunk terminator error", e);
 			}
 			currentStep = currentStep.getNextStep(exitCode);
 		}
 		try {
-			m_logPrinter.writeTerminator(transactionOutputStream);
+			m_logPrinter.writeTerminator(task.getTaskOutputStream());
 		} catch (IOException e) {
-			m_logger.error("write log terminator error" + transactionID, e);
+			m_logger.error("write log terminator error", e);
 		}
-		IOUtils.closeQuietly(transactionOutputStream);
+		IOUtils.closeQuietly(task.getTaskOutputStream());
 		return exitCode;
 	}
 
