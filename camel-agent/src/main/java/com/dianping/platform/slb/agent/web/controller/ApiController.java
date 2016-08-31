@@ -158,7 +158,7 @@ public class ApiController implements API {
 				}
 				return response;
 			}
-		})
+		});
 	}
 
 	@Override
