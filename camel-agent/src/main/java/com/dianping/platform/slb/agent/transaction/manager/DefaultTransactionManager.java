@@ -1,6 +1,7 @@
 package com.dianping.platform.slb.agent.transaction.manager;
 
 import com.dianping.platform.slb.agent.transaction.Transaction;
+import org.apache.commons.io.FileUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -37,6 +38,7 @@ public class DefaultTransactionManager implements TransactionManager {
 		File transactionDir = fetchTransactionBaseDir(txId);
 		File transactionLock = new File(transactionDir, TRANSACTION_LOCK_FILE);
 
+		FileUtils.forceMkdir(transactionLock.getParentFile());
 		return transactionLock.createNewFile();
 	}
 
@@ -73,6 +75,8 @@ public class DefaultTransactionManager implements TransactionManager {
 		File transactionSerializeFile = new File(transactionDir, TRANSACTION_SERIALIZE_FILE);
 
 		if (!transactionSerializeFile.exists()) {
+			FileUtils.forceMkdir(transactionSerializeFile.getParentFile());
+
 			transactionSerializeFile.createNewFile();
 		}
 		return transactionSerializeFile;
@@ -92,6 +96,8 @@ public class DefaultTransactionManager implements TransactionManager {
 		File transactionLog = new File(transactionDir, TRANSACTION_LOG_FILE);
 
 		if (!transactionLog.exists()) {
+			FileUtils.forceMkdir(transactionLog.getParentFile());
+
 			transactionLog.createNewFile();
 		}
 		return new FileOutputStream(transactionLog);
