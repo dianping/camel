@@ -140,11 +140,17 @@ public class ApiController implements API {
 	public Response fetchLog(
 			@RequestParam("deployId")
 			long deployId,
-			@RequestParam("offset")
-			int offset,
-			@RequestParam("br")
-			int br, HttpServletResponse httpResponse) {
+			@RequestParam(value = "offset", required = false)
+			Integer offset,
+			@RequestParam(value = "br", required = false)
+			Integer br, HttpServletResponse httpResponse) {
 		try {
+			if (offset == null) {
+				offset = 0;
+			}
+			if (br == null) {
+				br = 0;
+			}
 			Reader reader = m_transactionManager.getLogReader(deployId, offset);
 
 			while (reader == null && m_transactionProcessor.isTransactionProcessing(deployId)) {

@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public interface API {
 
-	Response fetchLog(long deployId, int offset, int br, HttpServletResponse response);
+	Response fetchLog(long deployId, Integer offset, Integer br, HttpServletResponse response);
 
 	Response deploy(long deployId, String vsName, String version, String config, boolean needReload,
 			String dynamicRefreshPostDataStr, String dynamicVsPostData);
