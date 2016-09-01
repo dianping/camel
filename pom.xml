@@ -93,7 +93,6 @@
                 <groupId>org.unidal.framework</groupId>
                 <artifactId>foundation-service</artifactId>
                 <version>2.0.3</version>
-                <scope>provided</scope>
             </dependency>
 
             <!-- java ee dependency -->

@@ -68,6 +68,12 @@
         <dependency>
             <groupId>org.unidal.framework</groupId>
             <artifactId>foundation-service</artifactId>
+            <exclusions>
+                <exclusion>
+                    <artifactId>google-collections</artifactId>
+                    <groupId>com.google.collections</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <!-- 日志系统 -->
