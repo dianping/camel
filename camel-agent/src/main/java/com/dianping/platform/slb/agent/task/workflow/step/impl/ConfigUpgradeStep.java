@@ -34,6 +34,14 @@ public abstract class ConfigUpgradeStep implements Step {
 		public String toString() {
 			return "SUCCESS";
 		}
+
+		@Override
+		public Map<String, String> getHeader() {
+			Map<String, String> headers = super.getHeader();
+
+			headers.put(HEADER_STATUS, STATUS_FAIL);
+			return headers;
+		}
 	};
 
 	public static final ConfigUpgradeStep FAIL = new ConfigUpgradeStep(null, null, 7) {
@@ -45,6 +53,14 @@ public abstract class ConfigUpgradeStep implements Step {
 		@Override
 		public String toString() {
 			return "FAIL";
+		}
+
+		@Override
+		public Map<String, String> getHeader() {
+			Map<String, String> headers = super.getHeader();
+
+			headers.put(HEADER_STATUS, STATUS_SUCCESS);
+			return headers;
 		}
 	};
 
