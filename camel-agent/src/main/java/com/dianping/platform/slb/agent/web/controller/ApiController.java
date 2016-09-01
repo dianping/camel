@@ -6,7 +6,11 @@ import com.dianping.platform.slb.agent.shell.ScriptExecutor;
 import com.dianping.platform.slb.agent.shell.impl.DefaultScriptExecutor;
 import com.dianping.platform.slb.agent.task.model.SubmitResult;
 import com.dianping.platform.slb.agent.task.model.config.upgrade.ConfigUpgradeTask;
+import com.dianping.platform.slb.agent.task.model.file.FileUpdateTask;
 import com.dianping.platform.slb.agent.task.processor.TransactionProcessor;
+import com.dianping.platform.slb.agent.task.workflow.engine.Engine;
+import com.dianping.platform.slb.agent.task.workflow.step.Step;
+import com.dianping.platform.slb.agent.task.workflow.step.impl.FileUpdateStep;
 import com.dianping.platform.slb.agent.transaction.Transaction;
 import com.dianping.platform.slb.agent.transaction.manager.TransactionManager;
 import com.dianping.platform.slb.agent.utils.CharacterReplaceFilterWriter;
@@ -19,6 +23,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -50,6 +55,9 @@ public class ApiController implements API {
 
 	@Autowired
 	private TransactionManager m_transactionManager;
+
+	@Autowired
+	private Engine m_engine;
 
 	@Override
 	@RequestMapping(params = "op=deploy", method = RequestMethod.POST)
@@ -131,6 +139,51 @@ public class ApiController implements API {
 
 				response.setStatus(transaction.getStatus().toString().toLowerCase());
 				return response;
+			}
+		});
+	}
+
+	@Override
+	public Response update(
+			@RequestParam("vs")
+			final String vsName,
+			@RequestParam("fileName")
+			final String fileName,
+			@RequestParam("vsPostData")
+			final String vsPostData) {
+		final Response response = new Response();
+
+		return m_responseAction.doTransaction(response, "update file error", new Wrapper<Response>() {
+			@Override
+			public Response doAction() throws Exception {
+				String[] vsNames = vsName.split(",");
+				String[] fileNames = fileName.split(",");
+				Map<String, String[]> fileContents = new Gson()
+						.fromJson(vsPostData, new TypeToken<Map<String, String[]>>() {
+						}.getType());
+
+				validateParameters(vsNames, fileNames, fileContents);
+
+				FileUpdateTask task = new FileUpdateTask(vsNames, fileNames, fileContents);
+				OutputStream outputStream = new ByteArrayOutputStream();
+
+				task.setTaskOutputStream(outputStream);
+
+				int statusCode = m_engine.executeStep(FileUpdateStep.INIT, task);
+
+				if (statusCode == Step.CODE_SUCCESS) {
+					response.setStatus(Response.Status.SUCCESS);
+				} else {
+					response.setStatus(Response.Status.FAIL);
+				}
+				response.setMessage(outputStream.toString());
+				return response;
+			}
+
+			private void validateParameters(String[] vsNames, String[] fileNames, Map<String, String[]> fileContents) {
+				Validate.isTrue(vsNames != null && fileNames != null);
+				Validate.isTrue(vsNames.length == fileContents.size());
+				Validate.isTrue(new ArrayList<>(fileContents.values()).get(0).length == fileNames.length);
 			}
 		});
 	}

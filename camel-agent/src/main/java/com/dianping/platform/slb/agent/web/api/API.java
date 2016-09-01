@@ -17,6 +17,8 @@ public interface API {
 	Response deploy(long deployId, String vsName, String version, String config, boolean needReload,
 			String dynamicRefreshPostDataStr, String dynamicVsPostData);
 
+	Response update(String vsName, String fileName, String vsPostData);
+
 	Response fetchStatus(long deployId);
 
 	Response fetchVersion(String vsName);
