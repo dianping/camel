@@ -140,6 +140,11 @@ public class DefaultNginxServiceImpl implements NginxService {
 
 			if (resultPair.getKey()) {
 				String namesStr = resultPair.getValue().getMessage();
+
+				if (StringUtils.isEmpty(namesStr) || "".equals(namesStr.trim())) {
+					return new HashSet<String>();
+				}
+				
 				Set<String> vsNames = new HashSet<String>(Arrays.asList(namesStr.split("\t")));
 
 				logger.info("[success][Agent][listVS]");
