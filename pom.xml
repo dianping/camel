@@ -93,6 +93,7 @@
                 <groupId>org.unidal.framework</groupId>
                 <artifactId>foundation-service</artifactId>
                 <version>2.0.3</version>
+                <scope>provided</scope>
             </dependency>
 
             <!-- java ee dependency -->
@@ -111,19 +112,6 @@
                 <artifactId>velocity-tools</artifactId>
                 <version>2.0</version>
             </dependency>
-            <dependency>
-                <groupId>javax.servlet.jsp</groupId>
-                <artifactId>jsp-api</artifactId>
-                <version>2.2</version>
-                <scope>provided</scope>
-            </dependency>
-            <dependency>
-                <groupId>javax.servlet</groupId>
-                <artifactId>servlet-api</artifactId>
-                <version>2.5</version>
-                <scope>provided</scope>
-            </dependency>
-
 
             <!-- 数据库 -->
             <dependency>
