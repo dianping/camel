@@ -103,10 +103,9 @@ public class AgentReader {
 
 						result.setCurrentStep(line.substring(pos).trim());
 					}
-				} else {
-					if (line.length() > 0) {
-						lines.add(line);
-					}
+				}
+				if (line.length() > 0) {
+					lines.add(line);
 				}
 			}
 		}
