@@ -144,6 +144,7 @@ public class ApiController implements API {
 	}
 
 	@Override
+	@RequestMapping(params = "op=update")
 	public Response update(
 			@RequestParam("vs")
 			final String vsName,
