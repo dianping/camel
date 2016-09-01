@@ -217,8 +217,8 @@ public abstract class AbstractAgentClient implements AgentClient {
 			throws BizException, UnsupportedEncodingException {
 
 		Map<String, String> postData = new HashMap<String, String>();
-		postData.put("url", configManager
-				.getNginxDynamicAddUpstreamUrlPattern(PoolNameUtils.rewriteToPoolNamePrefix(vsName, newPool.getName())));
+		postData.put("url", configManager.getNginxDynamicAddUpstreamUrlPattern(
+				PoolNameUtils.rewriteToPoolNamePrefix(vsName, newPool.getName())));
 		postData.put("method", "POST");
 		postData.put("data", generateUpstreamContent(newPool, false));
 		postDataList.add(postData);

@@ -10,7 +10,6 @@ import com.dianping.phoenix.lb.model.entity.SlbModelTree;
 import com.dianping.phoenix.lb.model.entity.VirtualServer;
 import com.dianping.phoenix.lb.service.model.StrategyService;
 import com.dianping.phoenix.lb.service.model.VirtualServerService;
-import com.dianping.phoenix.lb.utils.GsonUtils;
 import com.dianping.phoenix.lb.utils.IOUtilsWrapper;
 import com.dianping.phoenix.lb.visitor.VirtualServerComparisionVisitor;
 import com.dianping.phoenix.lb.visitor.VirtualServerComparisionVisitor.ComparisionResult;
@@ -23,8 +22,6 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.ExecutorService;
 
 public class DefaultAgentClient extends AbstractAgentClient implements AgentClient {
@@ -45,19 +42,18 @@ public class DefaultAgentClient extends AbstractAgentClient implements AgentClie
 	@Override
 	public void execute() {
 		long start = System.currentTimeMillis();
+
 		result.setStatus(DeployAgentStatus.PROCESSING);
 		result.logInfo(
 				String.format("Deploying phoenix-slb config(%s) to host(%s) for deploy(%s) of vs(%s)  ... ", tag, ip,
 						deployId, vsName));
 
 		String currentWorkingVersion = getAgentConfigVersion();
-		ComparisionResult compareResult = null;
 
 		result.setOldTag(currentWorkingVersion);
 		try {
 			Validate.isTrue(StringUtils.isNotBlank(currentWorkingVersion),
 					"currentWorkingVersion is blank: " + currentWorkingVersion);
-
 			if (sameVersion(vsName, currentWorkingVersion, tag)) {
 				endWithSuccess();
 				return;
@@ -65,6 +61,8 @@ public class DefaultAgentClient extends AbstractAgentClient implements AgentClie
 
 			SlbModelTree deployingSlbModelTree = virtualServerService.findTagById(vsName, tag);
 			boolean needReload = false;
+			VirtualServer deployVs = deployingSlbModelTree.findVirtualServer(vsName);
+			ComparisionResult compareResult = null;
 
 			if (!FIRST_VERSION.equals(currentWorkingVersion)) {
 				SlbModelTree currentWorkingSlbModelTree = virtualServerService
@@ -77,26 +75,26 @@ public class DefaultAgentClient extends AbstractAgentClient implements AgentClie
 					endWithFail();
 					return;
 				}
-
-				VirtualServer deployVs = deployingSlbModelTree.findVirtualServer(vsName);
-
 				if (isHttpsInfoChanged(deployVs, currentWorkingSlbModelTree.findVirtualServer(vsName))) {
 					updateAgentSslFile(deployVs);
 					needReload = true;
 				}
-
 				if (!needReload) {
 					VirtualServerComparisionVisitor comparisionVisitor = new VirtualServerComparisionVisitor(vsName,
 							currentWorkingSlbModelTree);
+
 					deployingSlbModelTree.accept(comparisionVisitor);
 					compareResult = comparisionVisitor.getVisitorResult();
-
 					if (compareResult.needReload()) {
 						needReload = true;
 					}
 				}
 			} else {
 				needReload = true;
+
+				if (deployVs.isHttpsOpen()) {
+					updateAgentSslFile(deployVs);
+				}
 			}
 
 			if (needReload) {
@@ -110,9 +108,7 @@ public class DefaultAgentClient extends AbstractAgentClient implements AgentClie
 			}
 
 			result.logInfo("Agent accepted.");
-
 			readLog();
-
 		} catch (Throwable e) {
 			logger.error("[execute]", e);
 			result.logError("Exception occurs", e);
