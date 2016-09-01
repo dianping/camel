@@ -39,7 +39,7 @@ public abstract class ConfigUpgradeStep implements Step {
 		public Map<String, String> getHeader() {
 			Map<String, String> headers = super.getHeader();
 
-			headers.put(HEADER_STATUS, STATUS_FAIL);
+			headers.put(HEADER_STATUS, STATUS_SUCCESS);
 			return headers;
 		}
 	};
@@ -59,7 +59,7 @@ public abstract class ConfigUpgradeStep implements Step {
 		public Map<String, String> getHeader() {
 			Map<String, String> headers = super.getHeader();
 
-			headers.put(HEADER_STATUS, STATUS_SUCCESS);
+			headers.put(HEADER_STATUS, STATUS_FAIL);
 			return headers;
 		}
 	};
