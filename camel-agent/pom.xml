@@ -10,8 +10,7 @@
     <groupId>com.dianping.platform</groupId>
     <artifactId>camel-agent</artifactId>
     <name>camel-agent</name>
-    <!-- if want to deploy on tomcat, change this to war -->
-    <packaging>jar</packaging>
+    <packaging>war</packaging>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
