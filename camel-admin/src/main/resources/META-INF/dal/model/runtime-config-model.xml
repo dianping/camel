@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model model-package="com.dianping.phoenix.lb.config" enable-base-visitor="true" enable-merger="true"
+       enable-sax-parser="true">
+    <entity name="runtime-config" root="true">
+        <element name="tengine-config-git-url" value-type="String"
+                 default-value="ssh://fakehost/fake.git"/>
+        <element name="model-git-url" value-type="String"
+                 default-value="ssh://fakehost/fake.git"/>
+        <element name="model-store-base-dir" value-type="String"
+                 default-value="/data/appdatas/fakepath"/>
+        <element name="tengine-config-base-dir" value-type="String"
+                 default-value="/data/appdatas/fakepath"/>
+        <element name="deploy-log-url-pattern" value-type="String"
+                 default-value="http://%s:3473/slb/agent/nginx?op=log&amp;deployId=%s"/>
+        <element name="deploy-url-reload-pattern" value-type="String"
+                 default-value="http://%s:3473/slb/agent/nginx?op=deploy&amp;deployId=%s&amp;vs=%s&amp;config=%s&amp;version=%s&amp;gitUrl=%s&amp;reload=true"/>
+        <element name="update-file-url-pattern" value-type="String"
+                 default-value="http://%s:3473/slb/agent/nginx?op=update&amp;vs=%s&amp;fileName=%s"/>
+        <element name="deploy-url-dynamic-refresh-pattern" value-type="String"
+                 default-value="http://%s:3473/slb/agent/nginx?op=deploy&amp;deployId=%s&amp;vs=%s&amp;config=%s&amp;version=%s&amp;gitUrl=%s&amp;reload=false"/>
+        <element name="deploy-status-url-pattern" value-type="String"
+                 default-value="http://%s:3473/slb/agent/nginx?op=status&amp;deployId=%s"/>
+        <element name="agent-tengine-config-version-url-pattern" value-type="String"
+                 default-value="http://%s:3473/slb/agent/nginx?op=version&amp;vs=%s"/>
+        <element name="agent-vs-list-url-pattern" value-type="String"
+                 default-value="http://%s:3473/slb/agent/nginx?op=vslist"/>
+        <element name="agent-remove-vs-url-pattern" value-type="String"
+                 default-value="http://%s:3473/slb/agent/nginx?op=delvs&amp;vs=%s"/>
+        <element name="agent-reload-url-pattern" value-type="String"
+                 default-value="http://%s:3473/slb/agent/nginx?op=reload"/>
+        <element name="deploy-getlog-retrycount" value-type="int" primitive="true" default-value="10"/>
+        <element name="deploy-connect-timeout" value-type="int" primitive="true" default-value="10000"/>
+        <element name="deploy-retry-interval" value-type="int" primitive="true" default-value="30000"/>
+        <element name="nginx-check-config-folder" value-type="String"
+                 default-value="/usr/local/nginx/conf/phoenix-slb/"/>
+        <element name="tengine-config-file-name" value-type="String" default-value="server.conf"/>
+        <element name="tengine-config-certifacate-name" value-type="String" default-value="ssl.crt"/>
+        <element name="tengine-config-key-name" value-type="String" default-value="ssl.key"/>
+        <element name="nginx-dynamic-add-upstream-url-pattern" value-type="String"
+                 default-value="127.0.0.1:8866/upstream/%s"/>
+        <element name="nginx-dynamic-delete-upstream-url-pattern" value-type="String"
+                 default-value="127.0.0.1:8866/upstream/%s"/>
+        <element name="nginx-dynamic-update-upstream-url-pattern" value-type="String"
+                 default-value="127.0.0.1:8866/upstream/%s"/>
+        <element name="git-servlet-base-dir" value-type="String" default-value="/data/appdatas/phoenix/slb/git_base"/>
+        <element name="f5-host" value-type="String" default-value="10.1.2.181:8070"/>
+        <element name="f5-user" value-type="String"/>
+        <element name="f5-password" value-type="String"/>
+        <element name="need-call-f5" value-type="boolean" default-value="false"/>
+    </entity>
+</model>
+
