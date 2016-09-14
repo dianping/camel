@@ -84,7 +84,7 @@ public abstract class AbstractTransactionProcessor implements TransactionProcess
 
 	private void startTransaction(Transaction transaction) throws IOException {
 		m_currentTransaction.set(transaction);
-		transaction.setStatus(Transaction.Status.RUNNNG);
+		transaction.setStatus(Transaction.Status.RUNNING);
 		m_transactionManager.saveTransaction(transaction);
 	}
 
