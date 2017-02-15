@@ -26,7 +26,7 @@ public class Transaction implements Serializable {
 	private Map<String, Object> properties;
 
 	public enum Status {
-		INIT, RUNNNG, SUCCESS, FAILED, KILLED, REJECTED;
+		INIT, RUNNING, SUCCESS, FAILED, KILLED, REJECTED;
 
 		private final static Set<Status> COMPLETED_STATUS = new HashSet<Status>();
 
